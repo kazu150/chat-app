@@ -4,6 +4,8 @@
 - 会員登録機能
 - 会員登録時の画像・ユーザーネームの登録
 - リアルタイムでの複数人でのチャット
+### アプリ概要
+https://docs.google.com/spreadsheets/d/1TYjfVvbRaRccgopyTlZuptjsoqW-OB4BxdH_P6Nddr4/edit#gid=0
 ### ディレクトリ構成
 - pages :各ページを構成するコンポーネント
 - components :個別のコンポーネント
