@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      marginBottom: theme.spacing(5),
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -66,23 +67,26 @@ const Header = () => {
       <div className={classes.root}>
         <FormGroup>
           <FormControlLabel
-            control={
+            control={(
               <Switch
                 checked={auth}
                 onChange={handleChange}
                 aria-label="login switch"
               />
-            }
+            )}
             label={auth ? 'Logout' : 'Login'}
           />
         </FormGroup>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h2" className={classes.title}>
               リアルタイムチャット
             </Typography>
             {auth ? (
               <div>
+                <Typography variant="button" className={classes.title}>
+                  クロネコ太郎さん
+                </Typography>
                 <IconButton
                   aria-label="account of current user"
                   aria-controls="menu-appbar"

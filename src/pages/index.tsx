@@ -1,42 +1,48 @@
 import { useContext } from 'react';
 import Router from 'next/router';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
 export default function Home() {
   const { auth } = useContext(CommonContext);
   return (
     <div>
-      <h1>リアルタイムチャット</h1>
+      <Typography variant="h1">リアルタイムチャット</Typography>
 
       <Box textAlign="center">
         <img src="chat.svg" width={350} height={350} />
       </Box>
       {auth ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => Router.push('/chat')}
-        >
-          チャットへ
-        </Button>
-      ) : (
-        <>
+        <Box textAlign="center">
           <Button
             variant="contained"
             color="primary"
-            onClick={() => Router.push('/signup')}
+            onClick={() => Router.push('/chat')}
           >
-            新規登録
+            チャットへ
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => Router.push('/signin')}
-          >
-            サインイン
-          </Button>
-        </>
+        </Box>
+      ) : (
+        <Box textAlign="center">
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => Router.push('/signup')}
+            >
+              新規登録
+            </Button>
+          </Box>
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => Router.push('/signin')}
+            >
+              サインイン
+            </Button>
+          </Box>
+        </Box>
       )}
     </div>
   );

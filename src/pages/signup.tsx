@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import Router from 'next/router';
+import { TextField, Box, Button, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
 const signup = () => {
@@ -10,19 +11,47 @@ const signup = () => {
     Router.push('/settings');
   };
 
-  useEffect(() => {
-    auth && Router.push('/chat');
-  }, [auth]);
+  // SignInSubmitとバッティングするためいまは保留
+  // useEffect(() => {
+  //   auth && Router.push('/chat');
+  // }, [auth]);
 
   return (
     !auth && (
       <div>
-        <h1>新規登録</h1>
+        <Typography variant="h1">新規登録</Typography>
         <form onSubmit={onSignupSubmit}>
-          <input placeholder="example@example.com" />
-          <input type="password" placeholder="●●●●●●●●" />
-          <input type="password" placeholder="●●●●●●●●" />
-          <input type="submit" value="送信する" />
+          <TextField
+            required
+            fullWidth
+            label="Eメール"
+            style={{ marginBottom: 16 }}
+            placeholder="example@example.com"
+            variant="outlined"
+          />
+          <TextField
+            required
+            fullWidth
+            type="password"
+            label="パスワード"
+            style={{ marginBottom: 16 }}
+            placeholder="●●●●●●●●"
+            variant="outlined"
+          />
+          <TextField
+            required
+            fullWidth
+            type="password"
+            label="パスワード（確認用）"
+            style={{ marginBottom: 40 }}
+            placeholder="●●●●●●●●"
+            variant="outlined"
+          />
+          <Box textAlign="center">
+            <Button type="submit" variant="contained" color="primary">
+              サインイン
+            </Button>
+          </Box>
         </form>
       </div>
     )
