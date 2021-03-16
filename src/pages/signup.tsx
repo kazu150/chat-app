@@ -7,6 +7,7 @@ const signup = () => {
   };
   return (
     <div>
+      <h1>新規登録</h1>
       <form onSubmit={onSignupSubmit}>
         <input placeholder="example@example.com" />
         <input type="password" placeholder="●●●●●●●●" />

@@ -7,6 +7,7 @@ const settings = () => {
   };
   return (
     <div>
+      <h1>設定</h1>
       <form onSubmit={onSettingsSubmit}>
         <input />
         <input type="submit" value="更新" />

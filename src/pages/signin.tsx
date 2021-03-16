@@ -7,6 +7,7 @@ const signin = () => {
   };
   return (
     <div>
+      <h1>サインイン</h1>
       <form onSubmit={onSigninSubmit}>
         <input placeholder="example@example.com" />
         <input type="password" placeholder="●●●●●●●●" />

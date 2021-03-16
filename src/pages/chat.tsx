@@ -8,6 +8,7 @@ const chat = () => {
 
   return (
     <div>
+      <h1>チャット</h1>
       <ul>
         <li>
           <div>

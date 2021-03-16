@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 import theme from '../theme/theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
@@ -30,7 +31,9 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Header />
-        <Component {...pageProps} />
+        <Container maxWidth="sm">
+          <Component {...pageProps} />
+        </Container>
         <Footer />
       </ThemeProvider>
     </>
