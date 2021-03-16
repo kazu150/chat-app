@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
 
 const Header = () => {
   return (
@@ -11,7 +12,15 @@ const Header = () => {
       <div>
         <h2>リアルタイムチャット</h2>
         <div>
-          <button>ログイン（ログアウト）</button>
+          <button onClick={() => Router.push('/')}>
+            サインアウト（サインイン時）
+          </button>
+          <button onClick={() => Router.push('/signup')}>
+            新規登録（サインアウト時）
+          </button>
+          <button onClick={() => Router.push('/signin')}>
+            サインイン（サインアウト時）
+          </button>
         </div>
       </div>
     </>

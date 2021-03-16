@@ -1,10 +1,16 @@
+import Router from 'next/router';
+
 const signin = () => {
+  const onSigninSubmit = (e) => {
+    e.preventDefault();
+    Router.push('/chat');
+  };
   return (
     <div>
-      <form>
+      <form onSubmit={onSigninSubmit}>
         <input placeholder="example@example.com" />
         <input type="password" placeholder="●●●●●●●●" />
-        <button>送信</button>
+        <input type="submit" value="送信する" />
       </form>
     </div>
   );
