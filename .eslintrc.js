@@ -34,12 +34,52 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "react/react-in-jsx-scope": "off",
         "prettier/prettier": [
             "error",
             {
                 "singleQuote": true,
                 "trailingComma": "es5"
             }
-        ]
-    }
+        ],
+        'import/extensions': [ 
+            'error',
+            'ignorePackages', 
+            {
+                js: 'never', jsx: 'never', ts: 'never', tsx: 'never',
+            } 
+        ],
+        'react/jsx-filename-extension': [ 
+            'error',
+            {
+                extensions: ['.jsx', '.tsx']
+            } 
+        ],
+        'react/jsx-props-no-spreading': [ 
+            'error',
+            {
+                html: 'enforce',
+                custom: 'enforce', 
+                explicitSpread: 'ignore',
+            }, 
+        ],
+    },
+    overrides: [
+        {
+            'files': ['*.tsx'], 
+            'rules': {
+                'react/prop-types': 'off', 
+            },
+        }, 
+    ],
+    settings: {
+        "react": {
+            "version": "detect"
+        },
+        'import/resolver': { 
+            node: {
+                paths: ['src'], 
+            },
+        }
+    },
 };

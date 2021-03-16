@@ -1,8 +1,16 @@
 import '../styles/globals.css';
-import { FC } from 'react';
+import Header from '../components/molecules/Header';
+import Footer from '../components/molecules/Footer';
 
-const MyApp: FC = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
-};
+function MyApp({ Component, pageProps }) {
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return (
+    <>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
+    </>
+  );
+}
 
 export default MyApp;
