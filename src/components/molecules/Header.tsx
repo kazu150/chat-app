@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useContext } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -9,6 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { Button } from '@material-ui/core';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import CommonContext from '../../context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,9 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Header = () => {
+  const { auth, setAuth } = useContext(CommonContext);
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +47,15 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const handleClickSignOut = () => {
+    Router.push('/');
+    handleClose();
+  };
+
+  const handleClickSettings = () => {
+    Router.push('/settings');
+    handleClose();
+  };
   return (
     <>
       <Head>
@@ -49,6 +63,18 @@ const Header = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={classes.root}>
+        <FormGroup>
+          <FormControlLabel
+            control={(
+              <Switch
+                checked={auth}
+                onChange={handleChange}
+                aria-label="login switch"
+              />
+            )}
+            label={auth ? 'Logout' : 'Login'}
+          />
+        </FormGroup>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
@@ -80,22 +106,18 @@ const Header = () => {
                   open={open}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={() => Router.push('/')}>
-                    サインアウト
-                  </MenuItem>
-                  <MenuItem onClick={() => Router.push('/settings')}>
-                    設定
-                  </MenuItem>
+                  <MenuItem onClick={handleClickSignOut}>サインアウト</MenuItem>
+                  <MenuItem onClick={handleClickSettings}>設定</MenuItem>
                 </Menu>
               </div>
             ) : (
               <div>
-                <MenuItem onClick={() => Router.push('/signup')}>
+                <Button color="inherit" onClick={() => Router.push('/signup')}>
                   新規登録
-                </MenuItem>
-                <MenuItem onClick={() => Router.push('/signin')}>
+                </Button>
+                <Button color="inherit" onClick={() => Router.push('/signin')}>
                   サインイン
-                </MenuItem>
+                </Button>
               </div>
             )}
           </Toolbar>

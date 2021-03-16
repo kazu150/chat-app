@@ -1,14 +1,35 @@
 import Router from 'next/router';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
 
 export default function Home() {
   return (
     <div>
       <h1>リアルタイムチャット</h1>
-      <button onClick={() => Router.push('/signin')}>サインイン</button>
-      <button onClick={() => Router.push('/signup')}>新規登録</button>
-      <button onClick={() => Router.push('/chat')}>チャットへ</button>
-      <Button color="primary">Hello World</Button>
+
+      <Box textAlign="center">
+        <img src="chat.svg" width={350} height={350} />
+      </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => Router.push('/signup')}
+      >
+        新規登録
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => Router.push('/signin')}
+      >
+        サインイン
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => Router.push('/chat')}
+      >
+        チャットへ
+      </Button>
     </div>
   );
 }

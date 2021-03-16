@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme: Theme) =>
     copyRight: {
       textAlign: 'center',
       marginTop: '40px',
+      marginBottom: '60px',
     },
   })
 );
