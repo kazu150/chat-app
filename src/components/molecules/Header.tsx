@@ -48,6 +48,7 @@ const Header = () => {
   };
 
   const handleClickSignOut = () => {
+    setAuth(false);
     Router.push('/');
     handleClose();
   };
@@ -65,13 +66,13 @@ const Header = () => {
       <div className={classes.root}>
         <FormGroup>
           <FormControlLabel
-            control={(
+            control={
               <Switch
                 checked={auth}
                 onChange={handleChange}
                 aria-label="login switch"
               />
-            )}
+            }
             label={auth ? 'Logout' : 'Login'}
           />
         </FormGroup>
