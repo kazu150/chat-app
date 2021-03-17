@@ -5,18 +5,19 @@ import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 
 const Settings: NextPage = () => {
-  const { state } = useContext(CommonContext);
+  const { state, dispatch } = useContext(CommonContext);
 
   useEffect(() => {
-    state.auth && Router.push('/');
-  }, [state.auth]);
+    !state.user.email && Router.push('/');
+  }, [state.user.email]);
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch({ type: 'userModProfile', payload: { name: 'くろねこ' } });
     await Router.push('/chat');
   };
   return (
-    state.auth && (
+    state.user.email && (
       <div>
         <Typography variant="h1">ユーザー設定</Typography>
         <form onSubmit={onSettingsSubmit}>

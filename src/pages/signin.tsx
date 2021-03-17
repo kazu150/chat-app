@@ -8,16 +8,23 @@ const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
   const onSigninSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch({ type: 'signin' });
+    dispatch({
+      type: 'userSignIn',
+      payload: {
+        name: 'クロネコてすと',
+        email: 'example@example.com',
+        thumb: 'avatar.png',
+      },
+    });
     await Router.push('/chat');
   };
 
   useEffect(() => {
-    state.auth && Router.push('/chat');
-  }, [state.auth]);
+    state.user.email && Router.push('/chat');
+  }, [state.user.email]);
 
   return (
-    !state.auth && (
+    !state.user.email && (
       <div>
         <Typography variant="h1">サインイン</Typography>
         <form onSubmit={onSigninSubmit}>

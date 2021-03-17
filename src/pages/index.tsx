@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>
-      {state.auth ? (
+      {state.user.email ? (
         <Box textAlign="center">
           <Button
             variant="contained"

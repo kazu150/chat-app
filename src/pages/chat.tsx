@@ -39,11 +39,11 @@ const Chat: NextPage = () => {
   };
 
   useEffect(() => {
-    !state.auth && Router.push('/');
-  }, [state.auth]);
+    !state.user.email && Router.push('/');
+  }, [state.user.email]);
 
   return (
-    state.auth && (
+    state.user.email && (
       <div>
         <Typography variant="h1">チャット</Typography>
         <form onSubmit={onPostSubmit}>
@@ -78,6 +78,7 @@ const Chat: NextPage = () => {
                 <>
                   <Typography
                     variant="body1"
+                    component="span"
                     className={classes.inline}
                     color="textPrimary"
                   >
@@ -101,6 +102,7 @@ const Chat: NextPage = () => {
                 <>
                   <Typography
                     variant="body1"
+                    component="span"
                     className={classes.inline}
                     color="textPrimary"
                   >
@@ -124,6 +126,7 @@ const Chat: NextPage = () => {
                 <>
                   <Typography
                     variant="body1"
+                    component="span"
                     className={classes.inline}
                     color="textPrimary"
                   >
@@ -147,6 +150,7 @@ const Chat: NextPage = () => {
                 <>
                   <Typography
                     variant="body1"
+                    component="span"
                     className={classes.inline}
                     color="textPrimary"
                   >

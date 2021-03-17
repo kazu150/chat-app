@@ -1,9 +1,9 @@
 const initialState = {
   auth: true,
   user: {
-    name: 'クロネコ太郎',
-    email: 'example@example.com',
-    thumb: 'avatar.png',
+    name: '',
+    email: '',
+    thumb: '',
   },
   chat: [
     {

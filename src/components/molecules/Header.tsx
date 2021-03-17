@@ -40,7 +40,18 @@ const Header: NextComponentType = () => {
   const open = Boolean(anchorEl);
 
   const handleChange = () => {
-    dispatch({ type: 'toggle' });
+    if (!state.user.email) {
+      dispatch({
+        type: 'userSignIn',
+        payload: {
+          name: 'クロネコてすと',
+          email: 'example@example.com',
+          thumb: 'avatar.png',
+        },
+      });
+    } else {
+      dispatch({ type: 'userSignOut' });
+    }
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,7 +63,7 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
-    dispatch({ type: 'signout' });
+    dispatch({ type: 'userSignOut' });
     await Router.push('/');
     handleClose();
   };
@@ -73,12 +84,12 @@ const Header: NextComponentType = () => {
             control={
               // eslint-disable-next-line react/jsx-wrap-multilines
               <Switch
-                checked={state.auth}
+                checked={Boolean(state.user.email)}
                 onChange={handleChange}
                 aria-label="login switch"
               />
             }
-            label={state.auth ? 'Logout' : 'Login'}
+            label={state.user.email ? 'Logout' : 'Login'}
           />
         </FormGroup>
         <AppBar position="static">
@@ -86,10 +97,10 @@ const Header: NextComponentType = () => {
             <Typography variant="h2" className={classes.title}>
               リアルタイムチャット
             </Typography>
-            {state.auth ? (
+            {state.user.email ? (
               <div>
                 <Typography variant="button" className={classes.title}>
-                  クロネコ太郎さん
+                  {`${state.user.name}さん`}
                 </Typography>
                 <IconButton
                   aria-label="account of current user"

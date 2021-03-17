@@ -8,17 +8,24 @@ const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
   const onSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch({ type: 'signin' });
+    dispatch({
+      type: 'userSignUp',
+      payload: {
+        name: 'クロネコてすと',
+        email: 'example@example.com',
+        thumb: 'avatar.png',
+      },
+    });
     await Router.push('/settings');
   };
 
   // SignInSubmitとバッティングするためいまは保留
   // useEffect(() => {
-  //   state.auth && Router.push('/chat');
-  // }, [state.auth]);
+  //   state.user.email && Router.push('/chat');
+  // }, [state.user.email]);
 
   return (
-    !state.auth && (
+    !state.user.email && (
       <div>
         <Typography variant="h1">新規登録</Typography>
         <form onSubmit={onSignupSubmit}>
