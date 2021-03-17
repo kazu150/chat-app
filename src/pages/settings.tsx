@@ -8,7 +8,7 @@ const Settings: NextPage = () => {
   const { state } = useContext(CommonContext);
 
   useEffect(() => {
-    !state.auth && Router.push('/');
+    state.auth && Router.push('/');
   }, [state.auth]);
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
