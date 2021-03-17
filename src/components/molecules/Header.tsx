@@ -34,13 +34,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Header: NextComponentType = () => {
-  const { auth, setAuth } = useContext(CommonContext);
+  const { state, dispatch } = useContext(CommonContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
+    dispatch({ type: 'toggle' });
+    // setAuth(event.target.checked);
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,7 +53,8 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
-    setAuth(false);
+    // setAuth(false);
+    dispatch({ type: 'signout' });
     await Router.push('/');
     handleClose();
   };
@@ -73,12 +75,12 @@ const Header: NextComponentType = () => {
             control={
               // eslint-disable-next-line react/jsx-wrap-multilines
               <Switch
-                checked={auth}
+                checked={state.auth}
                 onChange={handleChange}
                 aria-label="login switch"
               />
             }
-            label={auth ? 'Logout' : 'Login'}
+            label={state.auth ? 'Logout' : 'Login'}
           />
         </FormGroup>
         <AppBar position="static">
@@ -86,7 +88,7 @@ const Header: NextComponentType = () => {
             <Typography variant="h2" className={classes.title}>
               リアルタイムチャット
             </Typography>
-            {auth ? (
+            {state.auth ? (
               <div>
                 <Typography variant="button" className={classes.title}>
                   クロネコ太郎さん

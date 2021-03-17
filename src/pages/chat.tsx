@@ -32,18 +32,18 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
 
-  const { auth } = useContext<>(CommonContext);
+  const { state } = useContext(CommonContext);
   const onPostSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert('done');
   };
 
   useEffect(() => {
-    !auth && Router.push('/');
-  }, [auth]);
+    !state.auth && Router.push('/');
+  }, [state.auth]);
 
   return (
-    auth && (
+    state.auth && (
       <div>
         <Typography variant="h1">チャット</Typography>
         <form onSubmit={onPostSubmit}>

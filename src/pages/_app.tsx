@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -7,6 +7,8 @@ import theme from '../theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import CommonContext from '../context';
+import { reducer, Action } from '../reducer/index';
+import initialState from '../reducer/initialState';
 
 type Props = {
   Component: NextPage;
@@ -16,7 +18,7 @@ type Props = {
 };
 
 const MyApp: NextPage<Props> = ({ Component, pageProps }: Props) => {
-  const [auth, setAuth] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -35,7 +37,7 @@ const MyApp: NextPage<Props> = ({ Component, pageProps }: Props) => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <CommonContext.Provider value={{ auth, setAuth }}>
+      <CommonContext.Provider value={{ dispatch, state }}>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />

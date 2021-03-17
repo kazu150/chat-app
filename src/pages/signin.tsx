@@ -5,19 +5,19 @@ import { TextField, Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
 const Signin: NextPage = () => {
-  const { auth, setAuth } = useContext(CommonContext);
+  const { state, dispatch } = useContext(CommonContext);
   const onSigninSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setAuth(true);
+    dispatch({ type: 'signin' });
     await Router.push('/chat');
   };
 
   useEffect(() => {
-    auth && Router.push('/chat');
-  }, [auth]);
+    state.auth && Router.push('/chat');
+  }, [state.auth]);
 
   return (
-    !auth && (
+    !state.auth && (
       <div>
         <Typography variant="h1">サインイン</Typography>
         <form onSubmit={onSigninSubmit}>

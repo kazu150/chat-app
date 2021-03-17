@@ -5,7 +5,7 @@ import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
 const Home: NextPage = () => {
-  const { auth } = useContext(CommonContext);
+  const { state } = useContext(CommonContext);
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>
-      {auth ? (
+      {state.auth ? (
         <Box textAlign="center">
           <Button
             variant="contained"
