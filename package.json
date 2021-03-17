@@ -1,5 +1,5 @@
 {
-  "name": "1_dev",
+  "name": "chatapp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/system": "^4.11.3",
     "next": "10.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1"

@@ -1,17 +1,52 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import { useContext } from 'react';
+import Router from 'next/router';
+import { NextPage } from 'next';
+import { Button, Box, Typography } from '@material-ui/core';
+import CommonContext from '../context';
 
-export default function Home() {
+const Home: NextPage = () => {
+  const { auth } = useContext(CommonContext);
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div>
+      <Typography variant="h1">リアルタイムチャット</Typography>
 
-      <main className={styles.main} />
-
-      <footer className={styles.footer} />
+      <Box textAlign="center">
+        <img src="chat.svg" alt="アバター" width={350} height={350} />
+      </Box>
+      {auth ? (
+        <Box textAlign="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => Router.push('/chat')}
+          >
+            チャットへ
+          </Button>
+        </Box>
+      ) : (
+        <Box textAlign="center">
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => Router.push('/signup')}
+            >
+              新規登録
+            </Button>
+          </Box>
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => Router.push('/signin')}
+            >
+              サインイン
+            </Button>
+          </Box>
+        </Box>
+      )}
     </div>
   );
-}
+};
+
+export default Home;
