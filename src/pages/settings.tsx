@@ -28,6 +28,11 @@ const Settings: NextPage = () => {
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // ユーザー名は入力されているか
+    if (data.name === '') {
+      dispatch({ type: 'errorEmptyName' });
+      return;
+    }
     dispatch({ type: 'userModProfile', payload: data });
     await Router.push('/chat');
   };
@@ -53,11 +58,10 @@ const Settings: NextPage = () => {
               <img src={data.thumb} width={150} height={150} alt="アバター" />
             </Grid>
             <Grid item xs={4}>
-              <Typography variant="body1">ユーザーネーム：</Typography>
+              <Typography variant="body1">ユーザー名：</Typography>
             </Grid>
             <Grid item xs={8}>
               <TextField
-                required
                 fullWidth
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}

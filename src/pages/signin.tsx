@@ -3,6 +3,7 @@ import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
+import { regEmail, regPass } from '../utils/validate';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -13,6 +14,28 @@ const Signin: NextPage = () => {
 
   const onSigninSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // メールは入力されているか
+    if (user.email === '') {
+      dispatch({ type: 'errorEmptyMail' });
+      return;
+    }
+    // メールの形式は正しいか
+    if (!regEmail.test(user.email)) {
+      dispatch({ type: 'errorInvalidEmail' });
+      return;
+    }
+    // パスワードは入力されているか
+    if (user.password === '') {
+      dispatch({ type: 'errorEmptyPassword' });
+      return;
+    }
+    // パスワードの形式は正しいか
+    if (!regPass.test(user.password)) {
+      dispatch({ type: 'errorInvalidPassword' });
+      return;
+    }
+
     dispatch({
       type: 'userSignIn',
       payload: {
@@ -40,7 +63,6 @@ const Signin: NextPage = () => {
         <Typography variant="h1">サインイン</Typography>
         <form onSubmit={onSigninSubmit}>
           <TextField
-            required
             fullWidth
             label="Eメール"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -49,7 +71,6 @@ const Signin: NextPage = () => {
             variant="outlined"
           />
           <TextField
-            required
             fullWidth
             type="password"
             label="パスワード"

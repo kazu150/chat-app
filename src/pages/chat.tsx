@@ -43,6 +43,12 @@ const Chat: NextPage = () => {
     const h = `00${date.getHours()}`.slice(-2);
     const min = `00${date.getMinutes()}`.slice(-2);
 
+    // 投稿内容は入力されているか
+    if (draft === '') {
+      dispatch({ type: 'errorEmptyDraft' });
+      return;
+    }
+
     dispatch({
       type: 'chatPostNew',
       payload: {
@@ -77,7 +83,6 @@ const Chat: NextPage = () => {
           <Grid container spacing={1}>
             <Grid item xs={10}>
               <TextField
-                required
                 fullWidth
                 multiline
                 label="投稿内容"

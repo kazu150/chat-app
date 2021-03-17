@@ -2,7 +2,8 @@ import { useEffect, useReducer } from 'react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { CssBaseline, Container } from '@material-ui/core';
+import { CssBaseline, Container, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import theme from '../theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
@@ -46,6 +47,23 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
           <Container maxWidth="sm">
             <Component />
           </Container>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={state.error.isOpened}
+            onClose={() => dispatch({ type: 'errorClose' })}
+          >
+            <MuiAlert
+              elevation={6}
+              severity="error"
+              onClose={() => dispatch({ type: 'errorClose' })}
+              variant="filled"
+            >
+              {state.error.message}
+            </MuiAlert>
+          </Snackbar>
           <Footer />
         </ThemeProvider>
       </CommonContext.Provider>

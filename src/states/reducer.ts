@@ -101,13 +101,22 @@ export const reducer = (state: State, action: Action): State => {
           message: 'このメールアドレスは登録されていません',
         },
       };
-    case 'errorEmptyname':
+    case 'errorEmptyName':
       return {
         ...state,
         error: {
           isOpened: true,
           errorPart: 'name',
           message: 'ユーザー名を入力してください',
+        },
+      };
+    case 'errorEmptyDraft':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'name',
+          message: '投稿内容を入力してください',
         },
       };
     case 'errorOther':
