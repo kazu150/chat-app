@@ -35,20 +35,15 @@ export const reducer = (state: State, action: Action): State => {
         user: initialState.user,
       };
     // chatReducer
-    case 'chatLoadAll':
-      return {
-        ...state,
-        chat: action.payload,
-      };
     case 'chatLoadNew':
       return {
         ...state,
-        chat: [...state.chat, action.payload],
+        chats: [...state.chats, action.payload],
       };
     case 'chatPostNew':
       return {
         ...state,
-        chat: [...state.chat, action.payload],
+        chats: [...state.chats, action.payload],
       };
     // errorReducer
     case 'errorEmptyMail':
@@ -113,15 +108,6 @@ export const reducer = (state: State, action: Action): State => {
           isOpened: true,
           errorPart: 'name',
           message: 'ユーザー名を入力してください',
-        },
-      };
-    case 'errorInvalidInitialTime':
-      return {
-        ...state,
-        error: {
-          isOpened: true,
-          errorPart: 'initialTime',
-          message: '正しい学習時間を入力してください',
         },
       };
     case 'errorOther':

@@ -69,7 +69,7 @@ const Signup: NextPage = () => {
           />
           <Box textAlign="center">
             <Button type="submit" variant="contained" color="primary">
-              サインイン
+              新規登録
             </Button>
           </Box>
         </form>

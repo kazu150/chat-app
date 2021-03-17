@@ -3,34 +3,38 @@ const initialState = {
   user: {
     name: '',
     email: '',
-    thumb: '',
+    thumb: 'avatar.png',
   },
-  chat: [
+  chats: [
     {
+      id: 1,
       name: 'クロネコ太郎',
       thumb: 'avatar.png',
-      date: '2021/03/17 21:40',
+      createdAt: '2021/03/17 21:20',
       description:
         '本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文',
     },
     {
+      id: 2,
       name: 'シロネコ次郎',
       thumb: 'avatar.png',
-      date: '2021/03/17 21:40',
+      createdAt: '2021/03/17 21:30',
       description:
         '本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文',
     },
     {
+      id: 3,
       name: 'ミケネコ三郎',
       thumb: 'avatar.png',
-      date: '2021/03/17 21:40',
+      createdAt: '2021/03/17 21:40',
       description:
         '本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文',
     },
     {
+      id: 4,
       name: 'チャトラ四郎',
       thumb: 'avatar.png',
-      date: '2021/03/17 21:40',
+      createdAt: '2021/03/17 21:50',
       description:
         '本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文',
     },

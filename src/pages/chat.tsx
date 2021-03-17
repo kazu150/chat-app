@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
@@ -31,11 +31,30 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Chat: NextPage = () => {
   const classes = useStyles();
+  const { state, dispatch } = useContext(CommonContext);
+  const [draft, setDraft] = useState('');
 
-  const { state } = useContext(CommonContext);
   const onPostSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('done');
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = `00${date.getMonth() + 1}`.slice(-2);
+    const d = `00${date.getDate()}`.slice(-2);
+    const h = `00${date.getHours()}`.slice(-2);
+    const min = `00${date.getMinutes()}`.slice(-2);
+
+    dispatch({
+      type: 'chatPostNew',
+      payload: {
+        id: Number(date),
+        name: state.user.name,
+        thumb: state.user.thumb,
+        createdAt: `${y}/${m}/${d} ${h}:${min}`,
+        description: draft,
+      },
+    });
+
+    setDraft('');
   };
 
   useEffect(() => {
@@ -62,6 +81,8 @@ const Chat: NextPage = () => {
                 fullWidth
                 multiline
                 label="投稿内容"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
                 style={{ marginBottom: 10 }}
                 placeholder="投稿を入力しましょう"
                 variant="outlined"
@@ -75,102 +96,36 @@ const Chat: NextPage = () => {
           </Grid>
         </form>
         <List className={classes.root}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="avatar.png" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={<Typography variant="h6">クロネコ太郎</Typography>}
-              secondary={
-                // eslint-disable-next-line react/jsx-wrap-multilines
-                <>
-                  <Typography
-                    variant="body1"
-                    component="span"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文
-                  </Typography>
-                  <br />
-                  <time>2021/03/17 21:40</time>
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="avatar.png" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={<Typography variant="h6">クロネコ太郎</Typography>}
-              secondary={
-                // eslint-disable-next-line react/jsx-wrap-multilines
-                <>
-                  <Typography
-                    variant="body1"
-                    component="span"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文
-                  </Typography>
-                  <br />
-                  <time>2021/03/17 21:40</time>
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="avatar.png" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={<Typography variant="h6">クロネコ太郎</Typography>}
-              secondary={
-                // eslint-disable-next-line react/jsx-wrap-multilines
-                <>
-                  <Typography
-                    variant="body1"
-                    component="span"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文
-                  </Typography>
-                  <br />
-                  <time>2021/03/17 21:40</time>
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="avatar.png" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={<Typography variant="h6">クロネコ太郎</Typography>}
-              secondary={
-                // eslint-disable-next-line react/jsx-wrap-multilines
-                <>
-                  <Typography
-                    variant="body1"
-                    component="span"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文
-                  </Typography>
-                  <br />
-                  <time>2021/03/17 21:40</time>
-                </>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
+          {state.chats
+            .sort((a, b) => b.id - a.id)
+            .map((chat) => (
+              <div key={chat.id}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="Remy Sharp" src={chat.thumb} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={<Typography variant="h6">{chat.name}</Typography>}
+                    secondary={
+                      // eslint-disable-next-line react/jsx-wrap-multilines
+                      <>
+                        <Typography
+                          variant="body1"
+                          component="span"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          {chat.description}
+                        </Typography>
+                        <br />
+                        <time>{chat.createdAt}</time>
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </div>
+            ))}
         </List>
       </div>
     )
