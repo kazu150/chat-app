@@ -7,13 +7,6 @@ export type Action = {
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    // authReducer[debug用]
-    case 'signin':
-      return { ...state, auth: true };
-    case 'signout':
-      return { ...state, auth: false };
-    case 'toggle':
-      return { ...state, auth: !state.auth };
     // userReducer
     case 'userSignUp':
       return {

@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
-
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>

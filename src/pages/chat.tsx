@@ -39,7 +39,15 @@ const Chat: NextPage = () => {
   };
 
   useEffect(() => {
-    !state.user.email && Router.push('/');
+    const f = async () => {
+      try {
+        if (state.user.email) return;
+        await Router.push('/');
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    f();
   }, [state.user.email]);
 
   return (

@@ -11,9 +11,6 @@ import {
   MenuItem,
   Menu,
   Button,
-  Switch,
-  FormControlLabel,
-  FormGroup,
 } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../states/context';
@@ -37,25 +34,9 @@ const Header: NextComponentType = () => {
   const { state, dispatch } = useContext(CommonContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
-  const handleChange = () => {
-    if (!state.user.email) {
-      dispatch({
-        type: 'userSignIn',
-        payload: {
-          name: 'クロネコてすと',
-          email: 'example@example.com',
-          thumb: 'avatar.png',
-        },
-      });
-    } else {
-      dispatch({ type: 'userSignOut' });
-    }
-  };
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(e.currentTarget);
   };
 
   const handleClose = () => {
@@ -79,19 +60,6 @@ const Header: NextComponentType = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={classes.root}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              // eslint-disable-next-line react/jsx-wrap-multilines
-              <Switch
-                checked={Boolean(state.user.email)}
-                onChange={handleChange}
-                aria-label="login switch"
-              />
-            }
-            label={state.user.email ? 'Logout' : 'Login'}
-          />
-        </FormGroup>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h2" className={classes.title}>
@@ -100,7 +68,7 @@ const Header: NextComponentType = () => {
             {state.user.email ? (
               <div>
                 <Typography variant="button" className={classes.title}>
-                  {`${state.user.name}さん`}
+                  {`${state.user.name || '名無し'}さん`}
                 </Typography>
                 <IconButton
                   aria-label="account of current user"
@@ -123,7 +91,7 @@ const Header: NextComponentType = () => {
                     vertical: 'top',
                     horizontal: 'right',
                   }}
-                  open={open}
+                  open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
                   <MenuItem onClick={handleClickSignOut}>サインアウト</MenuItem>

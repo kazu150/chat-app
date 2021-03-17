@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
@@ -6,23 +6,32 @@ import CommonContext from '../states/context';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
+  const [submitting, setSubmitting] = useState(false);
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+    pwConfirm: '',
+  });
+
   const onSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitting(true);
     dispatch({
       type: 'userSignUp',
-      payload: {
-        name: 'クロネコてすと',
-        email: 'example@example.com',
-        thumb: 'avatar.png',
-      },
+      payload: { email: user.email },
     });
     await Router.push('/settings');
   };
 
   // SignInSubmitとバッティングするためいまは保留
-  // useEffect(() => {
-  //   state.user.email && Router.push('/chat');
-  // }, [state.user.email]);
+  useEffect(() => {
+    if (!state.user.email) return;
+    if (submitting) return;
+    Router.push('/chat');
+    return () => {
+      setSubmitting(false);
+    };
+  }, [state.user.email, submitting]);
 
   return (
     !state.user.email && (
@@ -33,6 +42,7 @@ const Signup: NextPage = () => {
             required
             fullWidth
             label="Eメール"
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
             style={{ marginBottom: 16 }}
             placeholder="example@example.com"
             variant="outlined"
@@ -42,6 +52,7 @@ const Signup: NextPage = () => {
             fullWidth
             type="password"
             label="パスワード"
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             style={{ marginBottom: 16 }}
             placeholder="●●●●●●●●"
             variant="outlined"
@@ -51,6 +62,7 @@ const Signup: NextPage = () => {
             fullWidth
             type="password"
             label="パスワード（確認用）"
+            onChange={(e) => setUser({ ...user, pwConfirm: e.target.value })}
             style={{ marginBottom: 40 }}
             placeholder="●●●●●●●●"
             variant="outlined"

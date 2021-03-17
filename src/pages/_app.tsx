@@ -12,12 +12,9 @@ import initialState from '../states/initialState';
 
 type Props = {
   Component: NextPage;
-  pageProps: {
-    title: string;
-  };
 };
 
-const MyApp: NextPage<Props> = ({ Component, pageProps }: Props) => {
+const MyApp: NextPage<Props> = ({ Component }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -47,7 +44,7 @@ const MyApp: NextPage<Props> = ({ Component, pageProps }: Props) => {
           <CssBaseline />
           <Header />
           <Container maxWidth="sm">
-            <Component {...pageProps} />
+            <Component />
           </Container>
           <Footer />
         </ThemeProvider>
