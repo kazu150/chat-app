@@ -39,9 +39,8 @@ const Header: NextComponentType = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = () => {
     dispatch({ type: 'toggle' });
-    // setAuth(event.target.checked);
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,7 +52,6 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
-    // setAuth(false);
     dispatch({ type: 'signout' });
     await Router.push('/');
     handleClose();

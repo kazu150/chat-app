@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -7,7 +7,7 @@ import theme from '../theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import CommonContext from '../context';
-import { reducer, Action } from '../reducer/index';
+import { reducer } from '../reducer/index';
 import initialState from '../reducer/initialState';
 
 type Props = {
