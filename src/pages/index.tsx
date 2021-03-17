@@ -1,16 +1,17 @@
 import { useContext } from 'react';
 import Router from 'next/router';
+import { NextPage } from 'next';
 import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
-export default function Home() {
+const Home: NextPage = () => {
   const { auth } = useContext(CommonContext);
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
 
       <Box textAlign="center">
-        <img src="chat.svg" width={350} height={350} />
+        <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>
       {auth ? (
         <Box textAlign="center">
@@ -46,4 +47,6 @@ export default function Home() {
       )}
     </div>
   );
-}
+};
+
+export default Home;

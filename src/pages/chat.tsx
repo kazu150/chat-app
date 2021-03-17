@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import Router from 'next/router';
+import { NextPage } from 'next';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -28,11 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const chat = () => {
+const Chat: NextPage = () => {
   const classes = useStyles();
 
-  const { auth } = useContext(CommonContext);
-  const onPostSubmit = (e) => {
+  const { auth } = useContext<>(CommonContext);
+  const onPostSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert('done');
   };
@@ -73,6 +74,7 @@ const chat = () => {
             <ListItemText
               primary={<Typography variant="h6">クロネコ太郎</Typography>}
               secondary={
+                // eslint-disable-next-line react/jsx-wrap-multilines
                 <>
                   <Typography
                     variant="body1"
@@ -95,6 +97,7 @@ const chat = () => {
             <ListItemText
               primary={<Typography variant="h6">クロネコ太郎</Typography>}
               secondary={
+                // eslint-disable-next-line react/jsx-wrap-multilines
                 <>
                   <Typography
                     variant="body1"
@@ -117,6 +120,7 @@ const chat = () => {
             <ListItemText
               primary={<Typography variant="h6">クロネコ太郎</Typography>}
               secondary={
+                // eslint-disable-next-line react/jsx-wrap-multilines
                 <>
                   <Typography
                     variant="body1"
@@ -139,6 +143,7 @@ const chat = () => {
             <ListItemText
               primary={<Typography variant="h6">クロネコ太郎</Typography>}
               secondary={
+                // eslint-disable-next-line react/jsx-wrap-multilines
                 <>
                   <Typography
                     variant="body1"
@@ -160,4 +165,4 @@ const chat = () => {
   );
 };
 
-export default chat;
+export default Chat;

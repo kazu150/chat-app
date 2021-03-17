@@ -1,18 +1,19 @@
 import { useContext, useEffect } from 'react';
+import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
-const settings = () => {
+const Settings: NextPage = () => {
   const { auth } = useContext(CommonContext);
 
   useEffect(() => {
     !auth && Router.push('/');
   }, [auth]);
 
-  const onSettingsSubmit = (e) => {
+  const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Router.push('/chat');
+    await Router.push('/chat');
   };
   return (
     auth && (
@@ -33,7 +34,7 @@ const settings = () => {
               </Button>
             </Grid>
             <Grid item xs={8}>
-              <img src="avatar.png" width={150} height={150} />
+              <img src="avatar.png" width={150} height={150} alt="アバター" />
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body1">ユーザーネーム：</Typography>
@@ -70,4 +71,4 @@ const settings = () => {
   );
 };
 
-export default settings;
+export default Settings;

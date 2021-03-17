@@ -1,7 +1,7 @@
-import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { NextComponentType } from 'next';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     copyRight: {
       textAlign: 'center',
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Footer = () => {
+const Footer: NextComponentType = () => {
   const classes = useStyles();
   return (
     <div className={classes.copyRight}>

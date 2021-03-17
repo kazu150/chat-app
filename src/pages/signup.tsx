@@ -1,14 +1,15 @@
 import { useContext, useEffect } from 'react';
 import Router from 'next/router';
+import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
-const signup = () => {
+const Signup: NextPage = () => {
   const { auth, setAuth } = useContext(CommonContext);
-  const onSignupSubmit = (e) => {
+  const onSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAuth(true);
-    Router.push('/settings');
+    await Router.push('/settings');
   };
 
   // SignInSubmitとバッティングするためいまは保留
@@ -58,4 +59,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default Signup;

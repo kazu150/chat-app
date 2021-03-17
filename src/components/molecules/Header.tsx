@@ -1,18 +1,21 @@
 import { useState, useContext } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
+import { NextComponentType } from 'next';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { Button } from '@material-ui/core';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+  Button,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+} from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../context';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Header = () => {
+const Header: NextComponentType = () => {
   const { auth, setAuth } = useContext(CommonContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -48,14 +51,14 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleClickSignOut = () => {
+  const handleClickSignOut = async () => {
     setAuth(false);
-    Router.push('/');
+    await Router.push('/');
     handleClose();
   };
 
-  const handleClickSettings = () => {
-    Router.push('/settings');
+  const handleClickSettings = async () => {
+    await Router.push('/settings');
     handleClose();
   };
   return (
@@ -67,13 +70,14 @@ const Header = () => {
       <div className={classes.root}>
         <FormGroup>
           <FormControlLabel
-            control={(
+            control={
+              // eslint-disable-next-line react/jsx-wrap-multilines
               <Switch
                 checked={auth}
                 onChange={handleChange}
                 aria-label="login switch"
               />
-            )}
+            }
             label={auth ? 'Logout' : 'Login'}
           />
         </FormGroup>

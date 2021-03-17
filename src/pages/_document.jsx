@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import theme from '../theme/theme';
+import theme from '../theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -51,10 +54,13 @@ MyDocument.getInitialProps = async (ctx) => {
 
   // Render app and page and get the context of the page with collected side effects.
   const sheets = new ServerStyleSheets();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const originalRenderPage = ctx.renderPage;
 
   ctx.renderPage = () =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     originalRenderPage({
+      // eslint-disable-next-line react/jsx-props-no-spreading
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 

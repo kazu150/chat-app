@@ -1,14 +1,15 @@
 import { useContext, useEffect } from 'react';
 import Router from 'next/router';
+import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../context';
 
-const signin = () => {
+const Signin: NextPage = () => {
   const { auth, setAuth } = useContext(CommonContext);
-  const onSigninSubmit = (e) => {
+  const onSigninSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAuth(true);
-    Router.push('/chat');
+    await Router.push('/chat');
   };
 
   useEffect(() => {
@@ -48,4 +49,4 @@ const signin = () => {
   );
 };
 
-export default signin;
+export default Signin;

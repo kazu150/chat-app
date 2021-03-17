@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { NextPage } from 'next';
 import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import theme from '../theme/theme';
+import { CssBaseline, Container } from '@material-ui/core';
+import theme from '../theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import CommonContext from '../context';
 
-export default function MyApp(props) {
-  const { Component, pageProps } = props;
+type Props = {
+  Component: NextPage;
+  pageProps: {
+    title: string;
+  };
+};
 
+const MyApp: NextPage<Props> = ({ Component, pageProps }: Props) => {
   const [auth, setAuth] = useState(true);
 
   useEffect(() => {
@@ -43,4 +48,6 @@ export default function MyApp(props) {
       </CommonContext.Provider>
     </>
   );
-}
+};
+
+export default MyApp;
