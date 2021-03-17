@@ -2,18 +2,17 @@ import { useContext } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { Button, Box, Typography } from '@material-ui/core';
-import CommonContext from '../context';
+import CommonContext from '../states/context';
 
 const Home: NextPage = () => {
-  const { auth } = useContext(CommonContext);
+  const { state } = useContext(CommonContext);
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
-
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>
-      {auth ? (
+      {state.user.email ? (
         <Box textAlign="center">
           <Button
             variant="contained"
