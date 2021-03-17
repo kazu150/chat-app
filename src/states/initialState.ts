@@ -35,10 +35,13 @@ const initialState = {
         '本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文',
     },
   ],
+  error: {
+    isOpened: false,
+    message: '',
+    errorPart: '',
+  },
 };
 
-export type State = {
-  auth: boolean;
-};
+export type State = typeof initialState;
 
 export default initialState;

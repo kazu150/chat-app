@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import initialState, { State } from '../reducer/initialState';
-import { Action } from '../reducer/index';
+import initialState, { State } from './initialState';
+import { Action } from './reducer';
 
 export type ContextType = {
   dispatch: React.Dispatch<Action>;

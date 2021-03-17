@@ -16,7 +16,7 @@ import {
   FormGroup,
 } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
-import CommonContext from '../../context';
+import CommonContext from '../../states/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

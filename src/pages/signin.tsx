@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
-import CommonContext from '../context';
+import CommonContext from '../states/context';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);

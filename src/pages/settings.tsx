@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
-import CommonContext from '../context';
+import CommonContext from '../states/context';
 
 const Settings: NextPage = () => {
   const { state } = useContext(CommonContext);

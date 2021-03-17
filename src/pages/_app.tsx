@@ -6,9 +6,9 @@ import { CssBaseline, Container } from '@material-ui/core';
 import theme from '../theme';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
-import CommonContext from '../context';
-import { reducer } from '../reducer/index';
-import initialState from '../reducer/initialState';
+import CommonContext from '../states/context';
+import { reducer } from '../states/reducer';
+import initialState from '../states/initialState';
 
 type Props = {
   Component: NextPage;

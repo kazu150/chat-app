@@ -14,7 +14,7 @@ import {
   ListItemAvatar,
   Typography,
 } from '@material-ui/core';
-import CommonContext from '../context';
+import CommonContext from '../states/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
