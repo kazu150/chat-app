@@ -68,7 +68,7 @@ const Settings: NextPage = () => {
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body1">プロフィール画像：</Typography>
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" color="default">
                 変更
               </Button>
             </Grid>
@@ -101,7 +101,7 @@ const Settings: NextPage = () => {
                 <Button
                   onClick={() => Router.push('/chat')}
                   variant="contained"
-                  color="secondary"
+                  color="default"
                 >
                   保存せずチャットへ
                 </Button>

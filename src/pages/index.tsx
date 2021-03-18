@@ -36,10 +36,19 @@ const Home: NextPage = () => {
           <Box component="span" m={1}>
             <Button
               variant="contained"
-              color="secondary"
+              color="default"
               onClick={() => Router.push('/signin')}
             >
               サインイン
+            </Button>
+          </Box>
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="default"
+              onClick={() => Router.push('/signin')}
+            >
+              ゲストサインイン
             </Button>
           </Box>
         </Box>
