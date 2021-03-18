@@ -1,6 +1,7 @@
 const initialState = {
   auth: true,
   user: {
+    id: '',
     name: '',
     email: '',
     thumb: 'avatar.png',

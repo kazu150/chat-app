@@ -53,8 +53,11 @@ const Signin: NextPage = () => {
         },
       });
       await Router.push('/chat');
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${error.message} [on signin]`,
+      });
     }
   };
 

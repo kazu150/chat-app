@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
+import Link from 'next/link';
 import { NextComponentType } from 'next';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../states/context';
+import { auth } from '../../../firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1,
+      cursor: 'pointer',
     },
   })
 );
@@ -44,6 +47,7 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
+    await auth.signOut();
     dispatch({ type: 'userSignOut' });
     await Router.push('/');
     handleClose();
@@ -62,9 +66,11 @@ const Header: NextComponentType = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h2" className={classes.title}>
-              リアルタイムチャット
-            </Typography>
+            <Link href="/">
+              <Typography variant="h2" className={classes.title}>
+                リアルタイムチャット
+              </Typography>
+            </Link>
             {state.user.email ? (
               <div>
                 <Typography variant="button" className={classes.title}>

@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
+import { db } from '../../firebase';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -13,6 +14,10 @@ const Settings: NextPage = () => {
   useEffect(() => {
     console.log(data);
   });
+
+  useEffect(() => {
+    setData({ thumb: state.user.thumb, name: state.user.name });
+  }, [state.user]);
 
   useEffect(() => {
     const f = async () => {
@@ -33,8 +38,21 @@ const Settings: NextPage = () => {
       dispatch({ type: 'errorEmptyName' });
       return;
     }
-    dispatch({ type: 'userModProfile', payload: data });
-    await Router.push('/chat');
+    console.log(state.user.id);
+    try {
+      await db
+        .collection('publicProfiles')
+        .doc(state.user.id)
+        .update({ thumb: data.thumb, name: data.name });
+
+      dispatch({ type: 'userModProfile', payload: data });
+      await Router.push('/chat');
+    } catch (error) {
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${error.message} [on settings]`,
+      });
+    }
   };
   return (
     state.user.email && (
