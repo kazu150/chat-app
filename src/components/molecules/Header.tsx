@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
+import Link from 'next/link';
 import { NextComponentType } from 'next';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1,
+      cursor: 'pointer',
     },
   })
 );
@@ -62,9 +64,11 @@ const Header: NextComponentType = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h2" className={classes.title}>
-              リアルタイムチャット
-            </Typography>
+            <Link href="/">
+              <Typography variant="h2" className={classes.title}>
+                リアルタイムチャット
+              </Typography>
+            </Link>
             {state.user.email ? (
               <div>
                 <Typography variant="button" className={classes.title}>
