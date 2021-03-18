@@ -70,6 +70,7 @@ const Signup: NextPage = () => {
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         dispatch({ type: 'errorEmailAlreadyInUse' });
+        return;
       }
       dispatch({
         type: 'errorOther',

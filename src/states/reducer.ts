@@ -75,7 +75,16 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: 'pwConfirm',
-          message: 'パスワードが一致しません',
+          message: '確認用パスワードが一致しません',
+        },
+      };
+    case 'errorWrongPassword':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'pwConfirm',
+          message: '入力されたパスワードが間違っています',
         },
       };
     case 'errorInvalidEmail':
@@ -97,7 +106,7 @@ export const reducer = (state: State, action: Action): State => {
             'パスワードは半角英数字の組み合わせ8-15文字で入力してください',
         },
       };
-    case 'errorUnregisteredPassword':
+    case 'errorUserNotFound':
       return {
         ...state,
         error: {

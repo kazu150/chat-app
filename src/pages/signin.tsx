@@ -62,6 +62,14 @@ const Signin: NextPage = () => {
       });
       await Router.push('/chat');
     } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        dispatch({ type: 'errorUserNotFound' });
+        return;
+      }
+      if (error.code === 'auth/wrong-password') {
+        dispatch({ type: 'errorWrongPassword' });
+        return;
+      }
       dispatch({
         type: 'errorOther',
         payload: `エラー内容：${error.message} [on signin]`,
