@@ -2,10 +2,8 @@ import { useContext, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
-import firebase from 'firebase/app';
 import useHandleSignIn from '../hooks/useHandleSignIn';
 import CommonContext from '../states/context';
-import { auth, db } from '../../firebase';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -16,8 +14,11 @@ const Signin: NextPage = () => {
       try {
         if (!state.user.email) return;
         await Router.push('/chat');
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${error.message} [on signup]`,
+        });
       }
     };
     f();

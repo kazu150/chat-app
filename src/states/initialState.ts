@@ -1,5 +1,4 @@
 const initialState = {
-  auth: true,
   user: {
     id: '',
     name: '',

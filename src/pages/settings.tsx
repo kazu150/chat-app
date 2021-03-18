@@ -11,25 +11,11 @@ const Settings: NextPage = () => {
     thumb: 'avatar.png',
     name: '',
   });
-  useEffect(() => {
-    console.log(data);
-  });
 
+  // ページをロードした際に、ユーザー情報を更新
   useEffect(() => {
     setData({ thumb: state.user.thumb, name: state.user.name });
   }, [state.user]);
-
-  useEffect(() => {
-    const f = async () => {
-      try {
-        if (state.user.email) return;
-        await Router.push('/');
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    f();
-  }, [state.user.email]);
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +24,7 @@ const Settings: NextPage = () => {
       dispatch({ type: 'errorEmptyName' });
       return;
     }
-    console.log(state.user.id);
+
     try {
       await db
         .collection('publicProfiles')

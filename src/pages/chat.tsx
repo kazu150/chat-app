@@ -73,21 +73,6 @@ const Chat: NextPage = () => {
     dispatch({ type: 'chatDeleteAll' });
   };
 
-  useEffect(() => {
-    const f = async () => {
-      try {
-        if (state.user.email) return;
-        await Router.push('/');
-      } catch (error) {
-        dispatch({
-          type: 'errorOther',
-          payload: `エラー内容：${error.message} [on chat]`,
-        });
-      }
-    };
-    f();
-  }, [state.user.email]);
-
   return (
     state.user.email && (
       <div>
