@@ -16,6 +16,10 @@ const Settings: NextPage = () => {
   });
 
   useEffect(() => {
+    setData({ thumb: state.user.thumb, name: state.user.name });
+  }, [state.user]);
+
+  useEffect(() => {
     const f = async () => {
       try {
         if (state.user.email) return;
@@ -34,13 +38,21 @@ const Settings: NextPage = () => {
       dispatch({ type: 'errorEmptyName' });
       return;
     }
-    await db
-      .collection('publicProfiles')
-      .doc()
-      .update({ thumb: user.thumb, name: user.name });
+    console.log(state.user.id);
+    try {
+      await db
+        .collection('publicProfiles')
+        .doc(state.user.id)
+        .update({ thumb: data.thumb, name: data.name });
 
-    dispatch({ type: 'userModProfile', payload: data });
-    await Router.push('/chat');
+      dispatch({ type: 'userModProfile', payload: data });
+      await Router.push('/chat');
+    } catch (error) {
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${error.message} [on settings]`,
+      });
+    }
   };
   return (
     state.user.email && (

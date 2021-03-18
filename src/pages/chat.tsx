@@ -68,8 +68,11 @@ const Chat: NextPage = () => {
       try {
         if (state.user.email) return;
         await Router.push('/');
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${error.message} [on chat]`,
+        });
       }
     };
     f();

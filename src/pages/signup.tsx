@@ -49,19 +49,22 @@ const Signup: NextPage = () => {
       // Firebase Authにて新規ユーザサインイン
       // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-
+      // サインイン後の返り値はdataに代入
       const data = await auth.createUserWithEmailAndPassword(
         user.email,
         user.password
       );
 
       // FireStoreにdocumentを追加
-      await db.collection('publicProfiles').doc().set({ email: user.email });
+      await db
+        .collection('publicProfiles')
+        .doc(data.user.uid)
+        .set({ email: user.email });
 
       setSubmitting(true);
       dispatch({
         type: 'userSignUp',
-        payload: { email: user.email },
+        payload: { email: user.email, id: data.user.uid },
       });
       await Router.push('/settings');
     } catch (error) {
@@ -75,7 +78,9 @@ const Signup: NextPage = () => {
     }
   };
 
-  // SignInSubmitとバッティングしないといいな
+  // サインイン状態でこのページにアクセスした際、標準でchatへリダイレクトする
+  // submitting: trueのときだけ、この機能をOFFにする（settingsへの遷移とバッティングするため）
+  // アンマウント後にクリーンナップ関数でsubmitting:falseに変更
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
