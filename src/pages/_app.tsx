@@ -10,6 +10,7 @@ import Footer from '../components/molecules/Footer';
 import CommonContext from '../states/context';
 import { reducer } from '../states/reducer';
 import initialState from '../states/initialState';
+import { auth } from '../../firebase';
 
 type Props = {
   Component: NextPage;
@@ -29,6 +30,55 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
   useEffect(() => {
     console.log(state);
   });
+
+  // キャッシュからのログイン。DBとつないだ後に設定
+  // useEffect(() => {
+  //   let userInfo = null;
+  //   let publicUserInfo = null;
+
+  //   // ユーザーのログイン状態を監視
+  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
+  //     try {
+  //       // ユーザーが検出されたら、signInの処理
+  //       if (user) {
+  //         userInfo = await db.collection('users').doc(user.uid).get();
+
+  //         publicUserInfo = await db
+  //           .collection('publicProfiles')
+  //           .doc(user.uid)
+  //           .get();
+
+  //         dispatch({
+  //           type: 'userSignin',
+  //           payload: {
+  //             userId: user.uid,
+  //             name: user.displayName,
+  //             initialTime: userInfo.data()?.initialTime || '',
+  //             englishService: userInfo.data().englishService?.id || '',
+  //             studyTime: publicUserInfo.data()?.studyTime || '',
+  //             photoUrl: publicUserInfo.data()?.photoUrl || '',
+  //           },
+  //         });
+  //         // ユーザーが検出されなかったら、signOutの処理
+  //       } else {
+  //         await auth.signOut();
+  //         dispatch({ type: 'userSignout' });
+  //         Router.push('/');
+  //         return;
+  //       }
+  //     } catch (error) {
+  //       dispatch({
+  //         type: 'errorOther',
+  //         payload: '認証関係でエラーが発生しました',
+  //       });
+  //     }
+  //   });
+  //   return () => {
+  //     userInfo && userInfo;
+  //     publicUserInfo && publicUserInfo;
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   return (
     <>

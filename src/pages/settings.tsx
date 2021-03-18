@@ -63,6 +63,7 @@ const Settings: NextPage = () => {
             <Grid item xs={8}>
               <TextField
                 fullWidth
+                error={state.error.errorPart === 'name'}
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
                 style={{ marginBottom: 40 }}

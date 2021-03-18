@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { Typography } from '@material-ui/core';
 
 const NoContents: NextPage = () => {
   return (
@@ -7,7 +8,7 @@ const NoContents: NextPage = () => {
       <Head>
         <title>ページがありません</title>
       </Head>
-      <div>404 | このページは存在しません！</div>
+      <Typography variant="h1">404 | このページは存在しません！</Typography>
     </>
   );
 };

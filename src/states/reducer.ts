@@ -69,7 +69,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         error: {
           isOpened: true,
-          errorPart: 'passwordConfirm',
+          errorPart: 'pwConfirm',
           message: 'パスワードが一致しません',
         },
       };
@@ -110,12 +110,21 @@ export const reducer = (state: State, action: Action): State => {
           message: 'ユーザー名を入力してください',
         },
       };
+    case 'errorEmailAlreadyInUse':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'email',
+          message: 'そのメールアドレスは既に使われています',
+        },
+      };
     case 'errorEmptyDraft':
       return {
         ...state,
         error: {
           isOpened: true,
-          errorPart: 'name',
+          errorPart: 'draft',
           message: '投稿内容を入力してください',
         },
       };
