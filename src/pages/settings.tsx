@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
+import { db } from '../../firebase';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -33,6 +34,11 @@ const Settings: NextPage = () => {
       dispatch({ type: 'errorEmptyName' });
       return;
     }
+    await db
+      .collection('publicProfiles')
+      .doc()
+      .update({ thumb: user.thumb, name: user.name });
+
     dispatch({ type: 'userModProfile', payload: data });
     await Router.push('/chat');
   };

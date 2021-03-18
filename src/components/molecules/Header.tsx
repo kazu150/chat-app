@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../states/context';
+import { auth } from '../../../firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +47,7 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
+    await auth.signOut();
     dispatch({ type: 'userSignOut' });
     await Router.push('/');
     handleClose();

@@ -5,7 +5,7 @@ import { TextField, Box, Button, Typography } from '@material-ui/core';
 import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
-import { auth } from '../../firebase';
+import { db, auth } from '../../firebase';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -46,6 +46,7 @@ const Signup: NextPage = () => {
     }
 
     try {
+      // Firebase Authにて新規ユーザサインイン
       // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
@@ -53,6 +54,9 @@ const Signup: NextPage = () => {
         user.email,
         user.password
       );
+
+      // FireStoreにdocumentを追加
+      await db.collection('publicProfiles').doc().set({ email: user.email });
 
       setSubmitting(true);
       dispatch({
