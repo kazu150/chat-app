@@ -2,8 +2,10 @@ import { useContext, useState, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
+import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
+import { auth } from '../../firebase';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -43,15 +45,33 @@ const Signup: NextPage = () => {
       return;
     }
 
-    setSubmitting(true);
-    dispatch({
-      type: 'userSignUp',
-      payload: { email: user.email },
-    });
-    await Router.push('/settings');
+    try {
+      // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+      const data = await auth.createUserWithEmailAndPassword(
+        user.email,
+        user.password
+      );
+
+      setSubmitting(true);
+      dispatch({
+        type: 'userSignUp',
+        payload: { email: user.email },
+      });
+      await Router.push('/settings');
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        dispatch({ type: 'errorEmailAlreadyInUse' });
+      }
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${error.message} [on signup]`,
+      });
+    }
   };
 
-  // SignInSubmitとバッティングするためいまは保留
+  // SignInSubmitとバッティングしないといいな
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
@@ -68,6 +88,7 @@ const Signup: NextPage = () => {
         <form onSubmit={onSignupSubmit}>
           <TextField
             fullWidth
+            error={state.error.errorPart === 'email'}
             label="Eメール"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             style={{ marginBottom: 16 }}
@@ -76,6 +97,7 @@ const Signup: NextPage = () => {
           />
           <TextField
             fullWidth
+            error={state.error.errorPart === 'password'}
             type="password"
             label="パスワード"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -85,6 +107,7 @@ const Signup: NextPage = () => {
           />
           <TextField
             fullWidth
+            error={state.error.errorPart === 'pwConfirm'}
             type="password"
             label="パスワード（確認用）"
             onChange={(e) => setUser({ ...user, pwConfirm: e.target.value })}

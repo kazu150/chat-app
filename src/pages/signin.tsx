@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
+import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
+import { auth } from '../../firebase';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -36,13 +38,24 @@ const Signin: NextPage = () => {
       return;
     }
 
-    dispatch({
-      type: 'userSignIn',
-      payload: {
-        email: user.email,
-      },
-    });
-    await Router.push('/chat');
+    try {
+      // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const data = await auth.signInWithEmailAndPassword(
+        user.email,
+        user.password
+      );
+
+      dispatch({
+        type: 'userSignIn',
+        payload: {
+          email: user.email,
+        },
+      });
+      await Router.push('/chat');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +77,7 @@ const Signin: NextPage = () => {
         <form onSubmit={onSigninSubmit}>
           <TextField
             fullWidth
+            error={state.error.errorPart === 'email'}
             label="Eメール"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             style={{ marginBottom: 16 }}
@@ -72,6 +86,7 @@ const Signin: NextPage = () => {
           />
           <TextField
             fullWidth
+            error={state.error.errorPart === 'password'}
             type="password"
             label="パスワード"
             onChange={(e) => setUser({ ...user, password: e.target.value })}

@@ -84,6 +84,7 @@ const Chat: NextPage = () => {
             <Grid item xs={10}>
               <TextField
                 fullWidth
+                error={state.error.errorPart === 'draft'}
                 multiline
                 label="投稿内容"
                 value={draft}
