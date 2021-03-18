@@ -33,7 +33,7 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
   return (
     <>
       <Head>
-        <title>My page</title>
+        <title>リアルタイムチャット</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"

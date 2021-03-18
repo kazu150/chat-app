@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
+import { auth } from '../../firebase';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -43,15 +44,27 @@ const Signup: NextPage = () => {
       return;
     }
 
-    setSubmitting(true);
-    dispatch({
-      type: 'userSignUp',
-      payload: { email: user.email },
-    });
-    await Router.push('/settings');
+    try {
+      // ユーザーのログイン状態をどれだけ継続するか（LOCALの場合、ブラウザを閉じても情報が保持される）
+      // await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+      const data = await auth.createUserWithEmailAndPassword(
+        user.email,
+        user.password
+      );
+
+      setSubmitting(true);
+      dispatch({
+        type: 'userSignUp',
+        payload: { email: user.email },
+      });
+      await Router.push('/settings');
+    } catch (e) {
+      console.log(encodeURI);
+    }
   };
 
-  // SignInSubmitとバッティングするためいまは保留
+  // SignInSubmitとバッティングしないといいな
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
