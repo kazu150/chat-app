@@ -11,7 +11,10 @@ export const reducer = (state: State, action: Action): State => {
     case 'userSignUp':
       return {
         ...state,
-        user: action.payload,
+        user: {
+          ...state.user,
+          ...action.payload,
+        },
       };
     case 'userSignIn':
       return {
