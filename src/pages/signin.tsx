@@ -5,7 +5,7 @@ import { TextField, Button, Box, Typography } from '@material-ui/core';
 import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -46,9 +46,17 @@ const Signin: NextPage = () => {
         user.password
       );
 
+      const userDataOnDb = await db
+        .collection('publicProfiles')
+        .doc(data.user.uid)
+        .get();
+
       dispatch({
         type: 'userSignIn',
         payload: {
+          id: data.user.uid,
+          name: userDataOnDb.data().name,
+          thumb: userDataOnDb.data().thumb,
           email: user.email,
         },
       });

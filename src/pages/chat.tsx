@@ -13,6 +13,7 @@ import {
   ListItemText,
   ListItemAvatar,
   Typography,
+  Box,
 } from '@material-ui/core';
 import CommonContext from '../states/context';
 
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inline: {
       display: 'inline',
+    },
+    chatArea: {
+      marginBottom: '30px',
     },
   })
 );
@@ -61,6 +65,12 @@ const Chat: NextPage = () => {
     });
 
     setDraft('');
+  };
+
+  const onDeleteAllClick = () => {
+    const agreed = window.confirm('本当にすべてのチャット履歴を削除しますか？');
+    if (!agreed) return;
+    dispatch({ type: 'chatDeleteAll' });
   };
 
   useEffect(() => {
@@ -105,36 +115,56 @@ const Chat: NextPage = () => {
           </Grid>
         </form>
         <List className={classes.root}>
-          {state.chats
-            .sort((a, b) => b.id - a.id)
-            .map((chat) => (
-              <div key={chat.id}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src={chat.thumb} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<Typography variant="h6">{chat.name}</Typography>}
-                    secondary={
-                      // eslint-disable-next-line react/jsx-wrap-multilines
-                      <>
-                        <Typography
-                          variant="body1"
-                          component="span"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          {chat.description}
-                        </Typography>
-                        <br />
-                        <time>{chat.createdAt}</time>
-                      </>
-                    }
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
+          {/* チャット履歴があれば履歴の配列を展開して表示 */}
+          {state.chats.length ? (
+            <>
+              <div className={classes.chatArea}>
+                {state.chats
+                  .sort((a, b) => b.id - a.id)
+                  .map((chat) => (
+                    <div key={chat.id}>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar alt="Remy Sharp" src={chat.thumb} />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <Typography variant="h6">{chat.name}</Typography>
+                          }
+                          secondary={
+                            // eslint-disable-next-line react/jsx-wrap-multilines
+                            <>
+                              <Typography
+                                variant="body1"
+                                component="span"
+                                className={classes.inline}
+                                color="textPrimary"
+                              >
+                                {chat.description}
+                              </Typography>
+                              <br />
+                              <time>{chat.createdAt}</time>
+                            </>
+                          }
+                        />
+                      </ListItem>
+                      <Divider variant="inset" component="li" />
+                    </div>
+                  ))}
               </div>
-            ))}
+              <Box textAlign="center">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={onDeleteAllClick}
+                >
+                  すべてのチャットを削除
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <div>チャット履歴がありません！</div>
+          )}
         </List>
       </div>
     )

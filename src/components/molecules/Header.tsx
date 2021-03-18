@@ -26,8 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
+    titleWrapper: {
+      justifyContent: 'space-between',
+    },
     title: {
-      flexGrow: 1,
       cursor: 'pointer',
     },
   })
@@ -65,7 +67,7 @@ const Header: NextComponentType = () => {
       </Head>
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar className={classes.titleWrapper}>
             <Link href="/">
               <Typography variant="h2" className={classes.title}>
                 リアルタイムチャット
@@ -73,7 +75,7 @@ const Header: NextComponentType = () => {
             </Link>
             {state.user.email ? (
               <div>
-                <Typography variant="button" className={classes.title}>
+                <Typography variant="button">
                   {`${state.user.name || '名無し'}さん`}
                 </Typography>
                 <IconButton

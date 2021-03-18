@@ -45,6 +45,11 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         chats: [...state.chats, action.payload],
       };
+    case 'chatDeleteAll':
+      return {
+        ...state,
+        chats: [],
+      };
     // errorReducer
     case 'errorEmptyMail':
       return {
