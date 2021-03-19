@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react';
-import Router from 'next/router';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
 import useHandleSignIn from '../hooks/useHandleSignIn';
@@ -7,25 +6,7 @@ import CommonContext from '../states/context';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
-  const [user, setUser, onSigninSubmit] = useHandleSignIn();
-
-  useEffect(() => {
-    const f = async () => {
-      try {
-        if (!state.user.email) return;
-        await Router.push('/chat');
-      } catch (error: unknown) {
-        // エラー内容を型安全に処理するため、カスタム型に代入
-        type CustomErrorType = { message: string };
-        const customError = error as CustomErrorType;
-        dispatch({
-          type: 'errorOther',
-          payload: `エラー内容：${customError.message} [on signup]`,
-        });
-      }
-    };
-    void f();
-  }, [state.user.email, dispatch]);
+  const [user, setUser, onSigninSubmit] = useHandleSignIn(state, dispatch);
 
   return (
     !state.user.email && (

@@ -8,6 +8,7 @@ import useGuestSignIn from '../hooks/useGuestSignIn';
 const Home: NextPage = () => {
   const { state } = useContext(CommonContext);
   const [onSigninSubmit] = useGuestSignIn();
+
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
