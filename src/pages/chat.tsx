@@ -63,7 +63,7 @@ const Chat: NextPage = () => {
               id: Number(doc.id),
               name: filteredUser.name,
               thumb: filteredUser.thumb,
-              createdAt: doc.data().createdAt?.toDate().toString(),
+              createdAt: doc.data().createdAt.toDate().toString(),
               description: doc.data().description,
             };
           });
