@@ -3,9 +3,11 @@ import Router from 'next/router';
 import { NextPage } from 'next';
 import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
+import useGuestSignIn from '../hooks/useGuestSignIn';
 
 const Home: NextPage = () => {
   const { state } = useContext(CommonContext);
+  const [onSigninSubmit] = useGuestSignIn();
   return (
     <div>
       <Typography variant="h1">リアルタイムチャット</Typography>
@@ -36,10 +38,21 @@ const Home: NextPage = () => {
           <Box component="span" m={1}>
             <Button
               variant="contained"
-              color="secondary"
+              color="default"
               onClick={() => Router.push('/signin')}
             >
               サインイン
+            </Button>
+          </Box>
+          <Box component="span" m={1}>
+            <Button
+              variant="contained"
+              color="default"
+              onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+                return onSigninSubmit(e);
+              }}
+            >
+              ゲストサインイン
             </Button>
           </Box>
         </Box>

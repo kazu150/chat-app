@@ -2,10 +2,9 @@ import { useContext, useState, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
-import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
-import { db, auth } from '../../firebase';
+import { db, auth, firebase } from '../../firebase';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -49,6 +48,7 @@ const Signup: NextPage = () => {
       // Firebase Authにて新規ユーザサインイン
       // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
       // サインイン後の返り値はdataに代入
       const data = await auth.createUserWithEmailAndPassword(
         user.email,
@@ -56,10 +56,10 @@ const Signup: NextPage = () => {
       );
 
       // FireStoreにdocumentを追加
-      await db
-        .collection('publicProfiles')
-        .doc(data.user.uid)
-        .set({ email: user.email });
+      await db.collection('publicProfiles').doc(data.user.uid).set({
+        email: user.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
 
       setSubmitting(true);
       dispatch({
@@ -67,13 +67,20 @@ const Signup: NextPage = () => {
         payload: { email: user.email, id: data.user.uid },
       });
       await Router.push('/settings');
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        code: string;
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      if (customError.code === 'auth/email-already-in-use') {
         dispatch({ type: 'errorEmailAlreadyInUse' });
+        return;
       }
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on signup]`,
+        payload: `エラー内容：${customError.message} [on signup]`,
       });
     }
   };
@@ -84,7 +91,7 @@ const Signup: NextPage = () => {
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
-    Router.push('/chat');
+    void Router.push('/chat');
     return () => {
       setSubmitting(false);
     };

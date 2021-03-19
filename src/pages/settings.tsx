@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
-import { db } from '../../firebase';
+import { db, firebase } from '../../firebase';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -11,25 +11,14 @@ const Settings: NextPage = () => {
     thumb: 'avatar.png',
     name: '',
   });
-  useEffect(() => {
-    console.log(data);
-  });
 
+  // ページをロードした際に、ユーザー情報を更新
   useEffect(() => {
-    setData({ thumb: state.user.thumb, name: state.user.name });
+    setData({
+      thumb: state.user.thumb,
+      name: state.user.name,
+    });
   }, [state.user]);
-
-  useEffect(() => {
-    const f = async () => {
-      try {
-        if (state.user.email) return;
-        await Router.push('/');
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    f();
-  }, [state.user.email]);
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,22 +27,27 @@ const Settings: NextPage = () => {
       dispatch({ type: 'errorEmptyName' });
       return;
     }
-    console.log(state.user.id);
+
     try {
-      await db
-        .collection('publicProfiles')
-        .doc(state.user.id)
-        .update({ thumb: data.thumb, name: data.name });
+      await db.collection('publicProfiles').doc(state.user.id).update({
+        thumb: data.thumb,
+        name: data.name,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
 
       dispatch({ type: 'userModProfile', payload: data });
       await Router.push('/chat');
-    } catch (error) {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = { message: string };
+      const customError = error as CustomErrorType;
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on settings]`,
+        payload: `エラー内容：${customError.message} [on settings]`,
       });
     }
   };
+
   return (
     state.user.email && (
       <div>
@@ -68,7 +62,7 @@ const Settings: NextPage = () => {
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body1">プロフィール画像：</Typography>
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" color="default">
                 変更
               </Button>
             </Grid>
@@ -101,7 +95,7 @@ const Settings: NextPage = () => {
                 <Button
                   onClick={() => Router.push('/chat')}
                   variant="contained"
-                  color="secondary"
+                  color="default"
                 >
                   保存せずチャットへ
                 </Button>

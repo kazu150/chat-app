@@ -1,4 +1,4 @@
-import initialState, { State } from './initialState';
+import initialState, { State, User } from './initialState';
 
 export type Action = {
   type: string;
@@ -11,14 +11,17 @@ export const reducer = (state: State, action: Action): State => {
     case 'userSignUp':
       return {
         ...state,
-        user: action.payload,
+        user: {
+          ...state.user,
+          ...(action.payload as User),
+        },
       };
     case 'userSignIn':
       return {
         ...state,
         user: {
           ...state.user,
-          ...action.payload,
+          ...(action.payload as User),
         },
       };
     case 'userModProfile':
@@ -26,24 +29,13 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         user: {
           ...state.user,
-          ...action.payload,
+          ...(action.payload as User),
         },
       };
     case 'userSignOut':
       return {
         ...state,
         user: initialState.user,
-      };
-    // chatReducer
-    case 'chatLoadNew':
-      return {
-        ...state,
-        chats: [...state.chats, action.payload],
-      };
-    case 'chatPostNew':
-      return {
-        ...state,
-        chats: [...state.chats, action.payload],
       };
     // errorReducer
     case 'errorEmptyMail':
@@ -70,7 +62,16 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: 'pwConfirm',
-          message: 'パスワードが一致しません',
+          message: '確認用パスワードが一致しません',
+        },
+      };
+    case 'errorWrongPassword':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'pwConfirm',
+          message: '入力されたパスワードが間違っています',
         },
       };
     case 'errorInvalidEmail':
@@ -92,7 +93,7 @@ export const reducer = (state: State, action: Action): State => {
             'パスワードは半角英数字の組み合わせ8-15文字で入力してください',
         },
       };
-    case 'errorUnregisteredPassword':
+    case 'errorUserNotFound':
       return {
         ...state,
         error: {
@@ -133,7 +134,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         error: {
           isOpened: true,
-          message: action.payload,
+          message: action.payload as string,
           errorPart: '',
         },
       };

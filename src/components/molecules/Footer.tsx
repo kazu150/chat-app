@@ -13,9 +13,10 @@ const useStyles = makeStyles(() =>
 
 const Footer: NextComponentType = () => {
   const classes = useStyles();
+  const date = new Date();
   return (
     <div className={classes.copyRight}>
-      <small>© nekoneko Company 2021</small>
+      <small>{`© ${date.getFullYear()} nekoneko Company`}</small>
     </div>
   );
 };
