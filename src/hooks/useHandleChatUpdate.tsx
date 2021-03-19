@@ -69,7 +69,6 @@ const useHandleChatUpdate = (
           const filteredUser = users.filter(
             (user) => user.id === doc.data().publicProfiles.id
           )[0];
-          console.log(doc.data());
           const date: Date = doc.data().createdAt?.toDate();
           const y = date?.getFullYear();
           const m = `00${date?.getMonth() + 1}`.slice(-2);
@@ -131,7 +130,7 @@ const useHandleChatUpdate = (
     const agreed = window.confirm('本当にすべてのチャット履歴を削除しますか？');
     if (!agreed) return;
     // deleteAllの処理
-    alert('all posts deleted');
+    console.log('all posts deleted');
   };
 
   return [draft, setDraft, chats, onPostSubmit, onDeleteAllClick];

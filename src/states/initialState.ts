@@ -21,7 +21,7 @@ const initialState: State = {
     id: '',
     name: '',
     email: '',
-    thumb: 'avatar.png',
+    thumb: '',
   },
   error: {
     isOpened: false,

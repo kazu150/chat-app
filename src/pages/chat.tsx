@@ -81,7 +81,10 @@ const Chat: NextPage = () => {
                     <div key={chat.id}>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <Avatar alt="Remy Sharp" src={chat.thumb} />
+                          <Avatar
+                            alt={chat.name}
+                            src={chat.thumb || 'avatar.png'}
+                          />
                         </ListItemAvatar>
                         <ListItemText
                           primary={
