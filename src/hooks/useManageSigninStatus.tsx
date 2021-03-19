@@ -11,7 +11,6 @@ const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       try {
         // ユーザーが検出されたら、signInの処理
-        console.log(3);
         if (user) {
           publicProfiles = await db
             .collection('publicProfiles')

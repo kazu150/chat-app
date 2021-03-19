@@ -10,8 +10,8 @@ type Chat = {
   createdAt: string;
   description: string;
 };
-type User = {
-  id: number;
+type UserOnChat = {
+  id: string;
   name: string;
   thumb: string;
 };
@@ -27,16 +27,17 @@ const useHandleChatUpdate = (
   typeof onDeleteAllClick
 ] => {
   const [draft, setDraft] = useState('');
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserOnChat[]>([]);
   const [chats, setChats] = useState<Chat[]>([]);
 
+  // UserOnChatの内容をリアルタイムで更新
   useEffect(() => {
     const f = async () => {
       try {
         // 各ユーザーの情報を取得
         const usersOnDb = await db.collection('publicProfiles').get();
-        const usersArray: User[] = usersOnDb.docs.map((user) => ({
-          id: Number(user.id),
+        const usersArray: UserOnChat[] = usersOnDb.docs.map((user) => ({
+          id: user.id,
           name: user.data().name as string,
           thumb: user.data().thumb as string,
         }));
@@ -54,23 +55,21 @@ const useHandleChatUpdate = (
       }
     };
     void f();
-  }, [dispatch]);
+  }, []);
 
+  // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    // リアルタイムでの更新
     db.collection('chats').onSnapshot(
       (
         snapshot: firebase.firestore.QuerySnapshot<
           firebase.firestore.DocumentData
         >
       ) => {
-        console.log(snapshot.docs[0].data());
         const formedSnapshot = snapshot.docs.map((doc) => {
           const filteredUser = users.filter(
             (user) => user.id === doc.data().publicProfiles.id
           )[0];
-
-          const date: Date = doc.data().createdAt?.toDate().toString();
+          const date: Date = doc.data().createdAt?.toDate();
           const y = date.getFullYear();
           const m = `00${date.getMonth() + 1}`.slice(-2);
           const d = `00${date.getDate()}`.slice(-2);
