@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
-import firebase from 'firebase/app';
 import Router from 'next/router';
-import { db, auth } from '../../firebase';
+import { db, auth, firebase } from '../../firebase';
 import { regEmail, regPass } from '../utils/validate';
 import CommonContext from '../states/context';
 
@@ -43,8 +42,8 @@ const useHandleSignIn = (): [
     }
 
     try {
-      // ユーザーのログイン状態継続時間指定（SESSION：ブラウザを開いている間は情報保持）
-      await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+      // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       const data = await auth.signInWithEmailAndPassword(
         user.email,
         user.password

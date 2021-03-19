@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
-import firebase from 'firebase/app';
 import Router from 'next/router';
-import { db, auth } from '../../firebase';
+import { db, auth, firebase } from '../../firebase';
 import CommonContext from '../states/context';
 
 const useGuestSignIn = (): [typeof onSigninSubmit] => {

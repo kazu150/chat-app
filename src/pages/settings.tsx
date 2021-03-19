@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
-import { db } from '../../firebase';
+import { db, firebase } from '../../firebase';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -14,7 +14,11 @@ const Settings: NextPage = () => {
 
   // ページをロードした際に、ユーザー情報を更新
   useEffect(() => {
-    setData({ thumb: state.user.thumb, name: state.user.name });
+    setData({
+      thumb: state.user.thumb,
+      name: state.user.name,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   }, [state.user]);
 
   const onSettingsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

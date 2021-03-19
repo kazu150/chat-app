@@ -36,6 +36,9 @@ const theme = createMuiTheme({
     body1: {
       color: '#555',
     },
+    button: {
+      textTransform: 'none',
+    },
   },
 });
 

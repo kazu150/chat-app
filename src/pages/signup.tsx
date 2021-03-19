@@ -2,10 +2,9 @@ import { useContext, useState, useEffect } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
-import firebase from 'firebase/app';
 import CommonContext from '../states/context';
 import { regEmail, regPass } from '../utils/validate';
-import { db, auth } from '../../firebase';
+import { db, auth, firebase } from '../../firebase';
 
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -49,6 +48,7 @@ const Signup: NextPage = () => {
       // Firebase Authにて新規ユーザサインイン
       // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
       // サインイン後の返り値はdataに代入
       const data = await auth.createUserWithEmailAndPassword(
         user.email,
@@ -56,10 +56,10 @@ const Signup: NextPage = () => {
       );
 
       // FireStoreにdocumentを追加
-      await db
-        .collection('publicProfiles')
-        .doc(data.user.uid)
-        .set({ email: user.email });
+      await db.collection('publicProfiles').doc(data.user.uid).set({
+        email: user.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
 
       setSubmitting(true);
       dispatch({

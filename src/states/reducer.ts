@@ -38,6 +38,12 @@ export const reducer = (state: State, action: Action): State => {
         user: initialState.user,
       };
     // chatReducer
+    case 'chatSetAll':
+      return {
+        ...state,
+        chats: action.payload,
+        // chats: [...state.chats, ...action.payload],
+      };
     case 'chatLoadNew':
       return {
         ...state,
