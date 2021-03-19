@@ -93,6 +93,7 @@ const useHandleSignUp = (
     if (!state.user.email) return;
     if (submitting) return;
     void Router.push('/chat');
+    // eslint-disable-next-line consistent-return
     return () => {
       setSubmitting(false);
     };

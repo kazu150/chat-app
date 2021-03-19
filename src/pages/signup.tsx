@@ -7,6 +7,7 @@ import useHandleSignUp from '../hooks/useHandleSignUp';
 const Signup: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
   const [user, setUser, onSignupSubmit] = useHandleSignUp(state, dispatch);
+
   return (
     !state.user.email && (
       <div>
