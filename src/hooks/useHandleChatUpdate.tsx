@@ -55,7 +55,7 @@ const useHandleChatUpdate = (
       }
     };
     void f();
-  }, []);
+  }, [dispatch]);
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
@@ -69,13 +69,14 @@ const useHandleChatUpdate = (
           const filteredUser = users.filter(
             (user) => user.id === doc.data().publicProfiles.id
           )[0];
+          console.log(doc.data());
           const date: Date = doc.data().createdAt?.toDate();
-          const y = date.getFullYear();
-          const m = `00${date.getMonth() + 1}`.slice(-2);
-          const d = `00${date.getDate()}`.slice(-2);
-          const h = `00${date.getHours()}`.slice(-2);
-          const min = `00${date.getMinutes()}`.slice(-2);
-          const formedDate = `${y}/${m}/${d} ${h}:${min}`;
+          const y = date?.getFullYear();
+          const m = `00${date?.getMonth() + 1}`.slice(-2);
+          const d = `00${date?.getDate()}`.slice(-2);
+          const h = `00${date?.getHours()}`.slice(-2);
+          const min = `00${date?.getMinutes()}`.slice(-2);
+          const formedDate = date ? `${y}/${m}/${d} ${h}:${min}` : '　';
 
           return {
             id: Number(doc.id),
@@ -130,7 +131,7 @@ const useHandleChatUpdate = (
     const agreed = window.confirm('本当にすべてのチャット履歴を削除しますか？');
     if (!agreed) return;
     // deleteAllの処理
-    console.log('all posts deleted');
+    alert('all posts deleted');
   };
 
   return [draft, setDraft, chats, onPostSubmit, onDeleteAllClick];
