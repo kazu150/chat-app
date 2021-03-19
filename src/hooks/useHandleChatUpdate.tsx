@@ -14,8 +14,6 @@ type User = {
   id: number;
   name: string;
   thumb: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
 const useHandleChatUpdate = (
@@ -37,49 +35,66 @@ const useHandleChatUpdate = (
       try {
         // 各ユーザーの情報を取得
         const usersOnDb = await db.collection('publicProfiles').get();
-        const usersArray = usersOnDb.docs.map((user) => ({
-          id: user.id,
-          ...user.data(),
+        const usersArray: User[] = usersOnDb.docs.map((user) => ({
+          id: Number(user.id),
+          name: user.data().name as string,
+          thumb: user.data().thumb as string,
         }));
         setUsers(usersArray);
       } catch (error) {
-        console.log(error);
+        // エラー内容を型安全に処理するため、カスタム型に代入
+        type CustomErrorType = {
+          message: string;
+        };
+        const customError = error as CustomErrorType;
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${customError.message} [on useHandleSignIn]`,
+        });
       }
     };
     void f();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     // リアルタイムでの更新
-    db.collection('chats').onSnapshot((snapshot) => {
-      console.log(snapshot.docs[0].data());
-      const formedSnapshot = snapshot.docs.map((doc) => {
-        const filteredUser = users.filter(
-          (user) => user.id === doc.data().publicProfiles.id
-        )[0];
-        console.log(filteredUser);
+    db.collection('chats').onSnapshot(
+      (
+        snapshot: firebase.firestore.QuerySnapshot<
+          firebase.firestore.DocumentData
+        >
+      ) => {
+        console.log(snapshot.docs[0].data());
+        const formedSnapshot = snapshot.docs.map((doc) => {
+          const filteredUser = users.filter(
+            (user) => user.id === doc.data().publicProfiles.id
+          )[0];
 
-        return {
-          id: Number(doc.id),
-          name: filteredUser?.name,
-          thumb: filteredUser?.thumb,
-          createdAt: doc.data().createdAt?.toDate().toString(),
-          description: doc.data().description,
-        };
-      });
+          const date: Date = doc.data().createdAt?.toDate().toString();
+          const y = date.getFullYear();
+          const m = `00${date.getMonth() + 1}`.slice(-2);
+          const d = `00${date.getDate()}`.slice(-2);
+          const h = `00${date.getHours()}`.slice(-2);
+          const min = `00${date.getMinutes()}`.slice(-2);
+          const formedDate = `${y}/${m}/${d} ${h}:${min}`;
 
-      setChats(formedSnapshot);
-    });
+          return {
+            id: Number(doc.id),
+            name: filteredUser?.name,
+            thumb: filteredUser?.thumb,
+            createdAt: formedDate,
+            description: doc.data().description as string,
+          };
+        });
+
+        setChats(formedSnapshot);
+      }
+    );
   }, [users]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const date = new Date();
-    const y = date.getFullYear();
-    const m = `00${date.getMonth() + 1}`.slice(-2);
-    const d = `00${date.getDate()}`.slice(-2);
-    const h = `00${date.getHours()}`.slice(-2);
-    const min = `00${date.getMinutes()}`.slice(-2);
     const idGeneratedFromDate = Number(date);
 
     // 投稿内容は入力されているか
@@ -99,10 +114,15 @@ const useHandleChatUpdate = (
         });
 
       setDraft('');
-    } catch (error) {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        message: string;
+      };
+      const customError = error as CustomErrorType;
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on chat-onPostSubmit]`,
+        payload: `エラー内容：${customError.message} [on chat-onPostSubmit]`,
       });
     }
   };
