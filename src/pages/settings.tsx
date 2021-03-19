@@ -17,7 +17,6 @@ const Settings: NextPage = () => {
     setData({
       thumb: state.user.thumb,
       name: state.user.name,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
   }, [state.user]);
 
@@ -30,20 +29,25 @@ const Settings: NextPage = () => {
     }
 
     try {
-      await db
-        .collection('publicProfiles')
-        .doc(state.user.id)
-        .update({ thumb: data.thumb, name: data.name });
+      await db.collection('publicProfiles').doc(state.user.id).update({
+        thumb: data.thumb,
+        name: data.name,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
 
       dispatch({ type: 'userModProfile', payload: data });
       await Router.push('/chat');
-    } catch (error) {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = { message: string };
+      const customError = error as CustomErrorType;
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on settings]`,
+        payload: `エラー内容：${customError.message} [on settings]`,
       });
     }
   };
+
   return (
     state.user.email && (
       <div>

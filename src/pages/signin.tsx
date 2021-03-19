@@ -14,15 +14,18 @@ const Signin: NextPage = () => {
       try {
         if (!state.user.email) return;
         await Router.push('/chat');
-      } catch (error) {
+      } catch (error: unknown) {
+        // エラー内容を型安全に処理するため、カスタム型に代入
+        type CustomErrorType = { message: string };
+        const customError = error as CustomErrorType;
         dispatch({
           type: 'errorOther',
-          payload: `エラー内容：${error.message} [on signup]`,
+          payload: `エラー内容：${customError.message} [on signup]`,
         });
       }
     };
     void f();
-  }, [state.user.email]);
+  }, [state.user.email, dispatch]);
 
   return (
     !state.user.email && (

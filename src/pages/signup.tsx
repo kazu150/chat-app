@@ -67,14 +67,20 @@ const Signup: NextPage = () => {
         payload: { email: user.email, id: data.user.uid },
       });
       await Router.push('/settings');
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        code: string;
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      if (customError.code === 'auth/email-already-in-use') {
         dispatch({ type: 'errorEmailAlreadyInUse' });
         return;
       }
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on signup]`,
+        payload: `エラー内容：${customError.message} [on signup]`,
       });
     }
   };
@@ -85,7 +91,7 @@ const Signup: NextPage = () => {
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
-    Router.push('/chat');
+    void Router.push('/chat');
     return () => {
       setSubmitting(false);
     };

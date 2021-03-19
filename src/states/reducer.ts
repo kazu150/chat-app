@@ -1,4 +1,4 @@
-import initialState, { State } from './initialState';
+import initialState, { State, User } from './initialState';
 
 export type Action = {
   type: string;
@@ -13,7 +13,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         user: {
           ...state.user,
-          ...action.payload,
+          ...(action.payload as User),
         },
       };
     case 'userSignIn':
@@ -21,7 +21,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         user: {
           ...state.user,
-          ...action.payload,
+          ...(action.payload as User),
         },
       };
     case 'userModProfile':
@@ -29,7 +29,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         user: {
           ...state.user,
-          ...action.payload,
+          ...(action.payload as User),
         },
       };
     case 'userSignOut':
@@ -134,7 +134,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         error: {
           isOpened: true,
-          message: action.payload,
+          message: action.payload as string,
           errorPart: '',
         },
       };

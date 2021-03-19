@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
-import { auth, db } from '../../firebase';
+import { auth, db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
 
 const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
   useEffect(() => {
-    let publicProfiles = null;
+    let publicProfiles: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> = null;
 
     // ユーザーのログイン状態を監視
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -22,9 +22,9 @@ const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
             type: 'userSignIn',
             payload: {
               id: user.uid,
-              name: publicProfiles.data().name,
+              name: publicProfiles.data().name as string,
               email: user.email,
-              thumb: publicProfiles.data().thumb,
+              thumb: publicProfiles.data().thumb as string,
             },
           });
           // ユーザーが検出されなかったら、signOutの処理
@@ -35,7 +35,6 @@ const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
           return;
         }
       } catch (error) {
-        console.log(error);
         dispatch({
           type: 'errorOther',
           payload: '認証関係でエラーが発生しました',
@@ -46,7 +45,7 @@ const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
       publicProfiles && publicProfiles;
       unsubscribe();
     };
-  }, []);
+  }, [dispatch]);
 };
 
 export default useManageSigninStatus;

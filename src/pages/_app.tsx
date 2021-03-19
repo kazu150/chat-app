@@ -28,10 +28,6 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  });
-
   return (
     <>
       <Head>

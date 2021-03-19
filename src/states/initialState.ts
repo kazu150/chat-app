@@ -1,15 +1,19 @@
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  thumb: string;
+};
+
+export type Error = {
+  isOpened: boolean;
+  message: string;
+  errorPart: string;
+};
+
 export type State = {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    thumb: string;
-  };
-  error: {
-    isOpened: boolean;
-    message: string;
-    errorPart: string;
-  };
+  user: User;
+  error: Error;
 };
 
 const initialState: State = {
