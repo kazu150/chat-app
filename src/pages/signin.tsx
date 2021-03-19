@@ -21,7 +21,7 @@ const Signin: NextPage = () => {
         });
       }
     };
-    f();
+    void f();
   }, [state.user.email]);
 
   return (

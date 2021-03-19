@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import Router from 'next/router';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
@@ -16,7 +15,7 @@ import {
   Box,
 } from '@material-ui/core';
 import CommonContext from '../states/context';
-import { db, firebase } from '../../firebase';
+import useHandleChatUpdate from '../hooks/useHandleChatUpdate';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,139 +36,13 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
-  const [draft, setDraft] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        // 各ユーザーの情報を取得
-        const usersOnDb = await db.collection('publicProfiles').get();
-        const usersArray = usersOnDb.docs.map((user) => ({
-          id: user.id,
-          ...user.data(),
-        }));
-        console.log(usersArray);
-
-        // リアルタイムでの更新
-        db.collection('chats').onSnapshot((snapshot) => {
-          console.log(snapshot.docs[0].data());
-          const formedSnapshot = snapshot.docs.map((doc) => {
-            const filteredUser = usersArray.filter(
-              (user) => user.id === doc.data().publicProfiles.id
-            )[0];
-            console.log(filteredUser);
-
-            return {
-              id: Number(doc.id),
-              name: filteredUser.name,
-              thumb: filteredUser.thumb,
-              createdAt: doc.data().createdAt.toDate().toString(),
-              description: doc.data().description,
-            };
-          });
-
-          dispatch({ type: 'chatSetAll', payload: formedSnapshot });
-        });
-
-        // // const formedChats = chats.docs.map(async (chat) => {
-        // //   const profile = await db
-        // //     .doc(`publicProfiles/${chat.data().publicProfiles.id}`)
-        // //     .get();
-        //   return {
-        //     id: Number(chat.id),
-        //     name: profile.data().name,
-        //     thumb: profile.data().thumb,
-        //     createdAt: chat.data().createdAt.toDate(),
-        //     description: chat.data().description,
-        //   };
-        // });
-        // console.log(formedChats);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const chats = await db.collection('chats').get();
-
-  //     const formedChats = chats.docs.map(async (chat) => {
-  //       const profile = await db
-  //         .doc(`publicProfiles/${chat.data().publicProfiles.id}`)
-  //         .get();
-
-  //       return {
-  //         id: chat.id,
-  //         name: profile.data().name,
-  //         thumb: profile.data().thumb,
-  //         createdAt: chat.data().createdAt.toDate(),
-  //         description: chat.data().description,
-  //       };
-  //     });
-
-  //     dispatch({ type: 'chatSetAll', payload: formedChats });
-  //   })();
-  // }, []);
-
-  const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const date = new Date();
-    const y = date.getFullYear();
-    const m = `00${date.getMonth() + 1}`.slice(-2);
-    const d = `00${date.getDate()}`.slice(-2);
-    const h = `00${date.getHours()}`.slice(-2);
-    const min = `00${date.getMinutes()}`.slice(-2);
-    const idGeneratedFromDate = Number(date);
-
-    // 投稿内容は入力されているか
-    if (draft === '') {
-      dispatch({ type: 'errorEmptyDraft' });
-      return;
-    }
-
-    try {
-      await db
-        .collection('chats')
-        .doc(idGeneratedFromDate.toString())
-        .set({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          publicProfiles: db.doc(`publicProfiles/${state.user.id}`),
-          description: draft,
-        });
-
-      setDraft('');
-    } catch (error) {
-      dispatch({
-        type: 'errorOther',
-        payload: `エラー内容：${error.message} [on chat-onPostSubmit]`,
-      });
-    }
-  };
-
-  const onDeleteAllClick = async () => {
-    const agreed = window.confirm('本当にすべてのチャット履歴を削除しますか？');
-    if (!agreed) return;
-
-    try {
-      await db
-        .collection('chats')
-        .doc()
-        .set({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          publicProfiles: db.doc(`publicProfiles/${state.user.id}`),
-          description: draft,
-        });
-
-      dispatch({ type: 'chatDeleteAll' });
-      setDraft('');
-    } catch (error) {
-      dispatch({
-        type: 'errorOther',
-        payload: `エラー内容：${error.message} [on chat-onDeleteAllClick]`,
-      });
-    }
-  };
+  const [
+    draft,
+    setDraft,
+    chats,
+    onPostSubmit,
+    onDeleteAllClick,
+  ] = useHandleChatUpdate(dispatch, state);
 
   return (
     state.user.email && (
@@ -199,10 +72,10 @@ const Chat: NextPage = () => {
         </form>
         <List className={classes.root}>
           {/* チャット履歴があれば履歴の配列を展開して表示 */}
-          {state.chats.length ? (
+          {chats.length ? (
             <>
               <div className={classes.chatArea}>
-                {state.chats
+                {chats
                   .sort((a, b) => b.id - a.id)
                   .map((chat) => (
                     <div key={chat.id}>

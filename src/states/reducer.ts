@@ -37,28 +37,6 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         user: initialState.user,
       };
-    // chatReducer
-    case 'chatSetAll':
-      return {
-        ...state,
-        chats: action.payload,
-        // chats: [...state.chats, ...action.payload],
-      };
-    case 'chatLoadNew':
-      return {
-        ...state,
-        chats: [...state.chats, action.payload],
-      };
-    case 'chatPostNew':
-      return {
-        ...state,
-        chats: [...state.chats, action.payload],
-      };
-    case 'chatDeleteAll':
-      return {
-        ...state,
-        chats: [],
-      };
     // errorReducer
     case 'errorEmptyMail':
       return {

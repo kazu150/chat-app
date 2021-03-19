@@ -58,24 +58,30 @@ const useHandleSignIn = (): [
         type: 'userSignIn',
         payload: {
           id: data.user.uid,
-          name: userDataOnDb.data().name,
-          thumb: userDataOnDb.data().thumb,
+          name: userDataOnDb.data().name as string,
+          thumb: userDataOnDb.data().thumb as string,
           email: user.email,
         },
       });
       await Router.push('/chat');
-    } catch (error) {
-      if (error.code === 'auth/user-not-found') {
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        code: string;
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      if (customError.code === 'auth/user-not-found') {
         dispatch({ type: 'errorUserNotFound' });
         return;
       }
-      if (error.code === 'auth/wrong-password') {
+      if (customError.code === 'auth/wrong-password') {
         dispatch({ type: 'errorWrongPassword' });
         return;
       }
       dispatch({
         type: 'errorOther',
-        payload: `エラー内容：${error.message} [on useHandleSignIn]`,
+        payload: `エラー内容：${customError.message} [on useHandleSignIn]`,
       });
     }
   };

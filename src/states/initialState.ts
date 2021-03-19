@@ -5,13 +5,6 @@ export type State = {
     email: string;
     thumb: string;
   };
-  chats: {
-    id: number;
-    name: string;
-    thumb: string;
-    createdAt: string;
-    description: string;
-  }[];
   error: {
     isOpened: boolean;
     message: string;
@@ -26,7 +19,6 @@ const initialState: State = {
     email: '',
     thumb: 'avatar.png',
   },
-  chats: [],
   error: {
     isOpened: false,
     message: '',
