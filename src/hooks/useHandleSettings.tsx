@@ -3,6 +3,7 @@ import { State } from '../states/initialState';
 import { Action } from '../states/reducer';
 import updateUser from '../firebase/updateUser';
 import saveImage from '../firebase/saveImage';
+import { userNameMaxLength as maxLength } from '../vars';
 
 export type Data = {
   thumb: string;
@@ -34,6 +35,13 @@ const useHandleSettings = (
       dispatch({ type: 'errorEmptyName' });
       return;
     }
+
+    // 最大文字数オーバーしていないか
+    if (data.name.length > maxLength) {
+      dispatch({ type: 'errorExcessMaxLength', payload: maxLength });
+      return;
+    }
+
     if (src) {
       // 画像をsetしている場合
       const path = await saveImage(src, dispatch);

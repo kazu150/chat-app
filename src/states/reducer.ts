@@ -149,6 +149,15 @@ export const reducer = (state: State, action: Action): State => {
           message: 'JPG/GIF/PNG画像ファイル以外は登録できません',
         },
       };
+    case 'errorExcessMaxLength':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: '',
+          message: `${action.payload as number}文字以内で入力してください`,
+        },
+      };
     case 'errorOther':
       return {
         ...state,

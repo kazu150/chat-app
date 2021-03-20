@@ -4,6 +4,7 @@ import { State } from '../states/initialState';
 import fetchUsers, { User } from '../firebase/fetchUsers';
 import fetchChats, { Chat } from '../firebase/fetchChats';
 import postChat from '../firebase/postChat';
+import { chatMaxLength as maxLength } from '../vars';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
@@ -39,6 +40,12 @@ const useHandleChatUpdate = (
     // 投稿内容は入力されているか
     if (draft === '') {
       dispatch({ type: 'errorEmptyDraft' });
+      return;
+    }
+
+    // 最大文字数オーバーしていないか
+    if (draft.length > maxLength) {
+      dispatch({ type: 'errorExcessMaxLength', payload: maxLength });
       return;
     }
 
