@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import { useContext } from 'react';
 import { NextPage } from 'next';
 import Router from 'next/router';
@@ -69,7 +70,6 @@ const Settings: NextPage = () => {
                 fullWidth
                 error={state.error.errorPart === 'name'}
                 value={data.name}
-                // eslint-disable-next-line prettier/prettier
                 onChange={(e) =>
                   setData({ thumb: data.thumb, name: e.target.value })
                 }

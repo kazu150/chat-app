@@ -27,6 +27,7 @@ const Signup: NextPage = () => {
             error={state.error.errorPart === 'password'}
             type="password"
             label="パスワード"
+            autoComplete="off"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             style={{ marginBottom: 16 }}
             placeholder="●●●●●●●●"
@@ -37,6 +38,7 @@ const Signup: NextPage = () => {
             error={state.error.errorPart === 'pwConfirm'}
             type="password"
             label="パスワード（確認用）"
+            autoComplete="off"
             onChange={(e) => setUser({ ...user, pwConfirm: e.target.value })}
             style={{ marginBottom: 40 }}
             placeholder="●●●●●●●●"

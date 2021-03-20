@@ -58,7 +58,6 @@ const useHandleSignUp = (
 
       // FireStoreにdocumentを追加
       await db.collection('publicProfiles').doc(data.user.uid).set({
-        email: user.email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 

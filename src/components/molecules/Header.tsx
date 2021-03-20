@@ -49,16 +49,41 @@ const Header: NextComponentType = () => {
   };
 
   const handleClickSignOut = async () => {
-    await auth.signOut();
-    dispatch({ type: 'userSignOut' });
-    await Router.push('/');
-    handleClose();
+    try {
+      await auth.signOut();
+      dispatch({ type: 'userSignOut' });
+      await Router.push('/');
+      handleClose();
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${customError.message} [on signup]`,
+      });
+    }
   };
 
   const handleClickSettings = async () => {
-    await Router.push('/settings');
-    handleClose();
+    try {
+      await Router.push('/settings');
+      handleClose();
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${customError.message} [on signup]`,
+      });
+    }
   };
+
   return (
     <>
       <Head>
