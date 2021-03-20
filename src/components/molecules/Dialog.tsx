@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { NextComponentType } from 'next';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CommonContext from '../../states/context';
+import useHandleDialog from '../../hooks/useHandleDialog';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -24,26 +25,13 @@ const useStyles = makeStyles(() =>
 const FormDialog: NextComponentType = () => {
   const { state, dispatch } = useContext(CommonContext);
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [roomTitle, setRoomTitle] = useState('');
-  const [roomDescription, setRoomDescription] = useState('');
-
-  // context内stateの値をもとに、dialogを開閉
-  useEffect(() => {
-    if (state.dialog) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [state.dialog]);
-
-  const handleClose = () => {
-    dispatch({ type: 'dialogClose' });
-  };
-
-  const handleCreateRoom = () => {
-    alert(roomTitle, roomDescription);
-  };
+  const [
+    open,
+    handleClose,
+    setRoomTitle,
+    setRoomDescription,
+    handleCreateRoom,
+  ] = useHandleDialog(state, dispatch);
 
   return (
     <div>

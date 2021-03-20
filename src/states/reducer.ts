@@ -70,6 +70,42 @@ export const reducer = (state: State, action: Action): State => {
           message: 'パスワードが未入力です',
         },
       };
+    case 'errorEmptyName':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'name',
+          message: 'ユーザー名を入力してください',
+        },
+      };
+    case 'errorEmptyDraft':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'draft',
+          message: '投稿内容を入力してください',
+        },
+      };
+    case 'errorEmptyRoomTitle':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'title',
+          message: 'ルーム名を入力してください',
+        },
+      };
+    case 'errorEmptyRoomDescription':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'description',
+          message: 'ルームの説明を入力してください',
+        },
+      };
     case 'errorUnmatchPassword':
       return {
         ...state,
@@ -116,15 +152,6 @@ export const reducer = (state: State, action: Action): State => {
           message: 'このメールアドレスは登録されていません',
         },
       };
-    case 'errorEmptyName':
-      return {
-        ...state,
-        error: {
-          isOpened: true,
-          errorPart: 'name',
-          message: 'ユーザー名を入力してください',
-        },
-      };
     case 'errorEmailAlreadyInUse':
       return {
         ...state,
@@ -132,15 +159,6 @@ export const reducer = (state: State, action: Action): State => {
           isOpened: true,
           errorPart: 'email',
           message: 'そのメールアドレスは既に使われています',
-        },
-      };
-    case 'errorEmptyDraft':
-      return {
-        ...state,
-        error: {
-          isOpened: true,
-          errorPart: 'draft',
-          message: '投稿内容を入力してください',
         },
       };
     case 'errorTooBigImageSize':
@@ -169,6 +187,24 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: '',
+          message: `${action.payload as number}文字以内で入力してください`,
+        },
+      };
+    case 'errorRoomTitleExcessMaxLength':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'title',
+          message: `${action.payload as number}文字以内で入力してください`,
+        },
+      };
+    case 'errorRoomDescriptionExcessMaxLength':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: 'title',
           message: `${action.payload as number}文字以内で入力してください`,
         },
       };

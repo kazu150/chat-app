@@ -51,6 +51,7 @@ https://docs.google.com/spreadsheets/d/1TYjfVvbRaRccgopyTlZuptjsoqW-OB4BxdH_P6Nd
 | ---------------- | ------- | ------ | ---------------------------------- |   
 |createdAt	|Timestamp	|null: false|  ドキュメント作成日|  
 |title	|string	|null: false|  チャットルームのタイトル|  
+|description	|string	|null: false|  チャットルームの説明|  
   
 ▼roomsコレクション > chatsサブコレクション (チャットログ)
 |Column	|Type	|Options|Details|
