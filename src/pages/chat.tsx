@@ -82,13 +82,15 @@ const Chat: NextPage = () => {
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                           <Avatar
-                            alt={chat.name}
+                            alt={chat.name || 'アバター'}
                             src={chat.thumb || 'avatar.png'}
                           />
                         </ListItemAvatar>
                         <ListItemText
                           primary={
-                            <Typography variant="h6">{chat.name}</Typography>
+                            <Typography variant="h6">
+                              {chat.name || '　'}
+                            </Typography>
                           }
                           secondary={
                             // eslint-disable-next-line react/jsx-wrap-multilines
@@ -99,10 +101,10 @@ const Chat: NextPage = () => {
                                 className={classes.inline}
                                 color="textPrimary"
                               >
-                                {chat.description}
+                                {chat.description || '　'}
                               </Typography>
                               <br />
-                              <time>{chat.createdAt}</time>
+                              <time>{chat.createdAt || '　'}</time>
                             </>
                           }
                         />
