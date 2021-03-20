@@ -1,35 +1,20 @@
-import { useContext, useEffect } from 'react';
-import Router from 'next/router';
+import { useContext } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { TextField, Button, Box, Typography } from '@material-ui/core';
 import useHandleSignIn from '../hooks/useHandleSignIn';
 import CommonContext from '../states/context';
 
 const Signin: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
-  const [user, setUser, onSigninSubmit] = useHandleSignIn();
-
-  useEffect(() => {
-    const f = async () => {
-      try {
-        if (!state.user.email) return;
-        await Router.push('/chat');
-      } catch (error: unknown) {
-        // エラー内容を型安全に処理するため、カスタム型に代入
-        type CustomErrorType = { message: string };
-        const customError = error as CustomErrorType;
-        dispatch({
-          type: 'errorOther',
-          payload: `エラー内容：${customError.message} [on signup]`,
-        });
-      }
-    };
-    void f();
-  }, [state.user.email, dispatch]);
+  const [user, setUser, onSigninSubmit] = useHandleSignIn(state, dispatch);
 
   return (
     !state.user.email && (
       <div>
+        <Head>
+          <title>リアルタイムチャット | サインイン</title>
+        </Head>
         <Typography variant="h1">サインイン</Typography>
         <form
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -50,6 +35,7 @@ const Signin: NextPage = () => {
             error={state.error.errorPart === 'password'}
             type="password"
             label="パスワード"
+            autoComplete="off"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             style={{ marginBottom: 40 }}
             placeholder="●●●●●●●●"

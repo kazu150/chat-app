@@ -1,15 +1,19 @@
 import { useContext } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
-import useGuestSignIn from '../hooks/useGuestSignIn';
+import guestSignIn from '../firebase/guestSignIn';
 
 const Home: NextPage = () => {
-  const { state } = useContext(CommonContext);
-  const [onSigninSubmit] = useGuestSignIn();
+  const { state, dispatch } = useContext(CommonContext);
+
   return (
     <div>
+      <Head>
+        <title>リアルタイムチャット | Home</title>
+      </Head>
       <Typography variant="h1">リアルタイムチャット</Typography>
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
@@ -49,7 +53,7 @@ const Home: NextPage = () => {
               variant="contained"
               color="default"
               onClick={(e: React.MouseEvent<HTMLInputElement>) => {
-                return onSigninSubmit(e);
+                return guestSignIn(dispatch, e);
               }}
             >
               ゲストサインイン

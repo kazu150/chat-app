@@ -24,7 +24,7 @@ export const reducer = (state: State, action: Action): State => {
           ...(action.payload as User),
         },
       };
-    case 'userModProfile':
+    case 'userUpdate':
       return {
         ...state,
         user: {
@@ -127,6 +127,35 @@ export const reducer = (state: State, action: Action): State => {
           isOpened: true,
           errorPart: 'draft',
           message: '投稿内容を入力してください',
+        },
+      };
+    case 'errorTooBigImageSize':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: '',
+          message: `ファイルの上限サイズ${
+            (action.payload as number) / 1000000
+          }MBを超えています`,
+        },
+      };
+    case 'errorInvalidImageFiles':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: '',
+          message: 'JPG/GIF/PNG画像ファイル以外は登録できません',
+        },
+      };
+    case 'errorExcessMaxLength':
+      return {
+        ...state,
+        error: {
+          isOpened: true,
+          errorPart: '',
+          message: `${action.payload as number}文字以内で入力してください`,
         },
       };
     case 'errorOther':

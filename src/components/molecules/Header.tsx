@@ -11,11 +11,11 @@ import {
   IconButton,
   MenuItem,
   Menu,
+  Avatar,
   Button,
 } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../states/context';
-import { auth } from '../../../firebase';
+import signOut from '../../firebase/signOut';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,17 +48,30 @@ const Header: NextComponentType = () => {
     setAnchorEl(null);
   };
 
-  const handleClickSignOut = async () => {
-    await auth.signOut();
-    dispatch({ type: 'userSignOut' });
-    await Router.push('/');
+  const handleClickSignOut = () => {
+    // サインアウト
+    void signOut(dispatch);
+    // メニューを閉じる
     handleClose();
   };
 
   const handleClickSettings = async () => {
-    await Router.push('/settings');
-    handleClose();
+    try {
+      await Router.push('/settings');
+      handleClose();
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${customError.message} [on signup]`,
+      });
+    }
   };
+
   return (
     <>
       <Head>
@@ -76,7 +89,7 @@ const Header: NextComponentType = () => {
             {state.user.email ? (
               <div>
                 <Typography variant="button">
-                  {`${state.user.name || '名無し'}さん`}
+                  {`${state.user.name}さん`}
                 </Typography>
                 <IconButton
                   aria-label="account of current user"
@@ -85,7 +98,10 @@ const Header: NextComponentType = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <Avatar
+                    alt={state.user.name || 'アバター'}
+                    src={state.user.thumb || 'avatar.png'}
+                  />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
