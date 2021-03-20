@@ -8,13 +8,10 @@ import useHandleSettings from '../hooks/useHandleSettings';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
-  const [
-    preview,
-    onSettingsSubmit,
-    onImageSet,
-    data,
-    setData,
-  ] = useHandleSettings(state, dispatch);
+  const [onSettingsSubmit, onImageSet, data, setData] = useHandleSettings(
+    state,
+    dispatch
+  );
 
   return (
     state.user.email && (
@@ -56,7 +53,7 @@ const Settings: NextPage = () => {
             </Grid>
             <Grid item xs={8}>
               <img
-                src={preview || data.thumb || 'avatar.png'}
+                src={data.thumb || 'avatar.png'}
                 width={150}
                 height={150}
                 alt="アバター"

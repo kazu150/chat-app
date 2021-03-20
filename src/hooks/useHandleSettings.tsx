@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import Router from 'next/router';
-import { db, firebase, storage } from '../../firebase';
 import { State } from '../states/initialState';
 import { Action } from '../states/reducer';
+import updateUser from '../firebase/updateUser';
+import saveImage from '../firebase/saveImage';
 
 const useHandleSettings = (
   state: State,
   dispatch: React.Dispatch<Action>
 ): [
-  typeof preview,
   typeof onSettingsSubmit,
   typeof onImageSet,
   typeof data,
@@ -19,9 +18,12 @@ const useHandleSettings = (
     name: '',
   });
   const [src, setSrc] = useState<File>(null);
-  const [preview, setPreview] = useState('');
+  useEffect(() => {
+    console.log('data', data);
+    console.log('src', src);
+  });
 
-  // ページをロードした際に、ユーザー情報を更新
+  // ページをロードした際に、ローカルstateがcontext内stateのユーザー情報を取得
   useEffect(() => {
     setData({
       thumb: state.user.thumb,
@@ -36,50 +38,47 @@ const useHandleSettings = (
       dispatch({ type: 'errorEmptyName' });
       return;
     }
-
-    try {
-      // cloud Storageに画像を保存
-      await storage.ref(`/images/${src.name}`).put(src);
-
-      // 保存したパスを取得
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const pathReference: Promise<string> = await storage
-        .ref(`/images/${src.name}`)
-        .getDownloadURL();
-
-      // DBをupdate。thumbにはcloud storageの画像保存先パスを入れる
-      await db
-        .collection('publicProfiles')
-        .doc(state.user.id)
-        .update({
-          thumb: pathReference || state.user.thumb,
-          name: data.name,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-
-      dispatch({ type: 'userModProfile', payload: data });
-      await Router.push('/chat');
-    } catch (error: unknown) {
-      // エラー内容を型安全に処理するため、カスタム型に代入
-      type CustomErrorType = { message: string };
-      const customError = error as CustomErrorType;
-      dispatch({
-        type: 'errorOther',
-        payload: `エラー内容：${customError.message} [on settings]`,
-      });
+    if (src) {
+      // 画像をsetしている場合
+      const path = await saveImage(src, dispatch);
+      void updateUser(state.user.id, data.name, path, dispatch);
+    } else {
+      // 画像をsetしていない場合
+      void updateUser(state.user.id, data.name, data.thumb, dispatch);
     }
   };
 
   const onImageSet = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     const { files } = target;
+
+    // 上限サイズは2MB
+    if (files[0].size > 2000000) {
+      dispatch({ type: 'errorTooBigImageSize', payload: 2000000 });
+      return;
+    }
+
+    // JPG/GIF/PNG画像ファイル以外はNG
+    if (
+      files[0].type !== 'image/jpeg' &&
+      files[0].type !== 'image/jpg' &&
+      files[0].type !== 'image/gif' &&
+      files[0].type !== 'image/png'
+    ) {
+      dispatch({ type: 'errorInvalidImageFiles' });
+      return;
+    }
+
     // ローカルの画像ファイルをstateに設定
     setSrc(files[0]);
-    // プレビュー画像をstateに設定
-    setPreview(window.URL.createObjectURL(files[0]));
+    // プレビュー画像パスをstateに設定
+    setData({
+      thumb: window.URL.createObjectURL(files[0]),
+      name: data.name,
+    });
   };
 
-  return [preview, onSettingsSubmit, onImageSet, data, setData];
+  return [onSettingsSubmit, onImageSet, data, setData];
 };
 
 export default useHandleSettings;
