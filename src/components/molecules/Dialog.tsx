@@ -25,7 +25,8 @@ const FormDialog: NextComponentType = () => {
   const { state, dispatch } = useContext(CommonContext);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [roomName, setRoomName] = useState('');
+  const [roomTitle, setRoomTitle] = useState('');
+  const [roomDescription, setRoomDescription] = useState('');
 
   // context内stateの値をもとに、dialogを開閉
   useEffect(() => {
@@ -41,7 +42,7 @@ const FormDialog: NextComponentType = () => {
   };
 
   const handleCreateRoom = () => {
-    alert(roomName);
+    alert(roomTitle, roomDescription);
   };
 
   return (
@@ -62,9 +63,20 @@ const FormDialog: NextComponentType = () => {
             autoFocus
             margin="dense"
             id="name"
-            onChange={(e) => setRoomName(e.target.value)}
+            onChange={(e) => setRoomTitle(e.target.value)}
+            style={{ marginBottom: 16 }}
             label="チャットルーム名"
-            placeholder="ネコを語るチャット"
+            placeholder="ネコチャット"
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            onChange={(e) => setRoomDescription(e.target.value)}
+            label="チャットルームの説明"
+            placeholder="猫好きが猫を愛でるチャットです。"
             variant="outlined"
             fullWidth
           />

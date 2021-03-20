@@ -28,6 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       marginBottom: '30px',
     },
+    title: {
+      marginBottom: 5,
+    },
+    description: {
+      marginBottom: 18,
+      fontSize: 14,
+    },
     inline: {
       display: 'inline',
     },
@@ -44,6 +51,7 @@ const Chat: NextPage = () => {
     id: '',
     createdAt: '',
     title: '',
+    description: '',
   });
   const [
     draft,
@@ -70,7 +78,12 @@ const Chat: NextPage = () => {
         <Head>
           <title>{`リアルタイムチャット | ${room.title}`}</title>
         </Head>
-        <Typography variant="h1">{room.title}</Typography>
+        <Typography className={classes.title} variant="h1">
+          {room.title}
+        </Typography>
+        <Typography className={classes.description} variant="body1">
+          {room.description}
+        </Typography>
         <form onSubmit={onPostSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={10}>
@@ -106,7 +119,7 @@ const Chat: NextPage = () => {
                         <ListItemAvatar>
                           <Avatar
                             alt={chat.name || 'アバター'}
-                            src={chat.thumb || '../avatar.png'}
+                            src={chat.thumb || '/avatar.png'}
                           />
                         </ListItemAvatar>
                         <ListItemText
@@ -142,7 +155,7 @@ const Chat: NextPage = () => {
                   color="secondary"
                   onClick={onDeleteAllClick}
                 >
-                  すべてのチャットを削除
+                  チャットルームを削除
                 </Button>
               </Box>
             </>

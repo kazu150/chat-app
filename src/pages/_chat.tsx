@@ -91,7 +91,7 @@ const Chat: NextPage = () => {
                         <ListItemAvatar>
                           <Avatar
                             alt={chat.name || 'アバター'}
-                            src={chat.thumb || 'avatar.png'}
+                            src={chat.thumb || '/avatar.png'}
                           />
                         </ListItemAvatar>
                         <ListItemText

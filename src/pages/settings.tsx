@@ -60,7 +60,7 @@ const Settings: NextPage = () => {
             </Grid>
             <Grid item xs={8}>
               <img
-                src={data.thumb || 'avatar.png'}
+                src={data.thumb || '/avatar.png'}
                 width={150}
                 height={150}
                 alt="アバター"

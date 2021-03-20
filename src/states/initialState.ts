@@ -1,5 +1,6 @@
 export type Room = {
   id: string;
+  description: string;
   createdAt: string;
   title: string;
 };

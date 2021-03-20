@@ -19,6 +19,7 @@ const fetchRooms = (dispatch: React.Dispatch<Action>): void => {
         return {
           id: doc.id,
           createdAt: formattedDate,
+          description: doc.data().description as string,
           title: doc.data().title as string,
         };
       });

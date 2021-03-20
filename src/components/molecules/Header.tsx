@@ -100,7 +100,7 @@ const Header: NextComponentType = () => {
                 >
                   <Avatar
                     alt={state.user.name || 'アバター'}
-                    src={state.user.thumb || 'avatar.png'}
+                    src={state.user.thumb || '/avatar.png'}
                   />
                 </IconButton>
                 <Menu
