@@ -8,7 +8,8 @@ import { chatMaxLength as maxLength } from '../vars';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
-  state: State
+  state: State,
+  roomId: string
 ): [
   typeof draft,
   typeof setDraft,
@@ -27,10 +28,10 @@ const useHandleChatUpdate = (
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    fetchChats(setChats, users);
+    fetchChats(roomId, setChats, users);
     // usersの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
-  }, [users]);
+  }, [users, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

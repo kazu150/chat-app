@@ -11,6 +11,7 @@ import CommonContext from '../states/context';
 import { reducer } from '../states/reducer';
 import initialState from '../states/initialState';
 import useManageSigninStatus from '../hooks/useManageSigninStatus';
+import Dialog from '../components/molecules/Dialog';
 
 type Props = {
   Component: NextPage;
@@ -28,6 +29,10 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(state);
+  });
+
   return (
     <>
       <Head>
@@ -42,6 +47,7 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Header />
+          <Dialog />
           <Container maxWidth="sm">
             <Component />
           </Container>

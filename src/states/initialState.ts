@@ -1,3 +1,9 @@
+export type Room = {
+  id: string;
+  createdAt: string;
+  title: string;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -12,11 +18,15 @@ export type Error = {
 };
 
 export type State = {
+  rooms: Room[];
+  dialog: boolean;
   user: User;
   error: Error;
 };
 
 const initialState: State = {
+  rooms: [],
+  dialog: false,
   user: {
     id: '',
     name: '',

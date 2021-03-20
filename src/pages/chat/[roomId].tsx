@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import { useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
@@ -16,8 +17,9 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
-import CommonContext from '../states/context';
-import useHandleChatUpdate from '../hooks/useHandleChatUpdate';
+import CommonContext from '../../states/context';
+import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
+import { Room } from '../../states/initialState';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,24 +40,37 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
+  const [room, setRoom] = useState<Room>({
+    id: '',
+    createdAt: '',
+    title: '',
+  });
   const [
     draft,
     setDraft,
     chats,
     onPostSubmit,
     onDeleteAllClick,
-  ] = useHandleChatUpdate(dispatch, state);
+  ] = useHandleChatUpdate(dispatch, state, room?.id);
+  const router = useRouter();
+  const { roomId } = router.query;
 
   useEffect(() => {
-    console.log(chats);
-  });
+    const fetchedRoom = state.rooms.filter((data) => {
+      return data.id === roomId;
+    })[0];
+    // fetchedRoomが確実に取得できるまでsetしない（nullが入るのを防ぐ）
+    if (!fetchedRoom) return;
+    setRoom(fetchedRoom);
+  }, [roomId, state.rooms]);
+
   return (
     state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | チャット</title>
+          <title>{`リアルタイムチャット | ${room.title}`}</title>
         </Head>
-        <Typography variant="h1">チャット</Typography>
+        <Typography variant="h1">{room.title}</Typography>
         <form onSubmit={onPostSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={10}>
@@ -91,7 +106,7 @@ const Chat: NextPage = () => {
                         <ListItemAvatar>
                           <Avatar
                             alt={chat.name || 'アバター'}
-                            src={chat.thumb || 'avatar.png'}
+                            src={chat.thumb || '../avatar.png'}
                           />
                         </ListItemAvatar>
                         <ListItemText

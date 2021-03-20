@@ -46,13 +46,13 @@ https://docs.google.com/spreadsheets/d/1TYjfVvbRaRccgopyTlZuptjsoqW-OB4BxdH_P6Nd
 |publicProfiles	|reference	|null: false|  投稿者のユーザー情報|  
 |description	|string	|null: false|  投稿の本文|   -->
 
-▼chatRoomコレクション (チャットルーム一覧)
+▼roomsコレクション (チャットルーム一覧)
 |Column	|Type	|Options|Details|
 | ---------------- | ------- | ------ | ---------------------------------- |   
 |createdAt	|Timestamp	|null: false|  ドキュメント作成日|  
 |title	|string	|null: false|  チャットルームのタイトル|  
   
-▼chatRoomコレクション > chatサブコレクション (チャットログ)
+▼roomsコレクション > chatsサブコレクション (チャットログ)
 |Column	|Type	|Options|Details|
 | ---------------- | ------- | ------ | ---------------------------------- |   
 |createdAt	|Timestamp	|null: false|  ドキュメント作成日|  

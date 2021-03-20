@@ -14,6 +14,7 @@ import {
   Avatar,
   Button,
 } from '@material-ui/core';
+import Drawer from './Drawer';
 import CommonContext from '../../states/context';
 import signOut from '../../firebase/signOut';
 
@@ -26,11 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    titleWrapper: {
-      justifyContent: 'space-between',
-    },
     title: {
       cursor: 'pointer',
+      marginRight: 'auto',
     },
   })
 );
@@ -80,7 +79,8 @@ const Header: NextComponentType = () => {
       </Head>
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar className={classes.titleWrapper}>
+          <Toolbar>
+            {state.user.email && <Drawer />}
             <Link href="/">
               <Typography variant="h2" className={classes.title}>
                 リアルタイムチャット

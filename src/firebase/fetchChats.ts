@@ -14,34 +14,41 @@ export type Chat = {
 };
 
 const fetchChats = (
+  roomId: string,
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>,
   users: User[]
 ): void => {
-  db.collection('chats').onSnapshot(
-    (
-      snapshot: firebase.firestore.QuerySnapshot<
-        firebase.firestore.DocumentData
-      >
-    ) => {
-      const formedSnapshot = snapshot.docs.map((doc) => {
-        const filteredUser = users.filter(
-          (user) => user.id === doc.data().publicProfiles.id
-        )[0];
-        const date: Date = doc.data().createdAt?.toDate();
-        const formattedDate = formatDate(date);
+  // roomIdを取得できるまで処理しない
+  if (!roomId) return;
 
-        return {
-          id: Number(doc.id),
-          name: filteredUser?.name,
-          thumb: filteredUser?.thumb,
-          createdAt: formattedDate,
-          description: doc.data().description as string,
-        };
-      });
+  db.collection('rooms')
+    .doc(roomId)
+    .collection('chats')
+    .onSnapshot(
+      (
+        snapshot: firebase.firestore.QuerySnapshot<
+          firebase.firestore.DocumentData
+        >
+      ) => {
+        const formedSnapshot = snapshot.docs.map((doc) => {
+          const filteredUser = users.filter(
+            (user) => user.id === doc.data().publicProfiles?.id
+          )[0];
+          const date: Date = doc.data().createdAt?.toDate();
+          const formattedDate = formatDate(date);
 
-      setChats(formedSnapshot);
-    }
-  );
+          return {
+            id: Number(doc.id),
+            name: filteredUser?.name,
+            thumb: filteredUser?.thumb,
+            createdAt: formattedDate,
+            description: doc.data().description as string,
+          };
+        });
+
+        setChats(formedSnapshot);
+      }
+    );
 };
 
 export default fetchChats;

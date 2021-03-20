@@ -1,6 +1,7 @@
-import Router from 'next/router';
 import { auth, db } from '../../firebase';
 import { Action } from '../states/reducer';
+import fetchRooms from './fetchRooms';
+import signOut from './signOut';
 
 const manageSignInStatus = (dispatch: React.Dispatch<Action>): void => {
   auth.onAuthStateChanged(async (user) => {
@@ -21,12 +22,13 @@ const manageSignInStatus = (dispatch: React.Dispatch<Action>): void => {
             thumb: publicProfiles.data().thumb as string,
           },
         });
+
+        // ルームをリアルタイム取得
+        fetchRooms(dispatch);
+
         // ユーザーが検出されなかったら、signOutの処理
       } else {
-        await auth.signOut();
-        dispatch({ type: 'userSignOut' });
-        await Router.push('/');
-        return;
+        await signOut(dispatch);
       }
     } catch (error) {
       dispatch({

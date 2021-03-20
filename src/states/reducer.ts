@@ -1,4 +1,4 @@
-import initialState, { State, User } from './initialState';
+import initialState, { State, User, Room } from './initialState';
 
 export type Action = {
   type: string;
@@ -7,6 +7,23 @@ export type Action = {
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    // roomsReducer
+    case 'roomsFetch':
+      return {
+        ...state,
+        rooms: action.payload as Room[],
+      };
+    // dialogReducer
+    case 'dialogOpen':
+      return {
+        ...state,
+        dialog: true,
+      };
+    case 'dialogClose':
+      return {
+        ...state,
+        dialog: false,
+      };
     // userReducer
     case 'userSignUp':
       return {
@@ -33,10 +50,7 @@ export const reducer = (state: State, action: Action): State => {
         },
       };
     case 'userSignOut':
-      return {
-        ...state,
-        user: initialState.user,
-      };
+      return initialState;
     // errorReducer
     case 'errorEmptyMail':
       return {
