@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
@@ -17,6 +18,9 @@ const Settings: NextPage = () => {
   return (
     state.user.email && (
       <div>
+        <Head>
+          <title>リアルタイムチャット | ユーザー設定</title>
+        </Head>
         <Typography variant="h1">ユーザー設定</Typography>
         <form onSubmit={onSettingsSubmit}>
           <Grid container spacing={3}>

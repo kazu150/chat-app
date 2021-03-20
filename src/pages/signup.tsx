@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import useHandleSignUp from '../hooks/useHandleSignUp';
@@ -11,6 +12,9 @@ const Signup: NextPage = () => {
   return (
     !state.user.email && (
       <div>
+        <Head>
+          <title>リアルタイムチャット | 新規登録</title>
+        </Head>
         <Typography variant="h1">新規登録</Typography>
         <form onSubmit={onSignupSubmit}>
           <TextField

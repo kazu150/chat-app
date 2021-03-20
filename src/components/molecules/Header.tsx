@@ -15,7 +15,7 @@ import {
   Button,
 } from '@material-ui/core';
 import CommonContext from '../../states/context';
-import { auth } from '../../../firebase';
+import signOut from '../../firebase/signOut';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,23 +48,11 @@ const Header: NextComponentType = () => {
     setAnchorEl(null);
   };
 
-  const handleClickSignOut = async () => {
-    try {
-      await auth.signOut();
-      dispatch({ type: 'userSignOut' });
-      await Router.push('/');
-      handleClose();
-    } catch (error: unknown) {
-      // エラー内容を型安全に処理するため、カスタム型に代入
-      type CustomErrorType = {
-        message: string;
-      };
-      const customError = error as CustomErrorType;
-      dispatch({
-        type: 'errorOther',
-        payload: `エラー内容：${customError.message} [on signup]`,
-      });
-    }
+  const handleClickSignOut = () => {
+    // サインアウト
+    void signOut(dispatch);
+    // メニューを閉じる
+    handleClose();
   };
 
   const handleClickSettings = async () => {

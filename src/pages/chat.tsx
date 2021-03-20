@@ -48,6 +48,9 @@ const Chat: NextPage = () => {
   return (
     state.user.email && (
       <div>
+        <Head>
+          <title>リアルタイムチャット | チャット</title>
+        </Head>
         <Typography variant="h1">チャット</Typography>
         <form onSubmit={onPostSubmit}>
           <Grid container spacing={1}>

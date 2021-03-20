@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import { db, auth, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
+import { guestEmail, guestPassword } from '../vars';
 
 const guestSignIn = async (
   dispatch: React.Dispatch<Action>,
@@ -13,8 +14,8 @@ const guestSignIn = async (
 
     // guestアカウントでサインイン
     const data = await auth.signInWithEmailAndPassword(
-      process.env.NEXT_PUBLIC_GUEST_ID,
-      process.env.NEXT_PUBLIC_GUEST_PW
+      guestEmail,
+      guestPassword
     );
 
     // DBからユーザー情報を取得
@@ -26,7 +27,7 @@ const guestSignIn = async (
         id: data.user.uid,
         name: user.data().name as string,
         thumb: user.data().thumb as string,
-        email: process.env.NEXT_PUBLIC_GUEST_ID,
+        email: guestEmail,
       },
     });
     await Router.push('/chat');
