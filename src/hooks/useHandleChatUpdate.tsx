@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import fetchUsers, { User } from '../firebase/fetchUsers';
 import fetchChats, { Chat } from '../firebase/fetchChats';
+import postChat from '../firebase/postChat';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
@@ -24,10 +24,6 @@ const useHandleChatUpdate = (
     fetchUsers(setUsers);
   }, []);
 
-  useEffect(() => {
-    console.log(users);
-  });
-
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
     fetchChats(setChats, users);
@@ -38,7 +34,7 @@ const useHandleChatUpdate = (
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const date = new Date();
-    const idGeneratedFromDate = Number(date);
+    const id = Number(date).toString();
 
     // 投稿内容は入力されているか
     if (draft === '') {
@@ -47,16 +43,7 @@ const useHandleChatUpdate = (
     }
 
     try {
-      await db
-        .collection('chats')
-        .doc(idGeneratedFromDate.toString())
-        .set({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          publicProfiles: db.doc(`publicProfiles/${state.user.id}`),
-          description: draft,
-        });
-
-      setDraft('');
+      await postChat(id, state.user.id, draft, setDraft, dispatch);
     } catch (error: unknown) {
       // エラー内容を型安全に処理するため、カスタム型に代入
       type CustomErrorType = {

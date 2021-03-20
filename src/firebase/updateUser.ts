@@ -24,7 +24,7 @@ const updateUser = async (
     const customError = error as CustomErrorType;
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on updateUser]`,
+      payload: `エラー内容：${customError.message} [on firebase/updateUser]`,
     });
   }
 };

@@ -41,7 +41,7 @@ const signIn = async (
     }
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on useHandleSignIn]`,
+      payload: `エラー内容：${customError.message} [on firebase/signin]`,
     });
   }
 };

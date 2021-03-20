@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db, firebase } from '../../firebase';
 import { User } from './fetchUsers';
+import formatDate from '../utils/formatDate';
 
 export type Chat = {
   id: number;
@@ -27,6 +28,7 @@ const fetchChats = (
           (user) => user.id === doc.data().publicProfiles.id
         )[0];
         const date: Date = doc.data().createdAt?.toDate();
+        formatDate(date);
         const y = date?.getFullYear();
         const m = `00${date?.getMonth() + 1}`.slice(-2);
         const d = `00${date?.getDate()}`.slice(-2);

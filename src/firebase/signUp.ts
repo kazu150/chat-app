@@ -43,7 +43,7 @@ const signUp = async (
     }
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on signup]`,
+      payload: `エラー内容：${customError.message} [on firebase/signup]`,
     });
   }
 };

@@ -19,7 +19,7 @@ const saveImage = async (
     const customError = error as CustomErrorType;
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on saveImage]`,
+      payload: `エラー内容：${customError.message} [on firebase/saveImage]`,
     });
   }
   return pathReference;

@@ -49,7 +49,7 @@ const guestSignIn = async (
     }
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on guestSignIn]`,
+      payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
     });
   }
 };
