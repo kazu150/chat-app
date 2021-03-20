@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState, useEffect } from 'react';
 import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
