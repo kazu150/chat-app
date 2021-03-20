@@ -1,23 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState, useEffect } from 'react';
 import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
-
-type Chat = {
-  id: number;
-  name: string;
-  thumb: string;
-  createdAt: string;
-  description: string;
-};
-type UserOnChat = {
-  id: string;
-  name: string;
-  thumb: string;
-};
+import fetchUsers, { User } from '../firebase/fetchUsers';
+import fetchChats, { Chat } from '../firebase/fetchChats';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
@@ -30,67 +16,23 @@ const useHandleChatUpdate = (
   typeof onDeleteAllClick
 ] => {
   const [draft, setDraft] = useState('');
-  const [users, setUsers] = useState<UserOnChat[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [chats, setChats] = useState<Chat[]>([]);
 
-  // UserOnChatの内容をリアルタイムで更新
+  // User[]の内容をリアルタイムで更新
   useEffect(() => {
-    void (async () => {
-      try {
-        // 各ユーザーの情報を取得
-        const usersOnDb = await db.collection('publicProfiles').get();
-        const usersArray: UserOnChat[] = usersOnDb.docs.map((user) => ({
-          id: user.id,
-          name: user.data().name as string,
-          thumb: user.data().thumb as string,
-        }));
-        setUsers(usersArray);
-      } catch (error) {
-        // エラー内容を型安全に処理するため、カスタム型に代入
-        type CustomErrorType = {
-          message: string;
-        };
-        const customError = error as CustomErrorType;
-        dispatch({
-          type: 'errorOther',
-          payload: `エラー内容：${customError.message} [on useHandleSignIn]`,
-        });
-      }
-    })();
-  }, [dispatch]);
+    fetchUsers(setUsers);
+  }, []);
+
+  useEffect(() => {
+    console.log(users);
+  });
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    db.collection('chats').onSnapshot(
-      (
-        snapshot: firebase.firestore.QuerySnapshot<
-          firebase.firestore.DocumentData
-        >
-      ) => {
-        const formedSnapshot = snapshot.docs.map((doc) => {
-          const filteredUser = users.filter(
-            (user) => user.id === doc.data().publicProfiles.id
-          )[0];
-          const date: Date = doc.data().createdAt?.toDate();
-          const y = date?.getFullYear();
-          const m = `00${date?.getMonth() + 1}`.slice(-2);
-          const d = `00${date?.getDate()}`.slice(-2);
-          const h = `00${date?.getHours()}`.slice(-2);
-          const min = `00${date?.getMinutes()}`.slice(-2);
-          const formedDate = date ? `${y}/${m}/${d} ${h}:${min}` : '　';
-
-          return {
-            id: Number(doc.id),
-            name: filteredUser?.name,
-            thumb: filteredUser?.thumb,
-            createdAt: formedDate,
-            description: doc.data().description as string,
-          };
-        });
-
-        setChats(formedSnapshot);
-      }
-    );
+    fetchChats(setChats, users);
+    // usersの中身が更新された時に再レンダーする
+    // （新規ユーザー登録時、既存ユーザープロフィール更新時）
   }, [users]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
