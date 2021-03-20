@@ -5,10 +5,11 @@ import Router from 'next/router';
 import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import useHandleSettings from '../hooks/useHandleSettings';
+import onImageSet from '../utils/onImageSet';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
-  const [onSettingsSubmit, onImageSet, data, setData] = useHandleSettings(
+  const [onSettingsSubmit, data, setData, setSrc] = useHandleSettings(
     state,
     dispatch
   );
@@ -47,7 +48,9 @@ const Settings: NextPage = () => {
                   type="file"
                   id="file"
                   style={{ display: 'none' }}
-                  onChange={(e) => onImageSet(e)}
+                  onChange={(e) =>
+                    onImageSet(e, setSrc, data, setData, dispatch)
+                  }
                 />
               </label>
             </Grid>

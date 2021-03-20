@@ -35,7 +35,7 @@ const useHandleChatUpdate = (
 
   // UserOnChatの内容をリアルタイムで更新
   useEffect(() => {
-    const f = async () => {
+    void (async () => {
       try {
         // 各ユーザーの情報を取得
         const usersOnDb = await db.collection('publicProfiles').get();
@@ -56,8 +56,7 @@ const useHandleChatUpdate = (
           payload: `エラー内容：${customError.message} [on useHandleSignIn]`,
         });
       }
-    };
-    void f();
+    })();
   }, [dispatch]);
 
   // Chatの内容をリアルタイムで更新
