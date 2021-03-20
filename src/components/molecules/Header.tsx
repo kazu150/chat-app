@@ -11,9 +11,9 @@ import {
   IconButton,
   MenuItem,
   Menu,
+  Avatar,
   Button,
 } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
 import CommonContext from '../../states/context';
 import { auth } from '../../../firebase';
 
@@ -110,7 +110,10 @@ const Header: NextComponentType = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <Avatar
+                    alt={state.user.name || 'アバター'}
+                    src={state.user.thumb || 'avatar.png'}
+                  />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
