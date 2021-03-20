@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import Router from 'next/router';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import guestSignIn from '../firebase/guestSignIn';

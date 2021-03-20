@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
