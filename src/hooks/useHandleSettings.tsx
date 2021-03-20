@@ -41,18 +41,21 @@ const useHandleSettings = (
       // cloud Storageに画像を保存
       await storage.ref(`/images/${src.name}`).put(src);
 
-      // 保存したパスを返り値かなんかで取得
+      // 保存したパスを取得
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const pathReference: Promise<string> = await storage
         .ref(`/images/${src.name}`)
         .getDownloadURL();
 
       // DBをupdate。thumbにはcloud storageの画像保存先パスを入れる
-      await db.collection('publicProfiles').doc(state.user.id).update({
-        thumb: pathReference,
-        name: data.name,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      await db
+        .collection('publicProfiles')
+        .doc(state.user.id)
+        .update({
+          thumb: pathReference || state.user.thumb,
+          name: data.name,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
 
       dispatch({ type: 'userModProfile', payload: data });
       await Router.push('/chat');

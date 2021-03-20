@@ -101,7 +101,7 @@ const Header: NextComponentType = () => {
             {state.user.email ? (
               <div>
                 <Typography variant="button">
-                  {`${state.user.name || '名無し'}さん`}
+                  {`${state.user.name}さん`}
                 </Typography>
                 <IconButton
                   aria-label="account of current user"
