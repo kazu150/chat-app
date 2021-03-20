@@ -37,14 +37,16 @@ const signUp = async (
       message: string;
     };
     const customError = error as CustomErrorType;
-    if (customError.code === 'auth/email-already-in-use') {
-      dispatch({ type: 'errorEmailAlreadyInUse' });
-      return;
+    switch (customError.code) {
+      case 'auth/email-already-in-use':
+        dispatch({ type: 'errorEmailAlreadyInUse' });
+        return;
+      default:
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
+        });
     }
-    dispatch({
-      type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on firebase/signup]`,
-    });
   }
 };
 

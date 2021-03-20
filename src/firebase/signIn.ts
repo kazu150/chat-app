@@ -31,18 +31,20 @@ const signIn = async (
       message: string;
     };
     const customError = error as CustomErrorType;
-    if (customError.code === 'auth/user-not-found') {
-      dispatch({ type: 'errorUserNotFound' });
-      return;
+    switch (customError.code) {
+      case 'auth/user-not-found':
+        dispatch({ type: 'errorUserNotFound' });
+        return;
+
+      case 'auth/wrong-password':
+        dispatch({ type: 'errorWrongPassword' });
+        return;
+      default:
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
+        });
     }
-    if (customError.code === 'auth/wrong-password') {
-      dispatch({ type: 'errorWrongPassword' });
-      return;
-    }
-    dispatch({
-      type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on firebase/signin]`,
-    });
   }
 };
 

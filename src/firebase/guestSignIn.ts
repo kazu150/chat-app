@@ -37,20 +37,20 @@ const guestSignIn = async (
       message: string;
     };
     const customError = error as CustomErrorType;
-    if ('code' in customError) {
-      if (customError.code === 'auth/user-not-found') {
+    switch (customError.code) {
+      case 'auth/user-not-found':
         dispatch({ type: 'errorUserNotFound' });
         return;
-      }
-      if (customError.code === 'auth/wrong-password') {
+
+      case 'auth/wrong-password':
         dispatch({ type: 'errorWrongPassword' });
         return;
-      }
+      default:
+        dispatch({
+          type: 'errorOther',
+          payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
+        });
     }
-    dispatch({
-      type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
-    });
   }
 };
 
