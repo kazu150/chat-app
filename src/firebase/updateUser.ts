@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
+import { defaultRoom } from '../vars';
 
 const updateUser = async (
   id: string,
@@ -17,7 +18,7 @@ const updateUser = async (
     });
     dispatch({ type: 'userUpdate', payload: { thumb, name } });
 
-    await Router.push('/chat');
+    await Router.push(`/chat/${defaultRoom}`);
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
     type CustomErrorType = { message: string };

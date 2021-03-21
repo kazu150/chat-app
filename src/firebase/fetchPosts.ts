@@ -13,7 +13,7 @@ export type Chat = {
   description: string;
 };
 
-const fetchChats = (
+const fetchPosts = (
   roomId: string,
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>,
   users: User[]
@@ -51,4 +51,4 @@ const fetchChats = (
     );
 };
 
-export default fetchChats;
+export default fetchPosts;

@@ -108,7 +108,7 @@ const Chat: NextPage = () => {
                 {chats
                   .sort((a, b) => b.id - a.id)
                   .map((chat) => (
-                    <ChatElement chat={chat} />
+                    <ChatElement chat={chat} key={chat.id} />
                   ))}
               </div>
               <Box textAlign="center">

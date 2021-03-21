@@ -31,6 +31,25 @@ const TemporaryDrawer: NextComponentType = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
+  const onRoomClick = async (room: string) => {
+    try {
+      // roomに遷移
+      await Router.push(`/chat/${room}`);
+      // currentRoomを遷移先に設定
+      dispatch({ type: 'currentRoomSwitch', payload: room });
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = {
+        message: string;
+      };
+      const customError = error as CustomErrorType;
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${customError.message} [on firebase/guestSignIn]`,
+      });
+    }
+  };
+
   const toggleDrawer = (toggle: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
   ) => {
@@ -58,11 +77,7 @@ const TemporaryDrawer: NextComponentType = () => {
         </ListSubheader>
         {state.rooms.length ? (
           state.rooms.map((room) => (
-            <ListItem
-              button
-              onClick={() => Router.push(`/chat/${room.id}`)}
-              key={room.id}
-            >
+            <ListItem button onClick={() => onRoomClick(room.id)} key={room.id}>
               <ListItemIcon>
                 <ChatIcon />
               </ListItemIcon>

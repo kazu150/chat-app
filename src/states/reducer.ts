@@ -7,6 +7,12 @@ export type Action = {
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    // currentRoomReducer
+    case 'currentRoomSwitch':
+      return {
+        ...state,
+        currentRoom: action.payload as string,
+      };
     // roomsReducer
     case 'roomsFetch':
       return {

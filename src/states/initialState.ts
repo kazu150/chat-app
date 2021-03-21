@@ -19,6 +19,7 @@ export type Error = {
 };
 
 export type State = {
+  currentRoom: string;
   rooms: Room[];
   dialog: boolean;
   user: User;
@@ -26,6 +27,7 @@ export type State = {
 };
 
 const initialState: State = {
+  currentRoom: '',
   rooms: [],
   dialog: false,
   user: {

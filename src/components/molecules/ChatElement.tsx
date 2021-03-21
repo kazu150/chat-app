@@ -35,7 +35,7 @@ const ChatElement: NextComponentType<NextPageContext, unknown, Props> = (
   const classes = useStyles();
 
   return (
-    <div key={chat.id}>
+    <>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar
@@ -60,7 +60,7 @@ const ChatElement: NextComponentType<NextPageContext, unknown, Props> = (
         />
       </ListItem>
       <Divider variant="inset" component="li" />
-    </div>
+    </>
   );
 };
 
