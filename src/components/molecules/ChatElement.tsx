@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { NextComponentType, NextPageContext } from 'next';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { Chat } from '../../firebase/fetchChats';
+import { Chat } from '../../firebase/fetchPosts';
 
 const useStyles = makeStyles(() =>
   createStyles({

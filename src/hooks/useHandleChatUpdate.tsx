@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import fetchUsers, { User } from '../firebase/fetchUsers';
-import fetchChats, { Chat } from '../firebase/fetchChats';
+import fetchPosts, { Chat } from '../firebase/fetchPosts';
 import createPost from '../firebase/createPost';
 import { chatMaxLength as maxLength } from '../vars';
 
@@ -28,7 +28,7 @@ const useHandleChatUpdate = (
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    fetchChats(roomId, setChats, users);
+    fetchPosts(roomId, setChats, users);
     // usersの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
   }, [users, roomId]);
