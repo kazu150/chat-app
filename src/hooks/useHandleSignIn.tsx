@@ -4,6 +4,7 @@ import { regEmail, regPass } from '../utils/validate';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import signIn from '../firebase/signIn';
+import { defaultRoom } from '../vars';
 
 const useHandleSignIn = (
   state: State,
@@ -46,7 +47,7 @@ const useHandleSignIn = (
     void (async () => {
       try {
         if (!state.user.email) return;
-        await Router.push('/chat');
+        await Router.push(`/chat/${defaultRoom}`);
       } catch (error: unknown) {
         // エラー内容を型安全に処理するため、カスタム型に代入
         type CustomErrorType = { message: string };

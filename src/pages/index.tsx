@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { Button, Box, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import guestSignIn from '../firebase/guestSignIn';
+import { defaultRoom } from '../vars';
 
 const Home: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -23,7 +24,7 @@ const Home: NextPage = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => Router.push('/chat')}
+            onClick={() => Router.push(`/chat/${defaultRoom}`)}
           >
             チャットへ
           </Button>

@@ -4,6 +4,7 @@ import { regEmail, regPass } from '../utils/validate';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import signUp from '../firebase/signUp';
+import { defaultRoom } from '../vars';
 
 const useHandleSignUp = (
   state: State,
@@ -54,7 +55,7 @@ const useHandleSignUp = (
   useEffect(() => {
     if (!state.user.email) return;
     if (submitting) return;
-    void Router.push('/chat');
+    void Router.push(`/chat/${defaultRoom}`);
     // eslint-disable-next-line consistent-return
     return () => {
       setSubmitting(false);

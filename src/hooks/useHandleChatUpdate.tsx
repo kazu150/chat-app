@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import fetchUsers, { User } from '../firebase/fetchUsers';
-import fetchChats, { Chat } from '../firebase/fetchChats';
-import postChat from '../firebase/postChat';
+import fetchPosts, { Chat } from '../firebase/fetchPosts';
+import createPost from '../firebase/createPost';
 import { chatMaxLength as maxLength } from '../vars';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
-  state: State
+  state: State,
+  roomId: string
 ): [
   typeof draft,
   typeof setDraft,
@@ -27,10 +28,10 @@ const useHandleChatUpdate = (
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    fetchChats(setChats, users);
+    fetchPosts(roomId, setChats, users);
     // usersの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
-  }, [users]);
+  }, [users, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,7 +51,7 @@ const useHandleChatUpdate = (
     }
 
     try {
-      await postChat(id, state.user.id, draft, setDraft, dispatch);
+      await createPost(roomId, id, state.user.id, draft, setDraft, dispatch);
     } catch (error: unknown) {
       // エラー内容を型安全に処理するため、カスタム型に代入
       type CustomErrorType = {

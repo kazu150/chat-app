@@ -1,7 +1,7 @@
 import Router from 'next/router';
 import { db, auth, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
-import { guestEmail, guestPassword } from '../vars';
+import { guestEmail, guestPassword, defaultRoom } from '../vars';
 
 const guestSignIn = async (
   dispatch: React.Dispatch<Action>,
@@ -30,7 +30,7 @@ const guestSignIn = async (
         email: guestEmail,
       },
     });
-    await Router.push('/chat');
+    await Router.push(`/chat/${defaultRoom}`);
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
     type CustomErrorType = {

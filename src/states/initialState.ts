@@ -1,3 +1,10 @@
+export type Room = {
+  id: string;
+  description: string;
+  createdAt: string;
+  title: string;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -12,11 +19,17 @@ export type Error = {
 };
 
 export type State = {
+  currentRoom: string;
+  rooms: Room[];
+  dialog: boolean;
   user: User;
   error: Error;
 };
 
 const initialState: State = {
+  currentRoom: '',
+  rooms: [],
+  dialog: false,
   user: {
     id: '',
     name: '',

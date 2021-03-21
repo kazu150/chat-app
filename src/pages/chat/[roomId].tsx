@@ -1,23 +1,21 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import { useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
   Button,
-  Avatar,
   Grid,
   List,
-  ListItem,
-  Divider,
-  ListItemText,
-  ListItemAvatar,
   Typography,
   Box,
 } from '@material-ui/core';
-import CommonContext from '../states/context';
-import useHandleChatUpdate from '../hooks/useHandleChatUpdate';
+import CommonContext from '../../states/context';
+import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
+import { Room } from '../../states/initialState';
+import ChatElement from '../../components/molecules/ChatElement';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,8 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       marginBottom: '30px',
     },
-    inline: {
-      display: 'inline',
+    title: {
+      marginBottom: 5,
+    },
+    description: {
+      marginBottom: 18,
+      fontSize: 14,
     },
     chatArea: {
       marginBottom: '30px',
@@ -38,25 +40,48 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
+  const [room, setRoom] = useState<Room>({
+    id: '',
+    createdAt: '',
+    title: '',
+    description: '',
+  });
   const [
     draft,
     setDraft,
     chats,
     onPostSubmit,
     onDeleteAllClick,
-  ] = useHandleChatUpdate(dispatch, state);
+  ] = useHandleChatUpdate(dispatch, state, room?.id);
+  const router = useRouter();
+  const { roomId } = router.query;
+
+  useEffect(() => {
+    const fetchedRoom = state.rooms.filter((data) => {
+      return data.id === roomId;
+    })[0];
+    // fetchedRoomが確実に取得できるまでsetしない（nullが入るのを防ぐ）
+    if (!fetchedRoom) return;
+    setRoom(fetchedRoom);
+  }, [roomId, state.rooms]);
 
   return (
     state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | チャット</title>
+          <title>{`リアルタイムチャット | ${room.title}`}</title>
         </Head>
-        <Typography variant="h1">チャット</Typography>
+        <Typography className={classes.title} variant="h1">
+          {room.title}
+        </Typography>
+        <Typography className={classes.description} variant="body1">
+          {room.description}
+        </Typography>
         <form onSubmit={onPostSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={10}>
               <TextField
+                autoFocus
                 fullWidth
                 error={state.error.errorPart === 'draft'}
                 multiline
@@ -83,39 +108,7 @@ const Chat: NextPage = () => {
                 {chats
                   .sort((a, b) => b.id - a.id)
                   .map((chat) => (
-                    <div key={chat.id}>
-                      <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                          <Avatar
-                            alt={chat.name || 'アバター'}
-                            src={chat.thumb || 'avatar.png'}
-                          />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Typography variant="h6">
-                              {chat.name || '　'}
-                            </Typography>
-                          }
-                          secondary={
-                            // eslint-disable-next-line react/jsx-wrap-multilines
-                            <>
-                              <Typography
-                                variant="body1"
-                                component="span"
-                                className={classes.inline}
-                                color="textPrimary"
-                              >
-                                {chat.description || '　'}
-                              </Typography>
-                              <br />
-                              <time>{chat.createdAt || '　'}</time>
-                            </>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant="inset" component="li" />
-                    </div>
+                    <ChatElement chat={chat} key={chat.id} />
                   ))}
               </div>
               <Box textAlign="center">
@@ -124,7 +117,7 @@ const Chat: NextPage = () => {
                   color="secondary"
                   onClick={onDeleteAllClick}
                 >
-                  すべてのチャットを削除
+                  チャットルームを削除
                 </Button>
               </Box>
             </>
