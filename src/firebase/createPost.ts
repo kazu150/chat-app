@@ -5,8 +5,8 @@ const createPost = async (
   roomId: string,
   postId: string,
   userId: string,
-  draft: string,
-  setDraft: React.Dispatch<React.SetStateAction<string>>,
+  drafts: { [key: string]: string },
+  setDrafts: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
   dispatch: React.Dispatch<Action>
 ): Promise<void> => {
   try {
@@ -18,10 +18,11 @@ const createPost = async (
       .set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         publicProfiles: db.doc(`publicProfiles/${userId}`),
-        description: draft,
+        description: drafts.roo,
       });
 
-    setDraft('');
+    // 投稿した下書きだけstateから削除
+    setDrafts({ ...drafts, [roomId]: '' });
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
     type CustomErrorType = {

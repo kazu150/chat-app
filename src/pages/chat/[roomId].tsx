@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable react/jsx-wrap-multilines */
 import { useState, useContext, useEffect } from 'react';
 import { NextPage } from 'next';
@@ -47,8 +48,8 @@ const Chat: NextPage = () => {
     description: '',
   });
   const [
-    draft,
-    setDraft,
+    drafts,
+    setDrafts,
     chats,
     onPostSubmit,
     onDeleteAllClick,
@@ -86,8 +87,10 @@ const Chat: NextPage = () => {
                 error={state.error.errorPart === 'draft'}
                 multiline
                 label="投稿内容"
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
+                value={drafts[roomId as string] || ''}
+                onChange={(e) =>
+                  setDrafts({ ...drafts, [roomId as string]: e.target.value })
+                }
                 style={{ marginBottom: 10 }}
                 placeholder="投稿を入力しましょう"
                 variant="outlined"
