@@ -1,8 +1,9 @@
 import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
 
-const postChat = async (
-  id: string,
+const createPost = async (
+  roomId: string,
+  postId: string,
   userId: string,
   draft: string,
   setDraft: React.Dispatch<React.SetStateAction<string>>,
@@ -10,8 +11,10 @@ const postChat = async (
 ): Promise<void> => {
   try {
     await db
+      .collection('rooms')
+      .doc(roomId)
       .collection('chats')
-      .doc(id)
+      .doc(postId)
       .set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         publicProfiles: db.doc(`publicProfiles/${userId}`),
@@ -27,9 +30,9 @@ const postChat = async (
     const customError = error as CustomErrorType;
     dispatch({
       type: 'errorOther',
-      payload: `エラー内容：${customError.message} [on firebase/postChat]`,
+      payload: `エラー内容：${customError.message} [on firebase/createPost]`,
     });
   }
 };
 
-export default postChat;
+export default createPost;

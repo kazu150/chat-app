@@ -3,7 +3,7 @@ import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import fetchUsers, { User } from '../firebase/fetchUsers';
 import fetchChats, { Chat } from '../firebase/fetchChats';
-import postChat from '../firebase/postChat';
+import createPost from '../firebase/createPost';
 import { chatMaxLength as maxLength } from '../vars';
 
 const useHandleChatUpdate = (
@@ -51,7 +51,7 @@ const useHandleChatUpdate = (
     }
 
     try {
-      await postChat(id, state.user.id, draft, setDraft, dispatch);
+      await createPost(roomId, id, state.user.id, draft, setDraft, dispatch);
     } catch (error: unknown) {
       // エラー内容を型安全に処理するため、カスタム型に代入
       type CustomErrorType = {
