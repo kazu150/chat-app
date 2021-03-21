@@ -28,9 +28,7 @@ const useHandleChatUpdate = (
       unsubscribe;
     };
   }, [state.publicProfiles, roomId]);
-  useEffect(() => {
-    console.log(chats);
-  });
+
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const date = new Date();

@@ -7,7 +7,6 @@ import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import useHandleSettings from '../hooks/useHandleSettings';
 import onImageSet from '../utils/onImageSet';
-import { defaultRoom } from '../vars';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -89,7 +88,7 @@ const Settings: NextPage = () => {
             {state.user.name && (
               <Box component="span" m={1}>
                 <Button
-                  onClick={() => Router.push(`/chat/${defaultRoom}`)}
+                  onClick={() => Router.push(`/chat/${state.currentRoom}}`)}
                   variant="contained"
                   color="default"
                 >

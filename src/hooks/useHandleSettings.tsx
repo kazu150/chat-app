@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Router from 'next/router';
 import { State } from '../states/initialState';
 import { Action } from '../states/reducer';
 import updateUser from '../firebase/updateUser';
@@ -41,14 +42,24 @@ const useHandleSettings = (
       dispatch({ type: 'errorExcessMaxLength', payload: maxLength });
       return;
     }
-
-    if (src) {
-      // 画像をsetしている場合
-      const path = await saveImage(src, dispatch);
-      void updateUser(state.user.id, data.name, path, dispatch);
-    } else {
-      // 画像をsetしていない場合
-      void updateUser(state.user.id, data.name, data.thumb, dispatch);
+    try {
+      if (src) {
+        // 画像をsetしている場合
+        const path = await saveImage(src, dispatch);
+        void updateUser(state.user.id, data.name, path, dispatch);
+      } else {
+        // 画像をsetしていない場合
+        void updateUser(state.user.id, data.name, data.thumb, dispatch);
+      }
+      await Router.push(`/chat/${state.currentRoom}`);
+    } catch (error: unknown) {
+      // エラー内容を型安全に処理するため、カスタム型に代入
+      type CustomErrorType = { message: string };
+      const customError = error as CustomErrorType;
+      dispatch({
+        type: 'errorOther',
+        payload: `エラー内容：${customError.message} [on firebase/updateUser]`,
+      });
     }
   };
 
