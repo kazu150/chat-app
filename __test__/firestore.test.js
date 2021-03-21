@@ -1,3 +1,6 @@
+process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
+process.env.FIREBASE_DATABASE_EMULATOR_HOST = "localhost:9000";
+
 const firebase = require('@firebase/rules-unit-testing');
 const fs = require('fs');
 
