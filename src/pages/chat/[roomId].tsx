@@ -7,19 +7,15 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
   Button,
-  Avatar,
   Grid,
   List,
-  ListItem,
-  Divider,
-  ListItemText,
-  ListItemAvatar,
   Typography,
   Box,
 } from '@material-ui/core';
 import CommonContext from '../../states/context';
 import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
 import { Room } from '../../states/initialState';
+import ChatElement from '../../components/molecules/ChatElement';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,9 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
     description: {
       marginBottom: 18,
       fontSize: 14,
-    },
-    inline: {
-      display: 'inline',
     },
     chatArea: {
       marginBottom: '30px',
@@ -115,39 +108,7 @@ const Chat: NextPage = () => {
                 {chats
                   .sort((a, b) => b.id - a.id)
                   .map((chat) => (
-                    <div key={chat.id}>
-                      <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                          <Avatar
-                            alt={chat.name || 'アバター'}
-                            src={chat.thumb || '/avatar.png'}
-                          />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Typography variant="h6">
-                              {chat.name || '　'}
-                            </Typography>
-                          }
-                          secondary={
-                            // eslint-disable-next-line react/jsx-wrap-multilines
-                            <>
-                              <Typography
-                                variant="body1"
-                                component="span"
-                                className={classes.inline}
-                                color="textPrimary"
-                              >
-                                {chat.description || '　'}
-                              </Typography>
-                              <br />
-                              <time>{chat.createdAt || '　'}</time>
-                            </>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant="inset" component="li" />
-                    </div>
+                    <ChatElement chat={chat} />
                   ))}
               </div>
               <Box textAlign="center">
