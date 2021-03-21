@@ -5,23 +5,21 @@ import { auth, db, firebase } from '../../firebase';
 
 const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
   useEffect(() => {
-    let publicProfiles: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> = null;
+    // let publicProfiles: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> = null;
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (!user) return;
 
-      publicProfiles = await db
-        .collection('publicProfiles')
-        .doc(user.uid)
-        .get();
+      // publicProfiles = await db
+      //   .collection('publicProfiles')
+      //   .doc(user.uid)
+      //   .get();
 
-      await manageSignInStatus(dispatch, user, publicProfiles);
+      await manageSignInStatus(dispatch, user);
     });
 
     return () => {
-      publicProfiles;
-      publicProfiles();
+      // publicProfiles();
       unsubscribe();
-      unsubscribe;
     };
   }, [dispatch]);
 };

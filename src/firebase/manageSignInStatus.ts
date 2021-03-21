@@ -1,4 +1,4 @@
-import { firebase } from '../../firebase';
+import { firebase, db } from '../../firebase';
 import { Action } from '../states/reducer';
 import fetchRooms from './fetchRooms';
 import fetchUsers from './fetchUsers';
@@ -6,26 +6,26 @@ import signOut from './signOut';
 
 const manageSignInStatus = async (
   dispatch: React.Dispatch<Action>,
-  user: firebase.User,
-  publicProfiles: firebase.firestore.DocumentSnapshot<
-    firebase.firestore.DocumentData
-  >
+  user: firebase.User
+  // publicProfiles: firebase.firestore.DocumentSnapshot<
+  //   firebase.firestore.DocumentData
+  // >
 ): Promise<void> => {
   try {
     // ユーザーが検出されたら、signInの処理
     if (user) {
-      // const publicProfiles = await db
-      //   .collection('publicProfiles')
-      //   .doc(user.uid)
-      //   .get();
+      const publicProfiles = await db
+        .collection('publicProfiles')
+        .doc(user.uid)
+        .get();
 
       dispatch({
         type: 'userSignIn',
         payload: {
           id: user.uid,
+          thumb: publicProfiles.data().thumb as string,
           name: publicProfiles.data().name as string,
           email: user.email,
-          thumb: publicProfiles.data().thumb as string,
         },
       });
 
@@ -39,10 +39,15 @@ const manageSignInStatus = async (
     } else {
       await signOut(dispatch);
     }
-  } catch (error) {
+  } catch (error: unknown) {
+    // エラー内容を型安全に処理するため、カスタム型に代入
+    type CustomErrorType = {
+      message: string;
+    };
+    const customError = error as CustomErrorType;
     dispatch({
       type: 'errorOther',
-      payload: '認証関係でエラーが発生しました',
+      payload: `エラー内容：${customError.message} [on firebase/manageSignInStatus]`,
     });
   }
 };

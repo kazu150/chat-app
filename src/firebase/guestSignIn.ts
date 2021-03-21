@@ -30,6 +30,10 @@ const guestSignIn = async (
         email: guestEmail,
       },
     });
+
+    // currentRoomをデフォルトルームに設定
+    dispatch({ type: 'currentRoomSwitch', payload: defaultRoom });
+
     await Router.push(`/chat/${defaultRoom}`);
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
