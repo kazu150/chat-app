@@ -22,6 +22,7 @@ const Signin: NextPage = () => {
           }}
         >
           <TextField
+            autoFocus
             fullWidth
             error={state.error.errorPart === 'email'}
             label="Eメール"

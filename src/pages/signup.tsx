@@ -18,6 +18,7 @@ const Signup: NextPage = () => {
         <Typography variant="h1">新規登録</Typography>
         <form onSubmit={onSignupSubmit}>
           <TextField
+            autoFocus
             fullWidth
             error={state.error.errorPart === 'email'}
             label="Eメール"

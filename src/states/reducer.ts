@@ -94,7 +94,7 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: 'title',
-          message: 'ルーム名を入力してください',
+          message: 'チャットルーム名を入力してください',
         },
       };
     case 'errorEmptyRoomDescription':
@@ -103,7 +103,7 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: 'description',
-          message: 'ルームの説明を入力してください',
+          message: 'チャットルームの説明を入力してください',
         },
       };
     case 'errorUnmatchPassword':
@@ -196,7 +196,9 @@ export const reducer = (state: State, action: Action): State => {
         error: {
           isOpened: true,
           errorPart: 'title',
-          message: `${action.payload as number}文字以内で入力してください`,
+          message: `チャットルーム名は${
+            action.payload as number
+          }文字以内で入力してください`,
         },
       };
     case 'errorRoomDescriptionExcessMaxLength':
@@ -204,8 +206,10 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         error: {
           isOpened: true,
-          errorPart: 'title',
-          message: `${action.payload as number}文字以内で入力してください`,
+          errorPart: 'description',
+          message: `チャットルームの説明は${
+            action.payload as number
+          }文字以内で入力してください`,
         },
       };
     case 'errorOther':

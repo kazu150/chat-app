@@ -88,6 +88,7 @@ const Chat: NextPage = () => {
           <Grid container spacing={1}>
             <Grid item xs={10}>
               <TextField
+                autoFocus
                 fullWidth
                 error={state.error.errorPart === 'draft'}
                 multiline

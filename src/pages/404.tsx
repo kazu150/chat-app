@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 
 const NoContents: NextPage = () => {
   return (
@@ -8,7 +8,9 @@ const NoContents: NextPage = () => {
       <Head>
         <title>リアルタイムチャット | ページがありません</title>
       </Head>
-      <Typography variant="h1">404 | このページは存在しません！</Typography>
+      <Box textAlign="center">
+        <Typography variant="h1">404 | このページは存在しません！</Typography>
+      </Box>
     </>
   );
 };

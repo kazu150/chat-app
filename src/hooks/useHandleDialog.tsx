@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { roomTitleMaxLength, roomDescriptionMaxLength } from '../vars';
 import { State } from '../states/initialState';
 import { Action } from '../states/reducer';
+import createRoom from '../firebase/createRoom';
 
 const useHandleDialog = (
   state: State,
@@ -23,6 +24,9 @@ const useHandleDialog = (
       setOpen(true);
     } else {
       setOpen(false);
+      // ダイアログ上の入力情報も初期化
+      setRoomTitle('');
+      setRoomDescription('');
     }
   }, [state.dialog]);
 
@@ -32,7 +36,10 @@ const useHandleDialog = (
 
   const handleCreateRoom = () => {
     // ルーム名が入力されていない場合
-    if (!roomTitle) dispatch({ type: 'errorEmptyRoomTitle' });
+    if (!roomTitle) {
+      dispatch({ type: 'errorEmptyRoomTitle' });
+      return;
+    }
 
     // ルーム名が超過の場合
     if (roomTitle.length > roomTitleMaxLength) {
@@ -40,10 +47,14 @@ const useHandleDialog = (
         type: 'errorRoomTitleExcessMaxLength',
         payload: roomTitleMaxLength,
       });
+      return;
     }
 
     // ルームの説明が入力されていない場合
-    if (!roomDescription) dispatch({ type: 'errorEmptyRoomDescription' });
+    if (!roomDescription) {
+      dispatch({ type: 'errorEmptyRoomDescription' });
+      return;
+    }
 
     // ルームの説明が超過の場合
     if (roomDescription.length > roomDescriptionMaxLength) {
@@ -52,6 +63,9 @@ const useHandleDialog = (
         payload: roomDescriptionMaxLength,
       });
     }
+
+    void createRoom(dispatch, roomTitle, roomDescription);
+    handleClose();
   };
   return [
     open,

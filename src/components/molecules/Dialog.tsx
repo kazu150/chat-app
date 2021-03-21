@@ -50,7 +50,7 @@ const FormDialog: NextComponentType = () => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            error={state.error.errorPart === 'title'}
             onChange={(e) => setRoomTitle(e.target.value)}
             style={{ marginBottom: 16 }}
             label="チャットルーム名"
@@ -59,9 +59,8 @@ const FormDialog: NextComponentType = () => {
             fullWidth
           />
           <TextField
-            autoFocus
             margin="dense"
-            id="name"
+            error={state.error.errorPart === 'description'}
             onChange={(e) => setRoomDescription(e.target.value)}
             label="チャットルームの説明"
             placeholder="猫好きが猫を愛でるチャットです。"

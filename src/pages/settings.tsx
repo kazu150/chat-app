@@ -71,6 +71,7 @@ const Settings: NextPage = () => {
             </Grid>
             <Grid item xs={8}>
               <TextField
+                autoFocus
                 fullWidth
                 error={state.error.errorPart === 'name'}
                 value={data.name}
