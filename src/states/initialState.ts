@@ -12,6 +12,12 @@ export type User = {
   thumb: string;
 };
 
+export type PublicProfiles = {
+  id: string;
+  name: string;
+  thumb: string;
+};
+
 export type Error = {
   isOpened: boolean;
   message: string;
@@ -22,6 +28,7 @@ export type State = {
   currentRoom: string;
   rooms: Room[];
   dialog: boolean;
+  publicProfiles: PublicProfiles[];
   user: User;
   error: Error;
 };
@@ -36,6 +43,7 @@ const initialState: State = {
     email: '',
     thumb: '',
   },
+  publicProfiles: [],
   error: {
     isOpened: false,
     message: '',

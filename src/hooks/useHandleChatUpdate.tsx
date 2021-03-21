@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
-import fetchUsers, { User } from '../firebase/fetchUsers';
 import fetchPosts, { Chat } from '../firebase/fetchPosts';
 import createPost from '../firebase/createPost';
 import { chatMaxLength as maxLength } from '../vars';
@@ -18,20 +17,17 @@ const useHandleChatUpdate = (
   typeof onDeleteAllClick
 ] => {
   const [draft, setDraft] = useState('');
-  const [users, setUsers] = useState<User[]>([]);
   const [chats, setChats] = useState<Chat[]>([]);
-
-  // User[]の内容をリアルタイムで更新
-  useEffect(() => {
-    fetchUsers(setUsers);
-  }, []);
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    fetchPosts(roomId, setChats, users);
+    const unsubscribe = fetchPosts(roomId, setChats, state.publicProfiles);
     // usersの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
-  }, [users, roomId]);
+    return () => {
+      unsubscribe;
+    };
+  }, [state.publicProfiles, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
