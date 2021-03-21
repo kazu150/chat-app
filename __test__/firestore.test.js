@@ -44,213 +44,124 @@ describe("Firestoreのテスト", () => {
         }).firestore();
     }
 
-    describe("usersコレクションのルールテスト", () => {
+    describe("publicProfilesコレクション", () => {
 
-        test("ログイン中のuserの読取り", async () => {
+        test("サインイン時に自userの読取りが成功するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertSucceeds(db.collection('users').doc('c05cDZITKVZH5930b6FotWsYLvF3').get());
+            await firebase.assertSucceeds(db.collection('publicProfiles').doc('c05cDZITKVZH5930b6FotWsYLvF3').get());
         })
 
-        test("ログイン中でないuserの読取り", async () => {
+        test("サインイン時に別userの読取りが成功するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertFails(db.collection('users').doc('d05cDZITKVZH5930b6FotWsYLvF3').get());
+            await firebase.assertSucceeds(db.collection('publicProfiles').doc('qwertyuio1234560asdfghjadfafs').get());
         })
 
-        test("user,publicProfilesの新規登録", async () => {
+        test("正しいデータでのpublicProfiles新規登録が成功するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertSucceeds(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').set({
-                englishService: null,
-                initialTime: 0,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            }));
             await firebase.assertSucceeds(db.doc('publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3').set({
                 name: '',
-                photoUrl: '',
-                studyTime: 0,
+                thumb: '',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             }));
         })
 
-        test("間違ったデータでのuser,publicProfilesの新規登録", async () => {
+        test("間違ったデータでのpublicProfiles新規登録が失敗するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertFails(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').set({
-                englishService: null,
-                initialTime: 0,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                hoge: 'aa'
-            }));
             await firebase.assertFails(db.doc('publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3').set({
                 name: '',
-                photoUrl: '',
-                studyTime: 0,
+                thumb: '',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 hoge: 'aa'
             }));
         })
 
-        test("user,publicProfilesの上書き", async () => {
+        test("正しいデータでのpublicProfilesの上書きが成功するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
             await db.doc('publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3').set({
                 name: '',
-                photoUrl: '',
-                studyTime: 0,
+                thumb: '',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             })
-            await db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').set({
-                englishService: null,
-                initialTime: 0,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            })
-
-            await firebase.assertSucceeds(
-                db.doc(`users/c05cDZITKVZH5930b6FotWsYLvF3`).update({
-                    englishService: db.doc(
-                        `englishServices/dmm`
-                    ),
-                    initialTime: 10000,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                })
-            );
             await firebase.assertSucceeds(
                 db.doc(`publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3`).update({
-                    name: 'testName',
+                    name: 'newName',
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 })
             );
         })
 
-        test("間違ったデータでのuser,publicProfilesの上書き", async () => {
+        test("間違ったデータでのpublicProfilesの上書きが失敗するか", async () => {
             //条件（uidやprojectId)を指定してdbを生成
             const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
             await db.doc('publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3').set({
                 name: '',
-                photoUrl: '',
-                studyTime: 0,
+                thumb: '',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             })
-            await db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').set({
-                englishService: null,
-                initialTime: 0,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            })
-
-            await firebase.assertFails(
-                db.doc(`users/c05cDZITKVZH5930b6FotWsYLvF3`).update({
-                    englishService: db.doc(
-                        `englishServices/dmm`
-                    ),
-                    initialTime: 10000,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    hoge: 1
-                })
-            );
             await firebase.assertFails(
                 db.doc(`publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3`).update({
-                    name: 'testName',
+                    name: 'newName',
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    hoge: 1
+                    hoge: 1234
                 })
             );
-        })
-
-        test("studyLogの新規登録", async () => {
-            //条件（uidやprojectId)を指定してdbを生成
-            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertSucceeds(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').add({
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25,
-            }));
-        })
-
-        test("間違ったデータでのstudyLogの新規登録", async () => {
-            //条件（uidやprojectId)を指定してdbを生成
-            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            await firebase.assertFails(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').add({
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25,
-                hoge: 1
-            }));
-        })
-
-        test("studyLogの上書き", async () => {
-            //条件（uidやprojectId)を指定してdbを生成
-            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            const log = await db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').add({
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25,
-            })
-            await firebase.assertSucceeds(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').doc(log.id).update({
-                nationality: db.doc(`nationalities/us`),
-            }));
-        })
-
-        test("間違ったデータでのstudyLogの上書き", async () => {
-            //条件（uidやprojectId)を指定してdbを生成
-            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            const log = await db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').add({
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25
-            })
-            await firebase.assertFails(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').doc(log.id).update({
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25,
-                hoge: 1
-            }));
-        })
-
-        test("deleteテスト", async () => {
-            //条件（uidやprojectId)を指定してdbを生成
-            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
-            const log = await db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').add({
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                nationality: db.doc(`nationalities/us`),
-                count: 1,
-                englishService: db.doc(
-                    `englishServices/dmm`
-                ),
-                time: 25
-            })
-            await firebase.assertSucceeds(db.doc('users/c05cDZITKVZH5930b6FotWsYLvF3').collection('studyLog').doc(log.id).delete());
         })
     })
 
+    describe("roomsコレクション", () => {
+
+        test("正しいデータでのroomsの新規登録が成功するか", async () => {
+            //条件（uidやprojectId)を指定してdbを生成
+            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
+            await firebase.assertSucceeds(db.collection('rooms').add({
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                title: '新しいルーム',
+                description: '新しいルームの説明です',
+            }));
+        })
+
+        test("間違ったデータでのroomsの新規登録が失敗するか", async () => {
+            //条件（uidやprojectId)を指定してdbを生成
+            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
+            await firebase.assertFails(db.collection('rooms').add({
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                title: '新しいルーム',
+                description: '新しいルームの説明ですけど今回に限っては文字数をめっちゃ増やしてエラーを出せるか確認です',
+            }));
+        })
+    })
+
+    describe("rooms > chatsサブコレクション", () => {
+        test("正しいデータでのchatsの新規登録が成功するか", async () => {
+            //条件（uidやprojectId)を指定してdbを生成
+            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
+            await firebase.assertSucceeds(db.doc('rooms/aqwsedrftgyhujikol222').collection('chats').add({
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                description: '投稿内容をこちらに記入！！！',
+                publicProfiles: db.doc(`publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3`)
+            }));
+        })
+
+        test("間違ったデータでのchatsの新規登録が失敗するか", async () => {
+            //条件（uidやprojectId)を指定してdbを生成
+            const db = authedApp({ uid: "c05cDZITKVZH5930b6FotWsYLvF3"});
+            await firebase.assertFails(db.doc('rooms/aqwsedrftgyhujikol222').collection('chats').add({
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                description: '投稿内容をこちらに記入！！！',
+                publicProfiles: db.doc(`publicProfiles/c05cDZITKVZH5930b6FotWsYLvF3`),
+                hoge: 'fdasfsfa'
+            }));
+        })
+    })
 })
 
 
