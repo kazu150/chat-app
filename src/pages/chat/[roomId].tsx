@@ -4,14 +4,7 @@ import { useContext } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import {
-  TextField,
-  Button,
-  Grid,
-  List,
-  Typography,
-  Box,
-} from '@material-ui/core';
+import { TextField, Button, Grid, List, Typography } from '@material-ui/core';
 import CommonContext from '../../states/context';
 import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
 import ChatElement from '../../components/molecules/ChatElement';
@@ -40,13 +33,10 @@ const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
 
-  const [
-    chats,
-    onPostSubmit,
-    onDeleteAllClick,
-    room,
-    roomId,
-  ] = useHandleChatUpdate(dispatch, state);
+  const [chats, onPostSubmit, room, roomId] = useHandleChatUpdate(
+    dispatch,
+    state
+  );
 
   return (
     state.user.email && (
@@ -91,24 +81,13 @@ const Chat: NextPage = () => {
         <List className={classes.root}>
           {/* チャット履歴があれば履歴の配列を展開して表示 */}
           {chats.length ? (
-            <>
-              <div className={classes.chatArea}>
-                {chats
-                  .sort((a, b) => b.id - a.id)
-                  .map((chat) => (
-                    <ChatElement chat={chat} key={chat.id} />
-                  ))}
-              </div>
-              <Box textAlign="center">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={onDeleteAllClick}
-                >
-                  チャットルームを削除
-                </Button>
-              </Box>
-            </>
+            <div className={classes.chatArea}>
+              {chats
+                .sort((a, b) => b.id - a.id)
+                .map((chat) => (
+                  <ChatElement chat={chat} key={chat.id} />
+                ))}
+            </div>
           ) : (
             <div>チャット履歴がありません！</div>
           )}

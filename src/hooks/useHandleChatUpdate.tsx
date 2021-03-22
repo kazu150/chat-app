@@ -9,7 +9,7 @@ import { chatMaxLength as maxLength } from '../vars';
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
   state: State
-): [Chat[], typeof onPostSubmit, typeof onDeleteAllClick, Room, string] => {
+): [Chat[], typeof onPostSubmit, Room, string] => {
   const [chats, setChats] = useState<Chat[]>([]);
 
   const [room, setRoom] = useState<Room>({
@@ -78,14 +78,7 @@ const useHandleChatUpdate = (
     }
   };
 
-  const onDeleteAllClick = () => {
-    const agreed = window.confirm('本当にすべてのチャット履歴を削除しますか？');
-    if (!agreed) return;
-    // deleteAllの処理
-    console.log('all posts deleted');
-  };
-
-  return [chats, onPostSubmit, onDeleteAllClick, room, roomId as string];
+  return [chats, onPostSubmit, room, roomId as string];
 };
 
 export default useHandleChatUpdate;
