@@ -3,7 +3,14 @@ import { useContext } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
-import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Box,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 import CommonContext from '../states/context';
 import useHandleSettings from '../hooks/useHandleSettings';
 import onImageSet from '../utils/onImageSet';
@@ -14,6 +21,7 @@ const Settings: NextPage = () => {
     state,
     dispatch
   );
+  const matches = useMediaQuery('(min-width:600px)');
 
   return (
     state.user.email && (
@@ -25,13 +33,17 @@ const Settings: NextPage = () => {
         <form onSubmit={onSettingsSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={4}>
-              <Typography variant="body1">メールアドレス：</Typography>
+              <Typography variant="body1">
+                {matches ? `メールアドレス：` : `アドレス：`}
+              </Typography>
             </Grid>
             <Grid item xs={8}>
               <Typography variant="body1">{state.user.email}</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography variant="body1">プロフィール画像：</Typography>
+              <Typography variant="body1">
+                {matches ? `プロフィール画像：` : `プロフ画像：`}
+              </Typography>
               <label htmlFor="file" style={{ position: 'relative' }}>
                 <Button
                   style={{ position: 'absolute' }}

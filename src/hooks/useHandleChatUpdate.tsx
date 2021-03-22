@@ -33,6 +33,9 @@ const useHandleChatUpdate = (
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
+    // サインアウト中にdbとの接続を試みるのを防ぐ
+    if (!state.user.email) return () => null;
+
     const unsubscribe = fetchPosts(
       roomId as string,
       setChats,
@@ -44,7 +47,7 @@ const useHandleChatUpdate = (
     };
     // publicProfilesの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
-  }, [state.publicProfiles, roomId]);
+  }, [state.user.email, state.publicProfiles, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

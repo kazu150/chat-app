@@ -4,7 +4,14 @@ import { useContext } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { TextField, Button, Grid, List, Typography } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Grid,
+  List,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 import CommonContext from '../../states/context';
 import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
 import ChatElement from '../../components/molecules/ChatElement';
@@ -32,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
-
+  const matches = useMediaQuery('(min-width:600px)');
   const [chats, onPostSubmit, room, roomId] = useHandleChatUpdate(
     dispatch,
     state
@@ -52,7 +59,7 @@ const Chat: NextPage = () => {
         </Typography>
         <form onSubmit={onPostSubmit}>
           <Grid container spacing={1}>
-            <Grid item xs={10}>
+            <Grid item xs={matches ? 10 : 9}>
               <TextField
                 autoFocus
                 fullWidth
@@ -66,13 +73,17 @@ const Chat: NextPage = () => {
                     payload: { [roomId]: e.target.value },
                   })
                 }
-                style={{ marginBottom: 10 }}
                 placeholder="投稿を入力しましょう"
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={2}>
-              <Button type="submit" variant="contained" color="primary">
+            <Grid item xs={matches ? 2 : 3}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                color="primary"
+              >
                 投稿！
               </Button>
             </Grid>
