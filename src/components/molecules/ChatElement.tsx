@@ -8,10 +8,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import { NextComponentType, NextPageContext } from 'next';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Chat } from '../../firebase/fetchPosts';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     inline: {
       display: 'inline',
@@ -19,6 +19,12 @@ const useStyles = makeStyles(() =>
     time: {
       marginLeft: 10,
       fontSize: 14,
+    },
+    listItem: {
+      [theme.breakpoints.down('sm')]: {
+        paddingRight: 0,
+        paddingLeft: 0,
+      },
     },
   })
 );
@@ -36,7 +42,7 @@ const ChatElement: NextComponentType<NextPageContext, unknown, Props> = (
 
   return (
     <>
-      <ListItem alignItems="flex-start">
+      <ListItem className={classes.listItem} alignItems="flex-start">
         <ListItemAvatar>
           <Avatar
             alt={chat.name || 'アバター'}

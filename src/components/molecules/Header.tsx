@@ -13,6 +13,7 @@ import {
   Menu,
   Avatar,
   Button,
+  useMediaQuery,
 } from '@material-ui/core';
 import Drawer from './Drawer';
 import CommonContext from '../../states/context';
@@ -38,6 +39,7 @@ const Header: NextComponentType = () => {
   const { state, dispatch } = useContext(CommonContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const matches = useMediaQuery('(min-width:600px)');
 
   const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -89,7 +91,7 @@ const Header: NextComponentType = () => {
             {state.user.email ? (
               <div>
                 <Typography variant="button">
-                  {`${state.user.name}さん`}
+                  {matches && `${state.user.name}さん`}
                 </Typography>
                 <IconButton
                   aria-label="account of current user"
@@ -118,6 +120,9 @@ const Header: NextComponentType = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
+                  {matches || (
+                    <MenuItem disabled>{`${state.user.name}さん`}</MenuItem>
+                  )}
                   <MenuItem onClick={handleClickSignOut}>サインアウト</MenuItem>
                   <MenuItem onClick={handleClickSettings}>設定</MenuItem>
                 </Menu>
