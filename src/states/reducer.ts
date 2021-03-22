@@ -2,6 +2,7 @@ import initialState, {
   State,
   User,
   Room,
+  Drafts,
   PublicProfiles,
 } from './initialState';
 
@@ -23,6 +24,15 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         rooms: action.payload as Room[],
+      };
+    // draftsReducer
+    case 'draftsUpdate':
+      return {
+        ...state,
+        drafts: {
+          ...state.drafts,
+          ...(action.payload as Drafts),
+        },
       };
     // dialogReducer
     case 'dialogOpen':

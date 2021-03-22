@@ -47,13 +47,11 @@ const Chat: NextPage = () => {
     title: '',
     description: '',
   });
-  const [
-    drafts,
-    setDrafts,
-    chats,
-    onPostSubmit,
-    onDeleteAllClick,
-  ] = useHandleChatUpdate(dispatch, state, room?.id);
+  const [chats, onPostSubmit, onDeleteAllClick] = useHandleChatUpdate(
+    dispatch,
+    state,
+    room?.id
+  );
   const router = useRouter();
   const { roomId } = router.query;
 
@@ -87,9 +85,12 @@ const Chat: NextPage = () => {
                 error={state.error.errorPart === 'draft'}
                 multiline
                 label="投稿内容"
-                value={drafts[roomId as string] || ''}
+                value={state.drafts[roomId as string] || ''}
                 onChange={(e) =>
-                  setDrafts({ ...drafts, [roomId as string]: e.target.value })
+                  dispatch({
+                    type: 'draftsUpdate',
+                    payload: { [roomId as string]: e.target.value },
+                  })
                 }
                 style={{ marginBottom: 10 }}
                 placeholder="投稿を入力しましょう"

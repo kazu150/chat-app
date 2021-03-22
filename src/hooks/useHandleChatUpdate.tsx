@@ -9,20 +9,8 @@ const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
   state: State,
   roomId: string
-): [
-  typeof drafts,
-  typeof setDrafts,
-  typeof chats,
-  typeof onPostSubmit,
-  typeof onDeleteAllClick
-] => {
-  const [drafts, setDrafts] = useState<{ [key: string]: string }>({});
+): [typeof chats, typeof onPostSubmit, typeof onDeleteAllClick] => {
   const [chats, setChats] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    console.log(drafts);
-    console.log(chats);
-  });
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
@@ -40,19 +28,19 @@ const useHandleChatUpdate = (
     const id = Number(date).toString();
 
     // 投稿内容は入力されているか
-    if (!drafts.roomId) {
+    if (!state.drafts[roomId]) {
       dispatch({ type: 'errorEmptyDraft' });
       return;
     }
 
     // 最大文字数オーバーしていないか
-    if (drafts.roomId.length > maxLength) {
+    if (state.drafts[roomId].length > maxLength) {
       dispatch({ type: 'errorExcessMaxLength', payload: maxLength });
       return;
     }
 
     try {
-      await createPost(roomId, id, state.user.id, drafts, setDrafts, dispatch);
+      await createPost(roomId, id, state.user.id, dispatch, state);
     } catch (error: unknown) {
       // エラー内容を型安全に処理するため、カスタム型に代入
       type CustomErrorType = {
@@ -73,7 +61,7 @@ const useHandleChatUpdate = (
     console.log('all posts deleted');
   };
 
-  return [drafts, setDrafts, chats, onPostSubmit, onDeleteAllClick];
+  return [chats, onPostSubmit, onDeleteAllClick];
 };
 
 export default useHandleChatUpdate;

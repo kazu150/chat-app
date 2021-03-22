@@ -1,13 +1,13 @@
 import { db, firebase } from '../../firebase';
 import { Action } from '../states/reducer';
+import { State } from '../states/initialState';
 
 const createPost = async (
   roomId: string,
   postId: string,
   userId: string,
-  drafts: { [key: string]: string },
-  setDrafts: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  state: State
 ): Promise<void> => {
   try {
     await db
@@ -18,11 +18,11 @@ const createPost = async (
       .set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         publicProfiles: db.doc(`publicProfiles/${userId}`),
-        description: drafts.roo,
+        description: state.drafts[roomId],
       });
 
     // 投稿した下書きだけstateから削除
-    setDrafts({ ...drafts, [roomId]: '' });
+    dispatch({ type: 'draftsUpdate', payload: { [roomId]: '' } });
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
     type CustomErrorType = {

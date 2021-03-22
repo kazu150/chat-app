@@ -5,6 +5,10 @@ export type Room = {
   title: string;
 };
 
+export type Drafts = {
+  [key: string]: string;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -27,6 +31,7 @@ export type Error = {
 export type State = {
   currentRoom: string;
   rooms: Room[];
+  drafts: Drafts;
   dialog: boolean;
   publicProfiles: PublicProfiles[];
   user: User;
@@ -36,6 +41,7 @@ export type State = {
 const initialState: State = {
   currentRoom: '',
   rooms: [],
+  drafts: {},
   dialog: false,
   user: {
     id: '',
