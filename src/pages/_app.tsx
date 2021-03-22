@@ -19,7 +19,7 @@ type Props = {
 
 const MyApp: NextPage<Props> = ({ Component }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useManageSigninStatus(dispatch);
+  useManageSigninStatus(dispatch, state);
 
   useEffect(() => {
     // Remove the server-side injected CSS.
