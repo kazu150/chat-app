@@ -52,7 +52,7 @@ const Chat: NextPage = () => {
     state.user.email && (
       <div>
         <Head>
-          <title>{`リアルタイムチャット | ${room.title}`}</title>
+          <title>{`ゆるふわちゃっと | ${room.title}`}</title>
         </Head>
         <Typography className={classes.title} variant="h1">
           {room.title}

@@ -9,7 +9,7 @@ const guestSignIn = async (
 ): Promise<void> => {
   e.preventDefault();
   try {
-    // ユーザーのログイン状態継続時間指定（SESSION：ブラウザを開いている間は情報保持）
+    // ユーザーのサインイン状態継続時間指定（SESSION：ブラウザを開いている間は情報保持）
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
     // guestアカウントでサインイン

@@ -10,8 +10,8 @@ import Footer from '../components/molecules/Footer';
 import CommonContext from '../states/context';
 import { reducer } from '../states/reducer';
 import initialState from '../states/initialState';
-import useManageSigninStatus from '../hooks/useManageSigninStatus';
 import Dialog from '../components/molecules/Dialog';
+import Auth from '../utils/Auth';
 
 type Props = {
   Component: NextPage;
@@ -19,7 +19,6 @@ type Props = {
 
 const MyApp: NextPage<Props> = ({ Component }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useManageSigninStatus(dispatch, state);
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -29,14 +28,10 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  });
-
   return (
     <>
       <Head>
-        <title>リアルタイムチャット</title>
+        <title>ゆるふわちゃっと</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -48,6 +43,11 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
           <CssBaseline />
           <Header />
           <Dialog />
+          {state.user.email ? (
+            <Auth />
+          ) : (
+            console.log('authがアンマウントされたはず')
+          )}
           <Container maxWidth="sm">
             <Component />
           </Container>

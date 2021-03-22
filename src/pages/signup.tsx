@@ -13,7 +13,7 @@ const Signup: NextPage = () => {
     !state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | 新規登録</title>
+          <title>ゆるふわちゃっと | 新規登録</title>
         </Head>
         <Typography variant="h1">新規登録</Typography>
         <form onSubmit={onSignupSubmit}>

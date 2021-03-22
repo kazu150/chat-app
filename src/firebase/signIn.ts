@@ -9,7 +9,7 @@ const signIn = async (
   dispatch: React.Dispatch<Action>
 ): Promise<void> => {
   try {
-    // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+    // ユーザーのサインイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
     await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     const data = await auth.signInWithEmailAndPassword(email, password);
 

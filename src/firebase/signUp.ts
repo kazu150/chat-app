@@ -11,7 +11,7 @@ const signUp = async (
 ): Promise<void> => {
   try {
     // Firebase Authにて新規ユーザサインイン
-    // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+    // ユーザーのサインイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
     await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
     // サインアップ後の返り値はdataに代入

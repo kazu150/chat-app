@@ -6,7 +6,7 @@ const NoContents: NextPage = () => {
   return (
     <>
       <Head>
-        <title>リアルタイムチャット | ページがありません</title>
+        <title>ゆるふわちゃっと | ページがありません</title>
       </Head>
       <Box textAlign="center">
         <Typography variant="h1">404 | このページは存在しません！</Typography>

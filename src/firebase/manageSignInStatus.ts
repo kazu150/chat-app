@@ -1,16 +1,11 @@
 import { firebase, db } from '../../firebase';
 import { Action } from '../states/reducer';
-import fetchRooms from './fetchRooms';
-import fetchUsers from './fetchUsers';
 import signOut from './signOut';
 
 const manageSignInStatus = async (
   dispatch: React.Dispatch<Action>,
   user: firebase.User
-): Promise<(() => void)[]> => {
-  let unsubscribeRooms: () => void;
-  let unsubscribeUsers: () => void;
-
+): Promise<void> => {
   try {
     // ユーザーが検出されたら、signInの処理
     if (user) {
@@ -29,12 +24,6 @@ const manageSignInStatus = async (
         },
       });
 
-      // 全ルームをリアルタイム取得
-      unsubscribeRooms = fetchRooms(dispatch);
-
-      // 全ユーザーをリアルタイム取得
-      unsubscribeUsers = fetchUsers(dispatch);
-
       // ユーザーが検出されなかったら、signOutの処理
     } else {
       await signOut(dispatch);
@@ -50,8 +39,6 @@ const manageSignInStatus = async (
       payload: `エラー内容：${customError.message} [on firebase/manageSignInStatus]`,
     });
   }
-
-  return [unsubscribeRooms, unsubscribeUsers];
 };
 
 export default manageSignInStatus;

@@ -19,7 +19,7 @@ const Settings: NextPage = () => {
     state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | ユーザー設定</title>
+          <title>ゆるふわちゃっと | ユーザー設定</title>
         </Head>
         <Typography variant="h1">ユーザー設定</Typography>
         <form onSubmit={onSettingsSubmit}>

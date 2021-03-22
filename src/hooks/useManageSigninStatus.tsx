@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { Action } from '../states/reducer';
 import { State } from '../states/initialState';
 import manageSignInStatus from '../firebase/manageSignInStatus';
+import fetchRooms from '../firebase/fetchRooms';
+import fetchUsers from '../firebase/fetchUsers';
 import { auth } from '../../firebase';
 import { defaultRoom } from '../vars';
 
@@ -14,16 +16,12 @@ const useManageSigninStatus = (
   const { roomId } = router.query;
 
   useEffect(() => {
-    let unsubscribeRooms: () => void = () => null;
-    let unsubscribeUsers: () => void = () => null;
+    // サインインステータスを追跡
+    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
+      await manageSignInStatus(dispatch, user);
 
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      // サインアウト時は下の処理は実行しない
       if (!user) return;
-
-      [unsubscribeRooms, unsubscribeUsers] = await manageSignInStatus(
-        dispatch,
-        user
-      );
 
       // 現在のRoomをcurrentRoomに設定
       if (roomId) {
@@ -43,9 +41,14 @@ const useManageSigninStatus = (
       }
     });
 
+    // 全ルームをリアルタイム取得
+    const unsubscribeRooms = fetchRooms(dispatch);
+
+    // 全ユーザーをリアルタイム取得
+    const unsubscribeUsers = fetchUsers(dispatch);
+
     return () => {
-      // publicProfiles();
-      unsubscribe();
+      unsubscribeAuth();
       unsubscribeRooms();
       unsubscribeUsers();
     };
