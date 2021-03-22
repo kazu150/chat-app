@@ -120,9 +120,6 @@ const Header: NextComponentType = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {matches || (
-                    <MenuItem disabled>{`${state.user.name}さん`}</MenuItem>
-                  )}
                   <MenuItem onClick={handleClickSignOut}>サインアウト</MenuItem>
                   <MenuItem onClick={handleClickSettings}>設定</MenuItem>
                 </Menu>
