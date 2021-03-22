@@ -74,7 +74,7 @@ const Header: NextComponentType = () => {
   return (
     <>
       <Head>
-        <title>リアルタイムチャット</title>
+        <title>ゆるふわちゃっと</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={classes.root}>
@@ -83,7 +83,7 @@ const Header: NextComponentType = () => {
             {state.user.email && <Drawer />}
             <Link href="/">
               <Typography variant="h2" className={classes.title}>
-                リアルタイムチャット
+                ゆるふわちゃっと
               </Typography>
             </Link>
             {state.user.email ? (

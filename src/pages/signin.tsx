@@ -13,7 +13,7 @@ const Signin: NextPage = () => {
     !state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | サインイン</title>
+          <title>ゆるふわちゃっと | サインイン</title>
         </Head>
         <Typography variant="h1">サインイン</Typography>
         <form

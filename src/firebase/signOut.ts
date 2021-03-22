@@ -4,8 +4,8 @@ import { Action } from '../states/reducer';
 
 const signOut = async (dispatch: React.Dispatch<Action>): Promise<void> => {
   try {
-    await auth.signOut();
     dispatch({ type: 'userSignOut' });
+    await auth.signOut();
     await Router.push('/');
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入

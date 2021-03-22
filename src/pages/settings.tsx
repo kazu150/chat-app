@@ -7,7 +7,6 @@ import { TextField, Button, Box, Grid, Typography } from '@material-ui/core';
 import CommonContext from '../states/context';
 import useHandleSettings from '../hooks/useHandleSettings';
 import onImageSet from '../utils/onImageSet';
-import { defaultRoom } from '../vars';
 
 const Settings: NextPage = () => {
   const { state, dispatch } = useContext(CommonContext);
@@ -20,7 +19,7 @@ const Settings: NextPage = () => {
     state.user.email && (
       <div>
         <Head>
-          <title>リアルタイムチャット | ユーザー設定</title>
+          <title>ゆるふわちゃっと | ユーザー設定</title>
         </Head>
         <Typography variant="h1">ユーザー設定</Typography>
         <form onSubmit={onSettingsSubmit}>
@@ -86,17 +85,15 @@ const Settings: NextPage = () => {
             </Grid>
           </Grid>
           <Box textAlign="center" style={{ marginBottom: 16 }}>
-            {state.user.name && (
-              <Box component="span" m={1}>
-                <Button
-                  onClick={() => Router.push(`/chat/${defaultRoom}`)}
-                  variant="contained"
-                  color="default"
-                >
-                  キャンセル
-                </Button>
-              </Box>
-            )}
+            <Box component="span" m={1}>
+              <Button
+                onClick={() => Router.push(`/chat/${state.currentRoom}`)}
+                variant="contained"
+                color="default"
+              >
+                キャンセル
+              </Button>
+            </Box>
             <Box component="span" m={1}>
               <Button type="submit" variant="contained" color="primary">
                 保存してチャットへ

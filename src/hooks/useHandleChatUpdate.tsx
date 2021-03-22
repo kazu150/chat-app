@@ -1,37 +1,50 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Action } from '../states/reducer';
-import { State } from '../states/initialState';
-import fetchUsers, { User } from '../firebase/fetchUsers';
+import { State, Room } from '../states/initialState';
 import fetchPosts, { Chat } from '../firebase/fetchPosts';
 import createPost from '../firebase/createPost';
 import { chatMaxLength as maxLength } from '../vars';
 
 const useHandleChatUpdate = (
   dispatch: React.Dispatch<Action>,
-  state: State,
-  roomId: string
-): [
-  typeof draft,
-  typeof setDraft,
-  typeof chats,
-  typeof onPostSubmit,
-  typeof onDeleteAllClick
-] => {
-  const [draft, setDraft] = useState('');
-  const [users, setUsers] = useState<User[]>([]);
+  state: State
+): [Chat[], typeof onPostSubmit, typeof onDeleteAllClick, Room, string] => {
   const [chats, setChats] = useState<Chat[]>([]);
 
-  // User[]の内容をリアルタイムで更新
+  const [room, setRoom] = useState<Room>({
+    id: '',
+    createdAt: '',
+    title: '',
+    description: '',
+  });
+  const router = useRouter();
+  const { roomId } = router.query;
+
+  // 現在のroomをstateにセット
   useEffect(() => {
-    fetchUsers(setUsers);
-  }, []);
+    const fetchedRoom = state.rooms.filter((data) => {
+      return data.id === roomId;
+    })[0];
+    // fetchedRoomが確実に取得できるまでsetしない（nullが入るのを防ぐ）
+    if (!fetchedRoom) return;
+    setRoom(fetchedRoom);
+  }, [roomId, state.rooms]);
 
   // Chatの内容をリアルタイムで更新
   useEffect(() => {
-    fetchPosts(roomId, setChats, users);
-    // usersの中身が更新された時に再レンダーする
+    const unsubscribe = fetchPosts(
+      roomId as string,
+      setChats,
+      state.publicProfiles
+    );
+    return () => {
+      // チャットページをunmountするときにクリーンアップ
+      unsubscribe();
+    };
+    // publicProfilesの中身が更新された時に再レンダーする
     // （新規ユーザー登録時、既存ユーザープロフィール更新時）
-  }, [users, roomId]);
+  }, [state.publicProfiles, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,19 +52,19 @@ const useHandleChatUpdate = (
     const id = Number(date).toString();
 
     // 投稿内容は入力されているか
-    if (draft === '') {
+    if (!state.drafts[roomId as string]) {
       dispatch({ type: 'errorEmptyDraft' });
       return;
     }
 
     // 最大文字数オーバーしていないか
-    if (draft.length > maxLength) {
+    if (state.drafts[roomId as string].length > maxLength) {
       dispatch({ type: 'errorExcessMaxLength', payload: maxLength });
       return;
     }
 
     try {
-      await createPost(roomId, id, state.user.id, draft, setDraft, dispatch);
+      await createPost(roomId as string, id, state.user.id, dispatch, state);
     } catch (error: unknown) {
       // エラー内容を型安全に処理するため、カスタム型に代入
       type CustomErrorType = {
@@ -72,7 +85,7 @@ const useHandleChatUpdate = (
     console.log('all posts deleted');
   };
 
-  return [draft, setDraft, chats, onPostSubmit, onDeleteAllClick];
+  return [chats, onPostSubmit, onDeleteAllClick, room, roomId as string];
 };
 
 export default useHandleChatUpdate;

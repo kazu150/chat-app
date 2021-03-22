@@ -5,10 +5,20 @@ export type Room = {
   title: string;
 };
 
+export type Drafts = {
+  [key: string]: string;
+};
+
 export type User = {
   id: string;
   name: string;
   email: string;
+  thumb: string;
+};
+
+export type PublicProfiles = {
+  id: string;
+  name: string;
   thumb: string;
 };
 
@@ -21,7 +31,9 @@ export type Error = {
 export type State = {
   currentRoom: string;
   rooms: Room[];
+  drafts: Drafts;
   dialog: boolean;
+  publicProfiles: PublicProfiles[];
   user: User;
   error: Error;
 };
@@ -29,6 +41,7 @@ export type State = {
 const initialState: State = {
   currentRoom: '',
   rooms: [],
+  drafts: {},
   dialog: false,
   user: {
     id: '',
@@ -36,6 +49,7 @@ const initialState: State = {
     email: '',
     thumb: '',
   },
+  publicProfiles: [],
   error: {
     isOpened: false,
     message: '',

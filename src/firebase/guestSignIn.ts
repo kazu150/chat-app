@@ -9,7 +9,7 @@ const guestSignIn = async (
 ): Promise<void> => {
   e.preventDefault();
   try {
-    // ユーザーのログイン状態継続時間指定（SESSION：ブラウザを開いている間は情報保持）
+    // ユーザーのサインイン状態継続時間指定（SESSION：ブラウザを開いている間は情報保持）
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
     // guestアカウントでサインイン
@@ -30,6 +30,10 @@ const guestSignIn = async (
         email: guestEmail,
       },
     });
+
+    // currentRoomをデフォルトルームに設定
+    dispatch({ type: 'currentRoomSwitch', payload: defaultRoom });
+
     await Router.push(`/chat/${defaultRoom}`);
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入

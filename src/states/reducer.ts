@@ -1,4 +1,10 @@
-import initialState, { State, User, Room } from './initialState';
+import initialState, {
+  State,
+  User,
+  Room,
+  Drafts,
+  PublicProfiles,
+} from './initialState';
 
 export type Action = {
   type: string;
@@ -18,6 +24,15 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         rooms: action.payload as Room[],
+      };
+    // draftsReducer
+    case 'draftsUpdate':
+      return {
+        ...state,
+        drafts: {
+          ...state.drafts,
+          ...(action.payload as Drafts),
+        },
       };
     // dialogReducer
     case 'dialogOpen':
@@ -57,6 +72,12 @@ export const reducer = (state: State, action: Action): State => {
       };
     case 'userSignOut':
       return initialState;
+    // publicProfilseReducer
+    case 'setPublicProfiles':
+      return {
+        ...state,
+        publicProfiles: action.payload as PublicProfiles[],
+      };
     // errorReducer
     case 'errorEmptyMail':
       return {

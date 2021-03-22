@@ -5,27 +5,31 @@ import { db, firebase } from '../../firebase';
 import formatDate from '../utils/formatDate';
 import { Action } from '../states/reducer';
 
-const fetchRooms = (dispatch: React.Dispatch<Action>): void => {
-  db.collection('rooms').onSnapshot(
-    (
-      snapshot: firebase.firestore.QuerySnapshot<
-        firebase.firestore.DocumentData
-      >
-    ) => {
-      const formedSnapshot = snapshot.docs.map((doc) => {
-        const date: Date = doc.data().createdAt?.toDate();
-        const formattedDate = formatDate(date);
+const fetchRooms = (dispatch: React.Dispatch<Action>): (() => void) => {
+  const unsubscribe = db
+    .collection('rooms')
+    .onSnapshot(
+      (
+        snapshot: firebase.firestore.QuerySnapshot<
+          firebase.firestore.DocumentData
+        >
+      ) => {
+        const formedSnapshot = snapshot.docs.map((doc) => {
+          const date: Date = doc.data().createdAt?.toDate();
+          const formattedDate = formatDate(date);
 
-        return {
-          id: doc.id,
-          createdAt: formattedDate,
-          description: doc.data().description as string,
-          title: doc.data().title as string,
-        };
-      });
-      dispatch({ type: 'roomsFetch', payload: formedSnapshot });
-    }
-  );
+          return {
+            id: doc.id,
+            createdAt: formattedDate,
+            description: doc.data().description as string,
+            title: doc.data().title as string,
+          };
+        });
+        dispatch({ type: 'roomsFetch', payload: formedSnapshot });
+      }
+    );
+
+  return unsubscribe;
 };
 
 export default fetchRooms;

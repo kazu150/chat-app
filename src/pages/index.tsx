@@ -13,9 +13,9 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>リアルタイムチャット | Home</title>
+        <title>ゆるふわちゃっと | Home</title>
       </Head>
-      <Typography variant="h1">リアルタイムチャット</Typography>
+      <Typography variant="h1">ゆるふわちゃっと</Typography>
       <Box textAlign="center">
         <img src="chat.svg" alt="アバター" width={350} height={350} />
       </Box>

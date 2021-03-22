@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db, firebase } from '../../firebase';
-import { User } from './fetchUsers';
 import formatDate from '../utils/formatDate';
+import { PublicProfiles } from '../states/initialState';
 
 export type Chat = {
   id: number;
@@ -16,12 +16,15 @@ export type Chat = {
 const fetchPosts = (
   roomId: string,
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>,
-  users: User[]
-): void => {
-  // roomIdを取得できるまで処理しない
-  if (!roomId) return;
+  publicProfiles: PublicProfiles[]
+): (() => void) => {
+  let unsubscribe: () => void = () => null;
 
-  db.collection('rooms')
+  // roomIdを取得できるまで処理しない
+  if (!roomId) return unsubscribe;
+
+  unsubscribe = db
+    .collection('rooms')
     .doc(roomId)
     .collection('chats')
     .onSnapshot(
@@ -31,7 +34,7 @@ const fetchPosts = (
         >
       ) => {
         const formedSnapshot = snapshot.docs.map((doc) => {
-          const filteredUser = users.filter(
+          const filteredUser = publicProfiles.filter(
             (user) => user.id === doc.data().publicProfiles?.id
           )[0];
           const date: Date = doc.data().createdAt?.toDate();
@@ -49,6 +52,8 @@ const fetchPosts = (
         setChats(formedSnapshot);
       }
     );
+
+  return unsubscribe;
 };
 
 export default fetchPosts;

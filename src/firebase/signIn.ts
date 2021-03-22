@@ -9,7 +9,7 @@ const signIn = async (
   dispatch: React.Dispatch<Action>
 ): Promise<void> => {
   try {
-    // ユーザーのログイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
+    // ユーザーのサインイン状態継続時間指定（LOCAL：ブラウザを閉じても情報保持）
     await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     const data = await auth.signInWithEmailAndPassword(email, password);
 
@@ -24,6 +24,10 @@ const signIn = async (
         email,
       },
     });
+
+    // currentRoomをデフォルトルームに設定
+    dispatch({ type: 'currentRoomSwitch', payload: defaultRoom });
+
     await Router.push(`/chat/${defaultRoom}`);
   } catch (error: unknown) {
     // エラー内容を型安全に処理するため、カスタム型に代入
