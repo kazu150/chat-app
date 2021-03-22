@@ -4,7 +4,6 @@ import useManageSigninStatus from '../hooks/useManageSigninStatus';
 
 const Auth = (): JSX.Element => {
   const { state, dispatch } = useContext(CommonContext);
-  console.log('アンマウントされてません！');
   useManageSigninStatus(dispatch, state);
   return <div />;
 };

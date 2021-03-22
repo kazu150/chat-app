@@ -20,7 +20,7 @@ const signUp = async (
     // FireStoreにdocumentを追加
     await db.collection('publicProfiles').doc(data.user.uid).set({
       thumb: '',
-      name: '',
+      name: '名無し',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     });

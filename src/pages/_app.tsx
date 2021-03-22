@@ -43,11 +43,7 @@ const MyApp: NextPage<Props> = ({ Component }: Props) => {
           <CssBaseline />
           <Header />
           <Dialog />
-          {state.user.email ? (
-            <Auth />
-          ) : (
-            console.log('authがアンマウントされたはず')
-          )}
+          {state.user.email && <Auth />}
           <Container maxWidth="sm">
             <Component />
           </Container>

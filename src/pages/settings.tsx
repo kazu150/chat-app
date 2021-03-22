@@ -85,17 +85,15 @@ const Settings: NextPage = () => {
             </Grid>
           </Grid>
           <Box textAlign="center" style={{ marginBottom: 16 }}>
-            {state.user.name && (
-              <Box component="span" m={1}>
-                <Button
-                  onClick={() => Router.push(`/chat/${state.currentRoom}`)}
-                  variant="contained"
-                  color="default"
-                >
-                  キャンセル
-                </Button>
-              </Box>
-            )}
+            <Box component="span" m={1}>
+              <Button
+                onClick={() => Router.push(`/chat/${state.currentRoom}`)}
+                variant="contained"
+                color="default"
+              >
+                キャンセル
+              </Button>
+            </Box>
             <Box component="span" m={1}>
               <Button type="submit" variant="contained" color="primary">
                 保存してチャットへ
