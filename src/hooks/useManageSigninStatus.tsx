@@ -22,7 +22,7 @@ const useManageSigninStatus = (dispatch: React.Dispatch<Action>): void => {
 
     return () => {
       // publicProfiles();
-      unsubscribe();
+      // unsubscribe();
     };
   }, [dispatch, roomId]);
 };

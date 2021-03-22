@@ -88,7 +88,7 @@ const Settings: NextPage = () => {
             {state.user.name && (
               <Box component="span" m={1}>
                 <Button
-                  onClick={() => Router.push(`/chat/${state.currentRoom}}`)}
+                  onClick={() => Router.push(`/chat/${state.currentRoom}`)}
                   variant="contained"
                   color="default"
                 >

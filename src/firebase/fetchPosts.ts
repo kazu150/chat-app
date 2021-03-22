@@ -18,7 +18,8 @@ const fetchPosts = (
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>,
   publicProfiles: PublicProfiles[]
 ): (() => void) => {
-  let unsubscribe: () => void = null;
+  let unsubscribe: () => void = () => null;
+
   // roomIdを取得できるまで処理しない
   if (!roomId) return unsubscribe;
 

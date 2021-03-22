@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable react/jsx-wrap-multilines */
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
@@ -15,7 +14,6 @@ import {
 } from '@material-ui/core';
 import CommonContext from '../../states/context';
 import useHandleChatUpdate from '../../hooks/useHandleChatUpdate';
-import { Room } from '../../states/initialState';
 import ChatElement from '../../components/molecules/ChatElement';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,28 +39,14 @@ const useStyles = makeStyles((theme: Theme) =>
 const Chat: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(CommonContext);
-  const [room, setRoom] = useState<Room>({
-    id: '',
-    createdAt: '',
-    title: '',
-    description: '',
-  });
-  const [chats, onPostSubmit, onDeleteAllClick] = useHandleChatUpdate(
-    dispatch,
-    state,
-    room?.id
-  );
-  const router = useRouter();
-  const { roomId } = router.query;
 
-  useEffect(() => {
-    const fetchedRoom = state.rooms.filter((data) => {
-      return data.id === roomId;
-    })[0];
-    // fetchedRoomが確実に取得できるまでsetしない（nullが入るのを防ぐ）
-    if (!fetchedRoom) return;
-    setRoom(fetchedRoom);
-  }, [roomId, state.rooms]);
+  const [
+    chats,
+    onPostSubmit,
+    onDeleteAllClick,
+    room,
+    roomId,
+  ] = useHandleChatUpdate(dispatch, state);
 
   return (
     state.user.email && (
@@ -85,11 +69,11 @@ const Chat: NextPage = () => {
                 error={state.error.errorPart === 'draft'}
                 multiline
                 label="投稿内容"
-                value={state.drafts[roomId as string] || ''}
+                value={state.drafts[roomId] || ''}
                 onChange={(e) =>
                   dispatch({
                     type: 'draftsUpdate',
-                    payload: { [roomId as string]: e.target.value },
+                    payload: { [roomId]: e.target.value },
                   })
                 }
                 style={{ marginBottom: 10 }}
