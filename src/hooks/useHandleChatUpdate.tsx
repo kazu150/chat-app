@@ -38,13 +38,12 @@ const useHandleChatUpdate = (
       setChats,
       state.publicProfiles
     );
-    // usersの中身が更新された時に再レンダーする
-    // （新規ユーザー登録時、既存ユーザープロフィール更新時）
     return () => {
       // チャットページをunmountするときにクリーンアップ
-      // eslint-disable-next-line no-unused-expressions
-      unsubscribe;
+      unsubscribe();
     };
+    // publicProfilesの中身が更新された時に再レンダーする
+    // （新規ユーザー登録時、既存ユーザープロフィール更新時）
   }, [state.publicProfiles, roomId]);
 
   const onPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
