@@ -7,7 +7,7 @@ export const roomTitleMaxLength = 15;
 // ルーム説明の最大文字数
 export const roomDescriptionMaxLength = 40;
 // サインイン時などにデフォルトで遷移する先のチャットルーム
-export const defaultRoom = 'DHCAYfQcd6NZjLthEDdO';
+export const defaultRoom = '3NFTwCelqY7dIowJDgHM';
 // ゲストアカウントのメールアドレス
 export const guestEmail = 'guest@guest.guest';
 // ゲストアカウントのパスワード
