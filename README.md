@@ -7,18 +7,21 @@
 ## アプリ概要
 https://docs.google.com/spreadsheets/d/1TYjfVvbRaRccgopyTlZuptjsoqW-OB4BxdH_P6Nddr4/edit#gid=0
 ## ディレクトリ構成
-- pages :各ページを構成するコンポーネント
-- components :個別のコンポーネント
--  └atoms: 最小単位のパーツ
--  └molecules: 少し大きめパーツ
-- hooks: customHookで切り分けたロジック部分
-- firebase: firebaseサービスとの疎通
-- states: ローカルステート管理（useReducer + useContext）
-- theme: Material-uiのテーマ関係
-- var.ts: 変数一覧
+- src
+-  └pages :各ページを構成するコンポーネント
+-  └components :個別のコンポーネント
+-    └atoms: 最小単位のパーツ
+-    └molecules: 少し大きめパーツ
+-  └hooks: customHookで切り分けたロジック部分
+-  └firebase: firebaseサービスとの疎通
+-  └states: ローカルステート管理（useReducer + useContext）
+-  └theme: Material-uiのテーマ関係
+-  └var.ts: 変数一覧
+-  firestore.rules: firestoreのセキュリティルール
+-  storage.rules: storageのセキュリティルール
 ## 使用ツール・ライブラリ
 - Next.js
-- React + hooks
+- React(FC)
 - firestore
 - firebase authentication
 - firebase storage
@@ -38,13 +41,6 @@ https://docs.google.com/spreadsheets/d/1TYjfVvbRaRccgopyTlZuptjsoqW-OB4BxdH_P6Nd
 |updatedAt	|Timestamp	|null: false|  ドキュメント最終更新日|  
 |name	|string	|null: false|  ユーザー名|  
 |thumb	|string	|null: false|  ユーザーのアイコン画像ファイルURL|
-  
-<!-- ▼chatsコレクション (チャットログ)
-|Column	|Type	|Options|Details|
-| ---------------- | ------- | ------ | ---------------------------------- |   
-|createdAt	|Timestamp	|null: false|  ドキュメント作成日|  
-|publicProfiles	|reference	|null: false|  投稿者のユーザー情報|  
-|description	|string	|null: false|  投稿の本文|   -->
 
 ▼roomsコレクション (チャットルーム一覧)
 |Column	|Type	|Options|Details|
